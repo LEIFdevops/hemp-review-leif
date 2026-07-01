@@ -736,21 +736,18 @@
   <!-- ═══════════════════════════════════════════════════════════ -->
   <section class="dashboard">
 
-    <!-- ROUND 4 · scope check-in -->
+    <!-- ROUND 5 · QA -->
     <div class="kickoff-card" id="kickoffCard">
       <div class="kickoff-inner">
         <div class="kickoff-lede">
-          <p class="kickoff-eyebrow">Round 4 · scope check-in</p>
-          <h2 class="kickoff-heading">Steps 0 &amp; 1 done. Help me scope the rest.</h2>
+          <p class="kickoff-eyebrow">Round 5 · your QA</p>
+          <h2 class="kickoff-heading">Steps 0-4 done. Ready for you to QA the numbers.</h2>
           <p class="kickoff-sub">
-            <strong style="color:var(--sage-bright);">Fertilizer canon fixed</strong> (all 5 σ_log values refit) and
-            <strong style="color:var(--sage-bright);">GWP corrections landed</strong> (24,000 pathway2 cells + EF4_wet resampled).
-            Before firing Steps 2–7 — which range from "quick" to "days of work" depending on your call — I want your judgment on 4 things. Answer any or all, then hit send.
-            You can always scroll down to see full Round-4 detail cards below.
+            All 6 workbooks are refreshed as <code>_v2</code> (or <code>_v4_FIXED</code> for the fertilizer canon). Open each in Excel, press <strong>Ctrl+Alt+F9</strong> (Mac: ⌘+⌥+F9), and verify the numbers. Every workbook has a Provenance or Notes tab documenting exactly what changed. When you've reviewed, answer the QA cards below and Phase 2 either wraps or gets a targeted fix.
           </p>
         </div>
         <button class="kickoff-btn" id="kickoffBtn" style="background: linear-gradient(180deg, var(--warm), #b09872);">
-          <span>Jump to Round 4 questions</span>
+          <span>Jump to Round 5 QA</span>
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M5 12h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="kickoff-status" id="kickoffStatus"></div>
@@ -759,14 +756,14 @@
 
     <div class="dashboard-status-card">
       <div class="dash-eyebrow">Live project state</div>
-      <h2 class="dash-status-heading">Phase 2 partial · Steps 0 + 1 shipped · scope call on remaining steps.</h2>
-      <p class="dash-status-sub">Fertilizer canon corrected. GWP formulas + EF4_wet corrected. Producing <code>Hemp_LCI_Fertilizer_Uncertainty_Workbook_v4_FIXED.xlsx</code> and <code>FinalMC_GWP_v2.xlsx</code>. Steps 2 through 7 have wildly different scope depending on paper-delivery minimum — see Round 4 above.</p>
+      <h2 class="dash-status-heading">Steps 0–4 done · 6 workbooks refreshed · Round 5 QA awaiting.</h2>
+      <p class="dash-status-sub">Fertilizer canon fixed. All 5 impact-category workbooks resampled with corrected σ_log + Scrucca cap. Allocation scope + SOC exception documented. Ready for you to open + Ctrl+Alt+F9 each workbook and verify the numbers. Only Step 7 (chart HTML) remains after QA sign-off.</p>
       <div class="phase-rail">
-        <div class="phase-seg done"><div class="phase-num">Phase 0</div><div class="phase-label">Ground truth</div></div>
-        <div class="phase-seg done"><div class="phase-num">Phase 1</div><div class="phase-label">Audit + R1/R2/R3</div></div>
-        <div class="phase-seg done"><div class="phase-num">Step 0</div><div class="phase-label">Fertilizer v4</div></div>
-        <div class="phase-seg done"><div class="phase-num">Step 1</div><div class="phase-label">GWP v2</div></div>
-        <div class="phase-seg active"><div class="phase-num">Round 4</div><div class="phase-label">Scope check</div></div>
+        <div class="phase-seg done"><div class="phase-num">Phase 1</div><div class="phase-label">Audit + R1-R4</div></div>
+        <div class="phase-seg done"><div class="phase-num">Steps 0-1</div><div class="phase-label">Canon + GWP</div></div>
+        <div class="phase-seg done"><div class="phase-num">Step 2</div><div class="phase-label">5 workbooks</div></div>
+        <div class="phase-seg done"><div class="phase-num">Steps 3-4</div><div class="phase-label">Alloc + SOC docs</div></div>
+        <div class="phase-seg active"><div class="phase-num">Round 5</div><div class="phase-label">Your QA</div></div>
       </div>
     </div>
 
@@ -853,10 +850,195 @@
 
 
   <!-- ═══════════════════════════════════════════════════════════ -->
-  <!-- ROUND 4 · SCOPE CHECK-IN (active) -->
+  <!-- ROUND 5 · QA (active) -->
   <!-- ═══════════════════════════════════════════════════════════ -->
   <section class="round-header round-2">
-    <div class="round-label active">Round 4 · needs your judgment</div>
+    <div class="round-label active">Round 5 · your QA on updated results</div>
+    <h2 class="round-title">Verify the numbers before we touch charts</h2>
+    <p class="round-sub">All 6 workbooks are refreshed. Open each one in Excel, press Ctrl+Alt+F9 to force full recalc, and check the numbers. Each workbook has a Provenance or Notes tab explaining exactly what changed and how to verify.</p>
+
+    <div class="round-context">
+      <strong>Files ready for your QA (all in <code>Vault/Inbox/Hemp LCA/</code>):</strong>
+      <div class="verdicts">
+        <div class="verdict cosmetic"><span class="verdict-tag">Fertilizer canon</span><code>Hemp_LCI_Fertilizer_Uncertainty_Workbook_v4_FIXED.xlsx</code> — check <code>_v4_Provenance</code> tab first, then Cluster_Stats σ_log values.</div>
+        <div class="verdict cosmetic"><span class="verdict-tag">GWP</span><code>FinalMC_GWP_v2.xlsx</code> — <code>_v2_Provenance</code> + <code>_step2_Provenance</code> + <code>_step3_Allocation_Notes</code> tabs. Check pathway2 formulas, EF4_wet median, TotalGWP_peracre.</div>
+        <div class="verdict cosmetic"><span class="verdict-tag">AP</span><code>FinalMC_upstreamAP_v2.xlsx</code> — check MOP_frozen distribution range, AP_upstream_perkg. Note: on-field NH₃ pathway per AP-001 fix still pending Rylie confirm — currently upstream-only.</div>
+        <div class="verdict cosmetic"><span class="verdict-tag">ADPe / ADPf</span><code>FinalMC_upstreamADPe_v2.xlsx</code> + <code>FinalMC_upstreamADPf_v2.xlsx</code> — same resample pattern; check upstream_perkg.</div>
+        <div class="verdict cosmetic"><span class="verdict-tag">Eutrophication</span><code>Final_MC_eutrophication_regional_weightedCF_v2.xlsx</code> — check upstream_eutro_perkg + MC_total_eutro_perkg_runs. NADP citation for P_deposition still pending (Step 0a — flagging for Round 5 to confirm before it lands in v2.6).</div>
+        <div class="verdict cosmetic"><span class="verdict-tag">SOC + Processing</span><code>Hemp_Seed_Processing_LCI_Model_updated_v2.xlsx</code> — check <code>_step4_SOC_Notes</code> tab documenting your R4 _GF exception rule.</div>
+      </div>
+    </div>
+  </section>
+
+  <article class="card" data-q="QR5-1">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num active">QR5·1</span>
+      <div class="q-title-wrap">
+        <div class="q-title">Do the updated GWP numbers look right?</div>
+        <div class="q-tags"><span class="tag tag-cat">GWP</span><span class="tag tag-sev-material">material</span></div>
+      </div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec"><span class="rec-label">What to check</span>Open <code>FinalMC_GWP_v2.xlsx</code>, Ctrl+Alt+F9. Look at <code>TotalGWP_peracre_wet</code> and <code>TotalGWP_peracre_dry</code> medians per scenario. Expected: wet-climate values rise (~40% from EF4_wet fix) but drop from F_CR removal — net direction scenario-dependent. Fertilizer draws now use v4 σ_log so N-rate tails no longer blown out.</div>
+      <div class="response-block">
+        <span class="response-label">Your call</span>
+        <div class="choices" data-q="QR5-1">
+          <label class="choice"><input type="radio" name="QR5-1" value="approve"><div class="choice-text"><strong>Approved</strong> — GWP numbers look correct</div></label>
+          <label class="choice"><input type="radio" name="QR5-1" value="minor-fix"><div class="choice-text"><strong>Minor fix needed</strong> — specify below</div></label>
+          <label class="choice"><input type="radio" name="QR5-1" value="major-issue"><div class="choice-text"><strong>Major issue</strong> — flag for investigation</div></label>
+        </div>
+        <label class="notes-label">Notes / specific cells / expected vs actual values:</label>
+        <textarea class="notes-area" data-q="QR5-1" placeholder=""></textarea>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-q="QR5-2">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num active">QR5·2</span>
+      <div class="q-title-wrap">
+        <div class="q-title">AP / ADPe / ADPf / Eutrophication — corrected fertilizer tails look right?</div>
+        <div class="q-tags"><span class="tag tag-cat">4 impact categories</span><span class="tag tag-sev-material">material</span></div>
+      </div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec"><span class="rec-label">What to check</span>Open each of the 4 upstream workbooks + Ctrl+Alt+F9. Especially: MOP_frozen max values for TDF/TIF should now be ≤135 lb/ac (was 2635). AP-002 pathological tail resolved. Look at *_upstream_perkg medians and confirm scenario ordering makes sense.</div>
+      <div class="response-block">
+        <span class="response-label">Your call</span>
+        <div class="choices" data-q="QR5-2">
+          <label class="choice"><input type="radio" name="QR5-2" value="approve"><div class="choice-text"><strong>Approved</strong> — all 4 categories look correct</div></label>
+          <label class="choice"><input type="radio" name="QR5-2" value="minor-fix"><div class="choice-text"><strong>Minor fix</strong> — specify below</div></label>
+          <label class="choice"><input type="radio" name="QR5-2" value="major-issue"><div class="choice-text"><strong>Major issue</strong> — flag for investigation</div></label>
+        </div>
+        <label class="notes-label">Notes:</label>
+        <textarea class="notes-area" data-q="QR5-2" placeholder=""></textarea>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-q="QR5-3">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num active">QR5·3</span>
+      <div class="q-title-wrap">
+        <div class="q-title">SOC + Processing — is my R4 exception interpretation correct?</div>
+        <div class="q-tags"><span class="tag tag-cat">SOC</span><span class="tag tag-sev-material">material</span></div>
+      </div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec"><span class="rec-label">What to check</span>Open <code>Hemp_Seed_Processing_LCI_Model_updated_v2.xlsx</code>. Read <code>_step4_SOC_Notes</code> tab. Verify _GF scenarios attribute SOC 100% to grain (no allocation applied). TDD/TID use mass allocation as default per ISO 14044. Q13 wire-switch is non-blocking given _GF exception.</div>
+      <div class="response-block">
+        <span class="response-label">Your call</span>
+        <div class="choices" data-q="QR5-3">
+          <label class="choice"><input type="radio" name="QR5-3" value="approve"><div class="choice-text"><strong>Approved</strong> — SOC exception is correctly documented + implemented</div></label>
+          <label class="choice"><input type="radio" name="QR5-3" value="modify"><div class="choice-text"><strong>Needs modification</strong> — specify below</div></label>
+        </div>
+        <label class="notes-label">Notes:</label>
+        <textarea class="notes-area" data-q="QR5-3" placeholder=""></textarea>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-q="QR5-4">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num active">QR5·4</span>
+      <div class="q-title-wrap">
+        <div class="q-title">Ready to update the report HTML charts? (Step 7)</div>
+        <div class="q-tags"><span class="tag tag-cat">Report</span><span class="tag tag-sev-material">material</span></div>
+      </div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec"><span class="rec-label">Report file located</span>You've placed <code>Midwest Hemp Environmental Footprint v5 - LEIF.html</code> in the vault. Once you approve Q5·1–5·3, I'll update the charts + numbers in that HTML to reflect the corrected results. Chart-by-chart, with your approval at each step.</div>
+      <div class="response-block">
+        <span class="response-label">Your call</span>
+        <div class="choices" data-q="QR5-4">
+          <label class="choice"><input type="radio" name="QR5-4" value="go"><div class="choice-text"><strong>Go — start chart updates</strong> after Q5·1-3 approved</div></label>
+          <label class="choice"><input type="radio" name="QR5-4" value="hold"><div class="choice-text"><strong>Hold</strong> — I want another QA pass on numbers first</div></label>
+          <label class="choice"><input type="radio" name="QR5-4" value="specific"><div class="choice-text"><strong>Start with specific charts only</strong> — specify below</div></label>
+        </div>
+        <label class="notes-label">Notes / chart priorities:</label>
+        <textarea class="notes-area" data-q="QR5-4" placeholder="e.g. start with the GWP headline chart"></textarea>
+      </div>
+    </div>
+  </article>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- ROUND 4 · AUDIT TRAIL -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="round-header round-2">
+    <div class="round-label resolved">Round 4 · resolved 2026-07-01</div>
+    <h2 class="round-title">Your Round 4 responses</h2>
+    <p class="round-sub">4 scope questions · submitted 2026-07-01 19:05 UTC · shaped Steps 2-4 execution.</p>
+  </section>
+
+  <article class="card audit" data-audit="QR4-1">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">QR4·1</span>
+      <div class="q-title-wrap"><div class="q-title">Paper delivery minimum</div><div class="q-tags"><span class="tag tag-answered">c · full regen</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · c (full regeneration + QA before charts)</div>
+        <div class="audit-notes">"We need to regenerate all of the results, so if there are workbooks that use the updated distributions and allocations that we've made changes to, then these need to be reflected in the updated results. I need you to first ensure that we have entirely updated results based on the updates we have discussed. We will then do another QAQC round on the computed updated results before we move toward the charts. One thing to note- in the SOC workbook, for the grain-only with residue harvest scenario, the SOC benefit is attributed entirely to the grain co-product, as is structurally shown in the formulas and labels. Do not apply the mass, economic or energy allocation here."</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> Steps 2 + 3 + 4 executed. All 6 workbooks updated as _v2. Round 5 opened for QA before charts.</div>
+      </div>
+    </div>
+  </article>
+
+  <article class="card audit" data-audit="QR4-2">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">QR4·2</span>
+      <div class="q-title-wrap"><div class="q-title">Allocation scope</div><div class="q-tags"><span class="tag tag-answered">_GF + Dual · SOC exception</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · gf-and-dual · with SOC exception</div>
+        <div class="audit-notes">"Your interpretation is correct, all scenario producing multiple co-products have the allocation for all impact categories, with the exception of the idea of SOC benefits, currently for the grain-only with fiber harvest scenarios, we are allocating any SOC benefits or detriments solely to the grain because it is the choice of the farmer to harvest or not harvest on the back end of the season (it isn't a forethought that is managed toward unlike dual purpose), which affects the env. impacts of the grain."</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> Step 3 documents the allocation rule in every impact-category workbook. Step 4 documents the SOC _GF exception in the SOC workbook. Existing SOC formula structure already assigns _GF SOC to grain per your R4 note.</div>
+      </div>
+    </div>
+  </article>
+
+  <article class="card audit" data-audit="QR4-3">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">QR4·3</span>
+      <div class="q-title-wrap"><div class="q-title">Report JSX location</div><div class="q-tags"><span class="tag tag-answered">Joe has it · shared as HTML</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · joe-has-it (HTML shared)</div>
+        <div class="audit-notes">"We will share it as a html file, the charts were all generated in Claude design. Before we make changes to the charts though, we will review the changes that were made and go through a round of QA to ensure equations are live and everything translated correctly into the updated files. Once we are confirmed that there are no additional errors to address from this round of results revisions, then we will move to the chart modification stage for the report."</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> <code>Midwest Hemp Environmental Footprint v5 - LEIF.html</code> located in vault. Chart updates queued for after Round 5 QA sign-off (Step 7).</div>
+      </div>
+    </div>
+  </article>
+
+  <article class="card audit" data-audit="QR4-4">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">QR4·4</span>
+      <div class="q-title-wrap"><div class="q-title">Deadline</div><div class="q-tags"><span class="tag tag-answered">tonight-or-tomorrow</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · tomorrow (soft push, quality first)</div>
+        <div class="audit-notes">"Our goal is to submit a quality report to our customer, if we need to push back for some additional time we can take it on this one. We still want to prioritize and operate as efficiently and effectively as we can, assuming that we will work as hard as we can together to get this out tonight or tomorrow ideally."</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> Steps 0-4 shipped efficiently. Round 5 QA next; Step 7 chart updates after your sign-off.</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- ROUND 3 · AUDIT TRAIL -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="round-header round-2">
+    <div class="round-label resolved">Round 3 · resolved 2026-07-01</div>
     <h2 class="round-title">Four scope questions before Steps 2–7</h2>
     <p class="round-sub">Being honest about scope tradeoffs so we don't burn hours on the wrong branch. Each question is a fork — your answer shapes the next 2–8 hours of work.</p>
 
@@ -1322,10 +1504,10 @@
 
 </main>
 
-<!-- Sticky submit bar for Round 4 -->
+<!-- Sticky submit bar for Round 5 -->
 <div class="submit-bar" id="submitBar" role="region">
-  <span class="submit-bar-status"><strong id="ans-count">0</strong> of 4 Round-4 answered · autosaved</span>
-  <button class="submit-btn" id="submitBtn">Send Round 4 →</button>
+  <span class="submit-bar-status"><strong id="ans-count">0</strong> of 4 Round-5 answered · autosaved</span>
+  <button class="submit-btn" id="submitBtn">Send Round 5 →</button>
 </div>
 
 <!-- Modal -->
@@ -1516,7 +1698,7 @@
 
   // Round 2 state — only 2 active questions
   const R2_STORAGE = 'leif_hemp_r2_v1';
-  const activeQs = ['QR4-1', 'QR4-2', 'QR4-3', 'QR4-4'];
+  const activeQs = ['QR5-1', 'QR5-2', 'QR5-3', 'QR5-4'];
 
   function loadState() {
     try { return JSON.parse(sessionStorage.getItem(R2_STORAGE) || '{}'); } catch { return {}; }
@@ -1593,7 +1775,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           password, submitter_name: 'Rylie Pelton', project_slug: 'midwest-hemp-lca',
-          round_number: 4, payload: responses,
+          round_number: 5, payload: responses,
         }),
       });
       const data = await res.json();
