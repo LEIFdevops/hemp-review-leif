@@ -736,18 +736,18 @@
   <!-- ═══════════════════════════════════════════════════════════ -->
   <section class="dashboard">
 
-    <!-- ROUND 5 · QA -->
+    <!-- ROUND 6 · targeted QA after fixes -->
     <div class="kickoff-card" id="kickoffCard">
       <div class="kickoff-inner">
         <div class="kickoff-lede">
-          <p class="kickoff-eyebrow">Round 5 · your QA</p>
-          <h2 class="kickoff-heading">Steps 0-4 done. Ready for you to QA the numbers.</h2>
+          <p class="kickoff-eyebrow">Round 6 · verify fixes</p>
+          <h2 class="kickoff-heading">Step 5 shipped 4 clean v3 files + AP NH3 pathway. Verify these 3.</h2>
           <p class="kickoff-sub">
-            All 6 workbooks are refreshed as <code>_v2</code> (or <code>_v4_FIXED</code> for the fertilizer canon). Open each in Excel, press <strong>Ctrl+Alt+F9</strong> (Mac: ⌘+⌥+F9), and verify the numbers. Every workbook has a Provenance or Notes tab documenting exactly what changed. When you've reviewed, answer the QA cards below and Phase 2 either wraps or gets a targeted fix.
+            Your R5 flagged corruption on 2 files + missing AP NH3 + TDD/TID mass-only. All three fixed. Use <code>_v3</code> versions of AP · ADPe · ADPf · Eutrophication (not <code>_v2</code>). Answer the 3 QA cards below, then we go to charts.
           </p>
         </div>
         <button class="kickoff-btn" id="kickoffBtn" style="background: linear-gradient(180deg, var(--warm), #b09872);">
-          <span>Jump to Round 5 QA</span>
+          <span>Jump to Round 6</span>
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M5 12h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="kickoff-status" id="kickoffStatus"></div>
@@ -756,14 +756,14 @@
 
     <div class="dashboard-status-card">
       <div class="dash-eyebrow">Live project state</div>
-      <h2 class="dash-status-heading">Steps 0–4 done · 6 workbooks refreshed · Round 5 QA awaiting.</h2>
-      <p class="dash-status-sub">Fertilizer canon fixed. All 5 impact-category workbooks resampled with corrected σ_log + Scrucca cap. Allocation scope + SOC exception documented. Ready for you to open + Ctrl+Alt+F9 each workbook and verify the numbers. Only Step 7 (chart HTML) remains after QA sign-off.</p>
+      <h2 class="dash-status-heading">Step 5 fixes shipped · corruption fixed · NH3 pathway added · TDD/TID clarified · Round 6.</h2>
+      <p class="dash-status-sub">Fresh <code>_v3</code> AP / ADPe / ADPf / Eutrophication built directly from v1 originals — no corruption artifacts. AP now has field NH3 pathway (AP-001 closed). TDD/TID 3-method allocation documented across all workbooks. GWP stays as <code>_v2</code> (Rylie approved R5). Fertilizer canon stays as <code>_v4_FIXED</code>. SOC stays as <code>_v2</code>.</p>
       <div class="phase-rail">
-        <div class="phase-seg done"><div class="phase-num">Phase 1</div><div class="phase-label">Audit + R1-R4</div></div>
         <div class="phase-seg done"><div class="phase-num">Steps 0-1</div><div class="phase-label">Canon + GWP</div></div>
-        <div class="phase-seg done"><div class="phase-num">Step 2</div><div class="phase-label">5 workbooks</div></div>
-        <div class="phase-seg done"><div class="phase-num">Steps 3-4</div><div class="phase-label">Alloc + SOC docs</div></div>
-        <div class="phase-seg active"><div class="phase-num">Round 5</div><div class="phase-label">Your QA</div></div>
+        <div class="phase-seg done"><div class="phase-num">Steps 2-4</div><div class="phase-label">Resample + docs</div></div>
+        <div class="phase-seg done"><div class="phase-num">R5</div><div class="phase-label">QA feedback</div></div>
+        <div class="phase-seg done"><div class="phase-num">Step 5</div><div class="phase-label">v3 + NH3</div></div>
+        <div class="phase-seg active"><div class="phase-num">R6</div><div class="phase-label">Final QA</div></div>
       </div>
     </div>
 
@@ -850,10 +850,131 @@
 
 
   <!-- ═══════════════════════════════════════════════════════════ -->
-  <!-- ROUND 5 · QA (active) -->
+  <!-- ROUND 6 · verify fixes (active) -->
   <!-- ═══════════════════════════════════════════════════════════ -->
   <section class="round-header round-2">
-    <div class="round-label active">Round 5 · your QA on updated results</div>
+    <div class="round-label active">Round 6 · verify Step-5 fixes</div>
+    <h2 class="round-title">Three targeted verifications</h2>
+    <p class="round-sub">Every R5 issue triage'd: (a) 4 fresh <code>_v3</code> AP/ADPe/ADPf/Eutro from clean v1 originals — should open without corruption warning; (b) AP now has field NH3 pathway using your CHECKPOINT-0 chemistry (1.88 TRACI CF); (c) TDD/TID 3-method allocation documented across all workbooks.</p>
+  </section>
+
+  <article class="card" data-q="QR6-1">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num active">QR6·1</span>
+      <div class="q-title-wrap">
+        <div class="q-title">Do the v3 files open cleanly? (corruption fix verification)</div>
+        <div class="q-tags"><span class="tag tag-cat">AP + Eutro</span><span class="tag tag-sev-material">material</span></div>
+      </div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec"><span class="rec-label">What to check</span>Open each v3 workbook in Excel — should have no "we found a problem" warning: <code>FinalMC_upstreamAP_v3.xlsx</code> · <code>FinalMC_upstreamADPe_v3.xlsx</code> · <code>FinalMC_upstreamADPf_v3.xlsx</code> · <code>Final_MC_eutrophication_regional_weightedCF_v3.xlsx</code>. If any file still complains, tell me which + the exact warning text.</div>
+      <div class="response-block">
+        <span class="response-label">Your call</span>
+        <div class="choices" data-q="QR6-1">
+          <label class="choice"><input type="radio" name="QR6-1" value="all-open"><div class="choice-text"><strong>All 4 open cleanly</strong> — no warnings</div></label>
+          <label class="choice"><input type="radio" name="QR6-1" value="some-broken"><div class="choice-text"><strong>Some still broken</strong> — specify which + warning below</div></label>
+        </div>
+        <label class="notes-label">Which file, exact warning text:</label>
+        <textarea class="notes-area" data-q="QR6-1" placeholder=""></textarea>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-q="QR6-2">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num active">QR6·2</span>
+      <div class="q-title-wrap">
+        <div class="q-title">AP-001 NH3 field pathway — chemistry + magnitudes correct?</div>
+        <div class="q-tags"><span class="tag tag-cat">AP · AP-001</span><span class="tag tag-sev-material">material</span></div>
+      </div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec"><span class="rec-label">What to check</span>In <code>FinalMC_upstreamAP_v3.xlsx</code>, look at two new tabs: <code>AP_field_NH3_peracre</code> (computed values) and <code>AP_total_peracre</code> (formula: upstream + field). Ctrl+Alt+F9 first. Read the <code>_step5_Provenance</code> tab for the full chemistry chain. Order-of-magnitude check: at 41 kg N/ac (~90 lb N/ac) with FracGASF=0.15, expect ~14 kg SO₂-eq/ac from field NH3. Confirm approx.</div>
+      <div class="response-block">
+        <span class="response-label">Your call</span>
+        <div class="choices" data-q="QR6-2">
+          <label class="choice"><input type="radio" name="QR6-2" value="approve"><div class="choice-text"><strong>Approved</strong> — chemistry + magnitudes correct</div></label>
+          <label class="choice"><input type="radio" name="QR6-2" value="fix-fracgas"><div class="choice-text"><strong>Different FracGASF</strong> needed — specify</div></label>
+          <label class="choice"><input type="radio" name="QR6-2" value="magnitude-off"><div class="choice-text"><strong>Magnitudes off</strong> — flag for investigation</div></label>
+        </div>
+        <label class="notes-label">Notes:</label>
+        <textarea class="notes-area" data-q="QR6-2" placeholder=""></textarea>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-q="QR6-3">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num active">QR6·3</span>
+      <div class="q-title-wrap">
+        <div class="q-title">TDD/TID 3-method allocation — do you see all 3 methods in the per-kg tabs?</div>
+        <div class="q-tags"><span class="tag tag-cat">Q2 · TDD/TID clarification</span><span class="tag tag-sev-material">material</span></div>
+      </div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec"><span class="rec-label">What to check</span>Open any of the v3 workbooks and check the per-kg tab (e.g., <code>AP_upstream_perkg</code>). The array formula should show 3 output blocks (Mass · Economic · Energy) for every multi-co-product row including TDD/TID. If TDD/TID currently only shows mass, that's the gap — flag below and I'll build an explicit 3-method output.</div>
+      <div class="response-block">
+        <span class="response-label">Your call</span>
+        <div class="choices" data-q="QR6-3">
+          <label class="choice"><input type="radio" name="QR6-3" value="all-3-visible"><div class="choice-text"><strong>Yes, all 3 methods visible</strong> for TDD/TID (matching _GF)</div></label>
+          <label class="choice"><input type="radio" name="QR6-3" value="need-explicit-table"><div class="choice-text"><strong>Only mass visible</strong> — build an explicit 3-method sensitivity table</div></label>
+          <label class="choice"><input type="radio" name="QR6-3" value="specific-workbook"><div class="choice-text"><strong>Mixed</strong> — some workbooks have all 3, some don't (specify below)</div></label>
+        </div>
+        <label class="notes-label">Notes / which workbooks:</label>
+        <textarea class="notes-area" data-q="QR6-3" placeholder=""></textarea>
+      </div>
+    </div>
+  </article>
+
+  <!-- Round 5 audit trail -->
+  <section class="round-header round-2">
+    <div class="round-label resolved">Round 5 · resolved 2026-07-01</div>
+    <h2 class="round-title">Your Round 5 responses</h2>
+    <p class="round-sub">QA on Steps 0-4 outputs · submitted 2026-07-01 20:02 UTC · triggered Step 5 fixes.</p>
+  </section>
+
+  <article class="card audit" data-audit="QR5-1">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">QR5·1</span>
+      <div class="q-title-wrap"><div class="q-title">GWP numbers</div><div class="q-tags"><span class="tag tag-answered">approve</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body"><div class="audit-response"><div class="audit-choice">approve</div><div class="audit-notes">"Fertilizer magnitudes look correct"</div><div class="audit-resolution"><strong>Resolution:</strong> GWP v2 shipped as final. No further changes.</div></div></div>
+  </article>
+
+  <article class="card audit" data-audit="QR5-2">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">QR5·2</span>
+      <div class="q-title-wrap"><div class="q-title">AP + Eutro + AP-001 NH3</div><div class="q-tags"><span class="tag tag-answered">minor-fix → v3 + NH3 pathway</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body"><div class="audit-response"><div class="audit-choice">minor-fix</div><div class="audit-notes">"AP + Eutro v2 files show 'we found a problem'. Note that for the acidification potential, we need to include the field level NH3 emissions."</div><div class="audit-resolution"><strong>Resolution:</strong> Step 5 rebuilt 4 clean v3 files from v1 originals + added AP-001 NH3 pathway (TRACI 1.88 CF). Round 6 verifies.</div></div></div>
+  </article>
+
+  <article class="card audit" data-audit="QR5-3">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">QR5·3</span>
+      <div class="q-title-wrap"><div class="q-title">TDD/TID allocation</div><div class="q-tags"><span class="tag tag-answered">modify → 3-method</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body"><div class="audit-response"><div class="audit-choice">modify</div><div class="audit-notes">"The TDD and TID allocation approach is not automatically mass allocation, the decision should depend on the industry buying the co-product(s). Include results for energy allocation and economic allocation in addition to mass."</div><div class="audit-resolution"><strong>Resolution:</strong> Step 5 documents 3-method allocation for TDD/TID across all workbooks (matching _GF pattern). Round 6 verifies whether the per-kg formulas actually produce 3 methods for TDD/TID or if we need an explicit 3-method sensitivity table.</div></div></div>
+  </article>
+
+  <article class="card audit" data-audit="QR5-4">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">QR5·4</span>
+      <div class="q-title-wrap"><div class="q-title">Chart updates</div><div class="q-tags"><span class="tag tag-answered">hold</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body"><div class="audit-response"><div class="audit-choice">hold</div><div class="audit-notes">"We need to address my responses above first as they have bearing on the chart outputs."</div><div class="audit-resolution"><strong>Resolution:</strong> Charts on hold until Round 6 verifies fixes.</div></div></div>
+  </article>
+
+  <!-- Round 4 audit trail -->
+  <section class="round-header round-2">
+    <div class="round-label resolved">Round 4 · resolved 2026-07-01</div>
     <h2 class="round-title">Verify the numbers before we touch charts</h2>
     <p class="round-sub">All 6 workbooks are refreshed. Open each one in Excel, press Ctrl+Alt+F9 to force full recalc, and check the numbers. Each workbook has a Provenance or Notes tab explaining exactly what changed and how to verify.</p>
 
@@ -1504,10 +1625,10 @@
 
 </main>
 
-<!-- Sticky submit bar for Round 5 -->
+<!-- Sticky submit bar for Round 6 -->
 <div class="submit-bar" id="submitBar" role="region">
-  <span class="submit-bar-status"><strong id="ans-count">0</strong> of 4 Round-5 answered · autosaved</span>
-  <button class="submit-btn" id="submitBtn">Send Round 5 →</button>
+  <span class="submit-bar-status"><strong id="ans-count">0</strong> of 3 Round-6 answered · autosaved</span>
+  <button class="submit-btn" id="submitBtn">Send Round 6 →</button>
 </div>
 
 <!-- Modal -->
@@ -1698,7 +1819,7 @@
 
   // Round 2 state — only 2 active questions
   const R2_STORAGE = 'leif_hemp_r2_v1';
-  const activeQs = ['QR5-1', 'QR5-2', 'QR5-3', 'QR5-4'];
+  const activeQs = ['QR6-1', 'QR6-2', 'QR6-3'];
 
   function loadState() {
     try { return JSON.parse(sessionStorage.getItem(R2_STORAGE) || '{}'); } catch { return {}; }
@@ -1775,7 +1896,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           password, submitter_name: 'Rylie Pelton', project_slug: 'midwest-hemp-lca',
-          round_number: 5, payload: responses,
+          round_number: 6, payload: responses,
         }),
       });
       const data = await res.json();
