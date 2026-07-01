@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hemp LCA — Phase 1 Decisions for Rylie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #111318;
+    --surface: #1a1d24;
+    --surface-2: #22262f;
+    --surface-3: #2a2e37;
+    --border: #2a2e37;
+    --border-strong: #3a3f4a;
+    --text: #e8e6e3;
+    --subtext: #9b9a97;
+    --muted: #6b6a67;
+    --sage: #7aab91;
+    --sage-deep: #5b8a72;
+    --sage-glow: rgba(122, 171, 145, 0.12);
+    --sage-glow-strong: rgba(122, 171, 145, 0.20);
+    --warm: #c4a882;
+    --warm-glow: rgba(196, 168, 130, 0.10);
+    --steel: #7a9bb5;
+    --rose: #b57a7a;
+    --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif;
+    --font-head: 'Sora', var(--font-body);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    background: var(--bg); color: var(--text);
+    font-family: var(--font-body); font-size: 15px; line-height: 1.55;
+    margin: 0; padding: 0;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  }
+  main { max-width: 840px; margin: 0 auto; padding: 64px 32px 200px; }
+
+  /* Header */
+  header.page { padding: 32px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; animation: fadeUp 0.6s var(--ease); }
+  .brand { display: flex; align-items: baseline; gap: 10px; margin-bottom: 24px; }
+  .brand-mark { font-family: var(--font-head); font-weight: 800; font-size: 20px; letter-spacing: -0.02em; color: var(--sage); }
+  .brand-tag { color: var(--muted); font-size: 13px; }
+  h1 { font-family: var(--font-head); font-weight: 700; font-size: 34px; letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 12px; }
+  .lede { color: var(--subtext); font-size: 17px; line-height: 1.5; margin: 0 0 24px; max-width: 640px; }
+  .meta { display: flex; gap: 24px; color: var(--muted); font-size: 13px; flex-wrap: wrap; }
+  .meta-item { display: flex; align-items: center; gap: 6px; }
+  .meta-item strong { color: var(--subtext); font-weight: 500; }
+
+  /* Progress + save state */
+  .progress { display: flex; align-items: center; gap: 12px; margin: 24px 0 0; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 13px; }
+  .progress-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--sage-deep), var(--sage)); width: 0%; transition: width 0.4s var(--ease); }
+  .progress-count { color: var(--subtext); font-variant-numeric: tabular-nums; }
+  .save-state { color: var(--muted); font-size: 12px; }
+  .save-state .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--sage); margin-right: 6px; vertical-align: middle; }
+
+  /* Sections */
+  .section { margin: 48px 0 20px; animation: fadeUp 0.6s var(--ease) both; }
+  .section-label { font-family: var(--font-head); font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sage); margin: 0 0 8px; }
+  .section-title { font-family: var(--font-head); font-weight: 700; font-size: 22px; letter-spacing: -0.01em; margin: 0 0 6px; }
+  .section-note { color: var(--muted); font-size: 13px; margin: 0 0 20px; }
+
+  /* Card */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: border-color 0.25s var(--ease); position: relative; }
+  .card:hover { border-color: var(--border-strong); }
+  .card.expanded { border-color: var(--sage); }
+  .card.answered { border-left: 3px solid var(--sage); }
+  .card.answered::before { content: ''; position: absolute; top: 22px; right: 22px; width: 8px; height: 8px; border-radius: 50%; background: var(--sage); box-shadow: 0 0 12px var(--sage); }
+  .card-batch { background: linear-gradient(180deg, var(--surface), rgba(122, 171, 145, 0.05)); border-color: rgba(122, 171, 145, 0.3); }
+
+  .card-header { display: flex; align-items: center; gap: 14px; padding: 18px 22px; cursor: pointer; user-select: none; transition: background 0.2s var(--ease); }
+  .card-header:hover { background: rgba(255,255,255,0.02); }
+  .card-header:focus-visible { outline: 2px solid var(--sage); outline-offset: -2px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; height: 32px; padding: 0 10px; background: var(--sage-glow); color: var(--sage); border-radius: 8px; font-family: var(--font-head); font-weight: 700; font-size: 13px; letter-spacing: 0.02em; flex-shrink: 0; }
+  .q-num.batch { background: var(--sage); color: var(--bg); }
+  .q-title-wrap { flex: 1; min-width: 0; }
+  .q-title { font-family: var(--font-head); font-weight: 600; font-size: 16px; line-height: 1.35; margin: 0 0 4px; }
+  .q-tags { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.02em; font-weight: 500; }
+  .tag-cat { background: var(--surface-2); color: var(--subtext); }
+  .tag-sev-material { background: var(--warm-glow); color: var(--warm); }
+  .tag-sev-batch { background: var(--sage-glow); color: var(--sage); }
+  .tag-affects { background: transparent; color: var(--muted); padding-left: 0; }
+  .caret { color: var(--muted); font-size: 16px; transition: transform 0.3s var(--ease); flex-shrink: 0; margin-left: 20px; }
+  .card.expanded .caret { transform: rotate(180deg); color: var(--sage); }
+
+  /* Card body */
+  .card-body { padding: 0 22px 22px 80px; display: none; }
+  .card.expanded .card-body { display: block; animation: fadeIn 0.4s var(--ease); }
+  @media (max-width: 640px) { .card-body { padding: 0 18px 20px 18px; } }
+
+  .rec { padding: 14px 18px; background: var(--sage-glow); border-left: 3px solid var(--sage); border-radius: 4px; margin: 0 0 20px; font-size: 14px; line-height: 1.55; }
+  .rec-label { color: var(--sage); font-family: var(--font-head); font-weight: 600; font-size: 11px; letter-spacing: 0.10em; text-transform: uppercase; display: block; margin-bottom: 4px; }
+
+  .detail-block { margin-bottom: 16px; }
+  .detail-block:last-child { margin-bottom: 0; }
+  .detail-label { color: var(--subtext); font-family: var(--font-head); font-weight: 600; font-size: 11px; letter-spacing: 0.10em; text-transform: uppercase; display: block; margin-bottom: 6px; }
+  .detail-block p { margin: 0; font-size: 14px; line-height: 1.55; }
+  .detail-block p + p { margin-top: 8px; }
+  .detail-block ul { margin: 6px 0 0; padding-left: 20px; font-size: 14px; line-height: 1.6; }
+  .detail-block li { margin-bottom: 4px; }
+  .detail-block li strong { color: var(--sage); font-weight: 600; }
+
+  /* Response widgets */
+  .response-block {
+    margin-top: 24px;
+    padding: 20px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .response-label {
+    color: var(--sage);
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .choices { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+  .choice {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s var(--ease);
+    user-select: none;
+  }
+  .choice:hover { border-color: var(--border-strong); background: var(--surface-2); }
+  .choice input[type="radio"], .choice input[type="checkbox"] {
+    appearance: none; -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border: 2px solid var(--border-strong);
+    background: var(--bg);
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: all 0.2s var(--ease);
+  }
+  .choice input[type="radio"] { border-radius: 50%; }
+  .choice input[type="checkbox"] { border-radius: 4px; }
+  .choice input:checked {
+    border-color: var(--sage);
+    background: var(--sage);
+    box-shadow: inset 0 0 0 3px var(--surface);
+  }
+  .choice input[type="checkbox"]:checked {
+    box-shadow: inset 0 0 0 2px var(--surface);
+    background-image: linear-gradient(45deg, transparent 45%, var(--surface) 45%, var(--surface) 55%, transparent 55%);
+  }
+  .choice.selected {
+    border-color: var(--sage);
+    background: var(--sage-glow);
+  }
+  .choice-text { flex: 1; font-size: 14px; line-height: 1.4; }
+  .choice-text strong { color: var(--sage); font-weight: 600; }
+
+  .notes-area {
+    width: 100%;
+    min-height: 72px;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: vertical;
+    transition: border-color 0.2s var(--ease);
+  }
+  .notes-area::placeholder { color: var(--muted); }
+  .notes-area:focus {
+    outline: none;
+    border-color: var(--sage);
+    background: var(--surface-2);
+  }
+  .notes-label {
+    display: block;
+    font-size: 12px;
+    color: var(--subtext);
+    margin-bottom: 6px;
+  }
+
+  .highlight-blob { font-family: var(--font-head); font-weight: 700; color: var(--warm); }
+
+  /* Sticky submit bar */
+  .submit-bar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--surface);
+    border: 1px solid var(--sage);
+    border-radius: 999px;
+    padding: 12px 18px 12px 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 4px rgba(122, 171, 145, 0.08);
+    z-index: 100;
+    animation: floatUp 0.6s var(--ease) 0.4s both;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .submit-bar-status { color: var(--subtext); font-size: 13px; }
+  .submit-bar-status strong { color: var(--sage); font-weight: 600; }
+  .submit-btn {
+    background: var(--sage);
+    color: var(--bg);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 999px;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all 0.2s var(--ease);
+  }
+  .submit-btn:hover { background: #8dbba1; transform: translateY(-1px); }
+  .submit-btn:active { transform: translateY(0); }
+  .submit-btn:disabled { background: var(--surface-3); color: var(--muted); cursor: not-allowed; transform: none; }
+
+  /* Response summary modal */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    animation: fadeIn 0.2s var(--ease);
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 32px;
+    animation: modalIn 0.35s var(--ease);
+  }
+  .modal h2 {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+  }
+  .modal p.subtle { color: var(--subtext); margin: 0 0 24px; font-size: 14px; }
+  .modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .action-btn {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: all 0.2s var(--ease);
+  }
+  .action-btn:hover { border-color: var(--sage); background: var(--surface-3); transform: translateY(-1px); }
+  .action-btn strong { color: var(--sage); font-weight: 600; font-size: 14px; }
+  .action-btn span { color: var(--muted); font-size: 12px; }
+  .action-btn.full { grid-column: 1 / -1; }
+
+  .response-preview {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--subtext);
+    max-height: 300px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    margin-bottom: 20px;
+  }
+  .close-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--subtext);
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s var(--ease);
+  }
+  .close-btn:hover { border-color: var(--sage); color: var(--sage); }
+  .toast {
+    position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+    background: var(--sage); color: var(--bg);
+    padding: 12px 20px; border-radius: 999px;
+    font-family: var(--font-head); font-weight: 600; font-size: 13px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    z-index: 300;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+
+  /* Footer */
+  footer.page { margin-top: 80px; padding: 32px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; line-height: 1.7; }
+  footer.page strong { color: var(--subtext); font-weight: 500; }
+  footer.page a { color: var(--sage); text-decoration: none; }
+  footer.page a:hover { text-decoration: underline; }
+
+  /* General notes big block */
+  .general-notes-block {
+    margin-top: 40px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .general-notes-block h3 {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 15px;
+    margin: 0 0 6px;
+  }
+  .general-notes-block p { color: var(--subtext); font-size: 13px; margin: 0 0 12px; }
+
+  code { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace; font-size: 13px; background: var(--surface-2); padding: 1px 6px; border-radius: 4px; color: var(--sage); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes modalIn { from { opacity: 0; transform: scale(0.96) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  @keyframes floatUp { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+  .section:nth-of-type(1) { animation-delay: 0.05s; }
+  .section:nth-of-type(2) { animation-delay: 0.10s; }
+  .section:nth-of-type(3) { animation-delay: 0.15s; }
+  .section:nth-of-type(4) { animation-delay: 0.20s; }
+  .section:nth-of-type(5) { animation-delay: 0.25s; }
+  .section:nth-of-type(6) { animation-delay: 0.30s; }
+  .section:nth-of-type(7) { animation-delay: 0.35s; }
+
+  @media (max-width: 640px) {
+    main { padding: 32px 20px 200px; }
+    h1 { font-size: 26px; }
+    .q-tags { display: none; }
+    .modal-actions { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    html, body { background: white; color: black; }
+    .submit-bar, .modal-backdrop, .toast, .expand-all, .caret { display: none !important; }
+    .card-body { display: block !important; }
+    .card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <header class="page">
+    <div class="brand">
+      <span class="brand-mark">LEIF</span>
+      <span class="brand-tag">Hemp LCA · Phase 1 QAQC</span>
+    </div>
+    <h1>Rylie — 14 decisions to close Phase 1</h1>
+    <p class="lede">
+      Read time <strong style="color:var(--text)">~10 min</strong>. All 6 blockers already resolved from your CHECKPOINT-0 answers.
+      Below is the remaining material set, bundled by decision. Every card has my recommendation up front. Pick a choice, add notes if you have know-how to add, and hit <strong style="color:var(--sage)">Send answers</strong> at the bottom.
+      Your progress autosaves as you go.
+    </p>
+    <div class="meta">
+      <div class="meta-item"><strong>Prepared</strong> 2026-07-01</div>
+      <div class="meta-item"><strong>For</strong> Rylie Pelton, LEIF LLC</div>
+      <div class="meta-item"><strong>Full log</strong> <code>Projects/Midwest-Hemp-LCA/QAQC/01_Discrepancy_Log.md</code></div>
+    </div>
+    <div class="progress" aria-live="polite">
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="progress-count" id="progressCount">0 of 14 answered</span>
+      <span class="save-state" id="saveState"><span class="dot"></span>Autosave on</span>
+    </div>
+  </header>
+
+  <!-- SECTION 1: BATCH ACTIONS -->
+  <section class="section">
+    <div class="section-label">Batch actions · click-through</div>
+    <h2 class="section-title">Three sweeping decisions clear ~120 rows</h2>
+    <p class="section-note">Each has a clear recommended default. Approve or override.</p>
+
+    <article class="card card-batch" data-q="B1">
+      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+        <span class="q-num batch">BATCH</span>
+        <div class="q-title-wrap">
+          <div class="q-title">Reject 3 LANCA false positives (same misread as LANCA-001/002)</div>
+          <div class="q-tags">
+            <span class="tag tag-cat">LANCA</span>
+            <span class="tag tag-sev-batch">verified</span>
+            <span class="tag tag-affects">LANCA-003 · LANCA-007 · LANCA-008</span>
+          </div>
+        </div>
+        <span class="caret">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="rec"><span class="rec-label">Recommended</span>Reject all three — verified false positives from the same subagent misread. No workbook fix needed.</div>
+        <div class="detail-block">
+          <span class="detail-label">What they claimed</span>
+          <ul>
+            <li><strong>LANCA-003</strong> — MC sheets 5000 rows, not 12000</li>
+            <li><strong>LANCA-007</strong> — only 5 of 12 scenarios present</li>
+            <li><strong>LANCA-008</strong> — L4_irrigation_MC has 99 Run cols instead of 1000</li>
+          </ul>
+        </div>
+        <div class="detail-block">
+          <span class="detail-label">Direct verification via openpyxl</span>
+          <ul>
+            <li>LANCA1_MC_peracre_calc: <strong>12001 × 41</strong>, all 12 scenarios in summary block cols AC-AJ rows 2-13</li>
+            <li>LANCA1_MC_perkg_calc: <strong>42001 × 37</strong></li>
+            <li>L4_irrigation_MC: row 1 has <strong>Run_1 through Run_1000</strong></li>
+          </ul>
+        </div>
+        <div class="response-block">
+          <span class="response-label">Your call</span>
+          <div class="choices" data-q="B1">
+            <label class="choice"><input type="radio" name="B1" value="approve"><div class="choice-text"><strong>Reject all three</strong> as recommended — false positives confirmed</div></label>
+            <label class="choice"><input type="radio" name="B1" value="override"><div class="choice-text"><strong>Override</strong> — I want to look at one specifically (add note below)</div></label>
+          </div>
+          <label class="notes-label">Notes (optional)</label>
+          <textarea class="notes-area" data-q="B1" placeholder="Anything I should know…"></textarea>
+        </div>
+      </div>
+    </article>
+
+    <article class="card card-batch" data-q="B2">
+      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+        <span class="q-num batch">BATCH</span>
+        <div class="q-title-wrap">
+          <div class="q-title">Ship a Provenance-tab template to all 6 workbooks</div>
+          <div class="q-tags">
+            <span class="tag tag-cat">Cross-workbook</span>
+            <span class="tag tag-sev-batch">universal</span>
+            <span class="tag tag-affects">XW-005 · EUTRO-013 · ADPe-006 · ADPf-006 · +5 provenance items</span>
+          </div>
+        </div>
+        <span class="caret">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="rec"><span class="rec-label">Recommended</span>Approve. One template per workbook: version · MC seed · iteration count · methodology citations · uncertainty-file version reference · regeneration date · changelog.</div>
+        <div class="detail-block"><span class="detail-label">Why</span><p>None of the 6 core workbooks carries a README/Provenance tab. ISO 14044 §5.1.1 documentation gets easier. Future audits get cheaper. ~30 min per workbook = one afternoon.</p></div>
+        <div class="response-block">
+          <span class="response-label">Your call</span>
+          <div class="choices" data-q="B2">
+            <label class="choice"><input type="radio" name="B2" value="approve"><div class="choice-text"><strong>Approve</strong> — ship the template to all 6</div></label>
+            <label class="choice"><input type="radio" name="B2" value="modify"><div class="choice-text"><strong>Modify template</strong> — add / remove fields (specify below)</div></label>
+            <label class="choice"><input type="radio" name="B2" value="reject"><div class="choice-text"><strong>Reject</strong> — not now, defer to Phase 3+</div></label>
+          </div>
+          <label class="notes-label">Fields to add / remove, or any modifications:</label>
+          <textarea class="notes-area" data-q="B2" placeholder="e.g. also include reviewer name, ISO conformance status…"></textarea>
+        </div>
+      </div>
+    </article>
+
+    <article class="card card-batch" data-q="B3">
+      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+        <span class="q-num batch">BATCH</span>
+        <div class="q-title-wrap">
+          <div class="q-title">Batch-approve ~99 minor items into Phase-2 housekeeping</div>
+          <div class="q-tags">
+            <span class="tag tag-cat">All categories</span>
+            <span class="tag tag-sev-batch">documentation</span>
+            <span class="tag tag-affects">all minor severities</span>
+          </div>
+        </div>
+        <span class="caret">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="rec"><span class="rec-label">Recommended</span>Approve — none of these change calculation output. All are label bugs, provenance stamps, README notes, cosmetic cleanup.</div>
+        <div class="detail-block">
+          <span class="detail-label">Examples in the batch</span>
+          <ul>
+            <li>Label copy-paste bugs (EF1_dry titled "N₂O EF1 wet")</li>
+            <li>Uncertainty README says v2.4 (canon is v2.5)</li>
+            <li>Missing CML / TRACI vintage citations</li>
+            <li>Documentation notes on intentional design patterns (mass allocation identity, L2/L3 scenario-agnostic treatment)</li>
+          </ul>
+        </div>
+        <div class="response-block">
+          <span class="response-label">Your call</span>
+          <div class="choices" data-q="B3">
+            <label class="choice"><input type="radio" name="B3" value="approve"><div class="choice-text"><strong>Approve batch</strong> — sweep all into Phase 2 housekeeping</div></label>
+            <label class="choice"><input type="radio" name="B3" value="defer"><div class="choice-text"><strong>Defer</strong> — mark as backlog, Phase 3+ only</div></label>
+            <label class="choice"><input type="radio" name="B3" value="selective"><div class="choice-text"><strong>Selective</strong> — I want to walk specific ones (specify below)</div></label>
+          </div>
+          <label class="notes-label">Notes (which minor items you want to walk, or anything else):</label>
+          <textarea class="notes-area" data-q="B3" placeholder="e.g. show me minor items that touch the CF vintage stamps first"></textarea>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- SECTION 2: CROSS-CUTTING -->
+  <section class="section">
+    <div class="section-label">Part B · cross-cutting</div>
+    <h2 class="section-title">Two decisions that touch multiple categories</h2>
+    <p class="section-note">Your answers cascade across 4-of-7 workbooks.</p>
+
+    <article class="card" data-q="Q1">
+      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+        <span class="q-num">Q1</span>
+        <div class="q-title-wrap">
+          <div class="q-title">Does v5 present GWP / AP / ADPe / ADPf per-state?</div>
+          <div class="q-tags"><span class="tag tag-cat">Spatial resolution</span><span class="tag tag-sev-material">material · cascades</span><span class="tag tag-affects">7 rows resolve</span></div>
+        </div>
+        <span class="caret">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="rec"><span class="rec-label">Your call</span><strong>Per-state / aggregate / hybrid?</strong> Biggest architectural question left.</div>
+        <div class="detail-block"><span class="detail-label">Current state</span><ul>
+          <li><strong>Eutro + LANCA:</strong> already county-level</li>
+          <li><strong>GWP:</strong> 12 states → 4 NERC regions probabilistically weighted; no per-state output</li>
+          <li><strong>AP / ADPe / ADPf:</strong> same NERC-only pattern on electricity CF; no per-state anywhere</li>
+        </ul></div>
+        <div class="detail-block"><span class="detail-label">If per-state (Phase-2 impact)</span><p>Add state × scenario axis to 4 workbooks. ~1 week per workbook.</p></div>
+        <div class="detail-block"><span class="detail-label">If aggregate only</span><p>Update v5 narrative to explicitly frame as national/regional aggregates. Cheap.</p></div>
+        <div class="response-block">
+          <span class="response-label">Your call</span>
+          <div class="choices" data-q="Q1">
+            <label class="choice"><input type="radio" name="Q1" value="aggregate"><div class="choice-text"><strong>Aggregate only</strong> — update v5 narrative to frame these as national/regional</div></label>
+            <label class="choice"><input type="radio" name="Q1" value="per-state"><div class="choice-text"><strong>Per-state</strong> — add state × scenario axis to all 4 workbooks in Phase 2</div></label>
+            <label class="choice"><input type="radio" name="Q1" value="hybrid"><div class="choice-text"><strong>Hybrid</strong> — some categories per-state, others aggregate (specify below)</div></label>
+            <label class="choice"><input type="radio" name="Q1" value="defer"><div class="choice-text"><strong>Defer</strong> — decide after Q1a review</div></label>
+          </div>
+          <label class="notes-label">If hybrid, which categories go per-state, and any other guidance:</label>
+          <textarea class="notes-area" data-q="Q1" placeholder="e.g. GWP per-state (customer-facing), rest aggregate"></textarea>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-q="Q2">
+      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+        <span class="q-num">Q2</span>
+        <div class="q-title-wrap">
+          <div class="q-title">Allocation drift across workbooks — intentional or drift?</div>
+          <div class="q-tags"><span class="tag tag-cat">Cross-workbook</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">XW-003</span></div>
+        </div>
+        <span class="caret">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="rec"><span class="rec-label">Your call</span><strong>(a)</strong> category-specific allocation with rationale, or <strong>(b)</strong> should share, propagate canonical.</div>
+        <div class="detail-block"><span class="detail-label">Finding</span><p><code>alloc</code> tab is 30×7 in AP/ADPe/ADPf/Eutro/LANCA — same structure, <strong>different content hashes per workbook.</strong> GWP is 30×12. SOC has no alloc.</p></div>
+        <div class="detail-block"><span class="detail-label">Why it matters</span><p>ISO 14044 §4.3.4 wants consistent allocation across impact categories unless documented as category-specific.</p></div>
+        <div class="response-block">
+          <span class="response-label">Your call</span>
+          <div class="choices" data-q="Q2">
+            <label class="choice"><input type="radio" name="Q2" value="category-specific"><div class="choice-text"><strong>Category-specific</strong> — different allocation per category is intentional (I'll document rationale per workbook)</div></label>
+            <label class="choice"><input type="radio" name="Q2" value="shared"><div class="choice-text"><strong>Should share</strong> — propagate canonical <code>alloc</code> values across all workbooks</div></label>
+            <label class="choice"><input type="radio" name="Q2" value="unsure"><div class="choice-text"><strong>Unsure</strong> — need to investigate history</div></label>
+          </div>
+          <label class="notes-label">Which allocation method per category, or context:</label>
+          <textarea class="notes-area" data-q="Q2" placeholder="e.g. economic for GWP, mass for LANCA, energy for CED…"></textarea>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- SECTION 3: GWP -->
+  <section class="section">
+    <div class="section-label">Part C · GWP methodology</div>
+    <h2 class="section-title">Four judgment calls in the flagship workbook</h2>
+
+    <article class="card" data-q="Q4">
+      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+        <span class="q-num">Q4</span>
+        <div class="q-title-wrap">
+          <div class="q-title">pathway2 volatilization applies FracGASM to crop-residue N — intentional?</div>
+          <div class="q-tags"><span class="tag tag-cat">GWP · N₂O</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">GWP-003</span></div>
+        </div>
+        <span class="caret">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="rec"><span class="rec-label">Your call</span><strong>Intentional research override</strong> (add citation) or <strong>bug</strong> (remove the F_CR × FracGASM term).</div>
+        <div class="detail-block"><span class="detail-label">What the workbook does</span><p><code>pathway2_wet</code> and <code>pathway2_dry</code> include <code>(F_CR × FracGASM_frozen)</code>.</p></div>
+        <div class="detail-block"><span class="detail-label">What IPCC 2019 says</span><p>Refinement Vol 4 Ch 11 Eq 11.9 — FracGASM applies only to organic amendments (F_ON) and grazing deposition (F_PRP). Crop residue N goes into pathway1 and pathway3, not pathway2.</p></div>
+        <div class="detail-block"><span class="detail-label">If bug</span><p>Reduces pathway2 by F_CR contribution — largest in TDD/TID (high residue biomass).</p></div>
+        <div class="response-block">
+          <span class="response-label">Your call</span>
+          <div class="choices" data-q="Q4">
+            <label class="choice"><input type="radio" name="Q4" value="intentional"><div class="choice-text"><strong>Intentional override</strong> — cite research source (add citation below)</div></label>
+            <label class="choice"><input type="radio" name="Q4" value="bug"><div class="choice-text"><strong>Bug</strong> — remove F_CR × FracGASM from pathway2</div></label>
+          </div>
+          <label class="notes-label">Citation if intentional, or any implementation guidance:</label>
+          <textarea class="notes-area" data-q="Q4" placeholder="e.g. citation for the research override, or scope of the fix"></textarea>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-q="Q5">
+      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+        <span class="q-num">Q5</span>
+        <div class="q-title-wrap">
+          <div class="q-title">EF4_wet uses aggregate distribution — switch to wet-disaggregated?</div>
+          <div class="q-tags"><span class="tag tag-cat">GWP · N₂O</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">GWP-005</span></div>
+        </div>
+        <span class="caret">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="rec"><span class="rec-label">Your call</span>Switch to wet-disaggregated. Under-estimates wet-climate pathway2 by ~30-40% currently.</div>
+        <div class="detail-block"><span class="detail-label">Numbers</span><ul>
+          <li>Current EF4_wet median: <strong>0.00987 kg N₂O-N/kg N volatilized</strong> (aggregate distribution)</li>
+          <li>Per v2.5 §6 row 52: should be <strong>Triangular(0.011, 0.014, 0.017)</strong> — median ~0.014</li>
+          <li>Fix raises EF4_wet ~40%</li>
+        </ul></div>
+        <div class="response-block">
+          <span class="response-label">Your call</span>
+          <div class="choices" data-q="Q5">
+            <label class="choice"><input type="radio" name="Q5" value="switch"><div class="choice-text"><strong>Switch</strong> to wet-disaggregated Triangular(0.011, 0.014, 0.017)</div></label>
+            <label class="choice"><input type="radio" name="Q5" value="keep"><div class="choice-text"><strong>Keep aggregate</strong> — reasoning (add note below)</div></label>
+          </div>
+          <label class="notes-label">Notes:</label>
+          <textarea class="notes-area" data-q="Q5" placeholder=""></textarea>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-q="Q6">
+      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+        <span class="q-num">Q6</span>
+        <div class="q-title-wrap">
+          <div class="q-title">N_AG_BG applies "Fiber N" uniformly to all residue — simplification or split?</div>
+          <div class="q-tags"><span class="tag tag-cat">GWP · N inventory</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">GWP-007</span></div>
+        </div>
+        <span class="caret">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="rec"><span class="rec-label">Your call</span><strong>Deliberate simplification</strong> (narrative note) or <strong>split by tissue</strong> (Stover-N / Fiber-N / Root-N per scenario).</div>
+        <div class="detail-block"><span class="detail-label">Current</span><p><code>F_CR!row 17</code> uses <code>N_AG_BG!B$2</code> (labeled "Fiber N", median 0.008) as N content for both AG residue AND BG roots for ALL 12 scenarios.</p></div>
+        <div class="detail-block"><span class="detail-label">Typical realistic values</span><ul>
+          <li>Grain stover N: 0.005-0.007</li>
+          <li>Hemp fiber N: ~0.008</li>
+          <li>Root N: 0.010-0.012</li>
+        </ul></div>
+        <div class="response-block">
+          <span class="response-label">Your call</span>
+          <div class="choices" data-q="Q6">
+            <label class="choice"><input type="radio" name="Q6" value="simplification"><div class="choice-text"><strong>Deliberate simplification</strong> — add narrative note explaining</div></label>
+            <label class="choice"><input type="radio" name="Q6" value="split"><div class="choice-text"><strong>Split by tissue</strong> — Stover-N / Fiber-N / Root-N per scenario</div></label>
+          </div>
+          <label class="notes-label">Notes:</label>
+          <textarea class="notes-area" data-q="Q6" placeholder="e.g. use these specific N-content values by tissue"></textarea>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-q="Q7">
+      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+        <span class="q-num">Q7</span>
+        <div class="q-title-wrap">
+          <div class="q-title">Fuel MC draws identical across 4 scenario pairs — CRN or copy-paste?</div>
+          <div class="q-tags"><span class="tag tag-cat">GWP · MC design</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">GWP-009</span></div>
+        </div>
+        <span class="caret">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="rec"><span class="rec-label">Your call</span><strong>Intentional common-random-numbers</strong> (document) or <strong>accidental copy-paste</strong> (redraw independent MC).</div>
+        <div class="detail-block"><span class="detail-label">Finding</span><p>Fuel MC realizations byte-identical across TDG_GF, TDD, HDG_GF, HIG_GF (Run_1=251.53, Run_2=689.62, …). TIG_GF and TID share another identical series.</p></div>
+        <div class="response-block">
+          <span class="response-label">Your call</span>
+          <div class="choices" data-q="Q7">
+            <label class="choice"><input type="radio" name="Q7" value="crn"><div class="choice-text"><strong>Intentional CRN</strong> — document explicitly in workbook README</div></label>
+            <label class="choice"><input type="radio" name="Q7" value="redraw"><div class="choice-text"><strong>Accidental</strong> — redraw independent MC per scenario</div></label>
+            <label class="choice"><input type="radio" name="Q7" value="unsure"><div class="choice-text"><strong>Not sure</strong> — need to check the sampling code</div></label>
+          </div>
+          <label class="notes-label">Notes:</label>
+          <textarea class="notes-area" data-q="Q7" placeholder=""></textarea>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- SECTION 4: LANCA -->
+  <section class="section">
+    <div class="section-label">Part D · LANCA</div>
+    <h2 class="section-title">Two remaining LANCA items</h2>
+
+    <article class="card" data-q="Q8">
+      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+        <span class="q-num">Q8</span>
+        <div class="q-title-wrap">
+          <div class="q-title">LANCA4 irrigation units — <span class="highlight-blob">possible ×4047 error</span></div>
+          <div class="q-tags"><span class="tag tag-cat">LANCA4</span><span class="tag tag-sev-material">material · verify</span><span class="tag tag-affects">LANCA-038</span></div>
+        </div>
+        <span class="caret">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="rec"><span class="rec-label">Your call</span>Confirm the canonical unit — I'll trace the conversion path end-to-end.</div>
+        <div class="detail-block"><span class="detail-label">Finding</span><ul>
+          <li><code>L4_assumptions</code> rows 23-35: labeled <strong>m³/ac</strong></li>
+          <li><code>LANCA4_MC_peracre_calc</code> col H: labeled <strong>Irrigation_mm_yr</strong></li>
+          <li>Acre-to-m² conversion = 4047, so if mismatch is real, LANCA4 results off by ~4047×</li>
+        </ul></div>
+        <div class="response-block">
+          <span class="response-label">Your call</span>
+          <div class="choices" data-q="Q8">
+            <label class="choice"><input type="radio" name="Q8" value="mm-per-yr"><div class="choice-text"><strong>mm/yr is canonical</strong> — L4_assumptions label is wrong (cosmetic fix)</div></label>
+            <label class="choice"><input type="radio" name="Q8" value="m3-per-ac"><div class="choice-text"><strong>m³/ac is canonical</strong> — LANCA4 calc has implicit conversion (verify)</div></label>
+            <label class="choice"><input type="radio" name="Q8" value="unsure"><div class="choice-text"><strong>Need me to investigate</strong> — trace the derivation both ways and report</div></label>
+          </div>
+          <label class="notes-label">Any context on the intended unit or source:</label>
+          <textarea class="notes-area" data-q="Q8" placeholder=""></textarea>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-q="Q9">
+      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+        <span class="q-num">Q9</span>
+        <div class="q-title-wrap">
+          <div class="q-title">LANCA2 (mechanical filtration) scenario-agnostic like L3 — confirm intentional?</div>
+          <div class="q-tags"><span class="tag tag-cat">LANCA2</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">LANCA-018</span></div>
+        </div>
+        <span class="caret">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="rec"><span class="rec-label">Your call</span>Same treatment as L3 (per your CHECKPOINT-0)? If yes, I add a narrative note explaining L2 + L3 as per-acre constants varying only by yield.</div>
+        <div class="detail-block"><span class="detail-label">Finding</span><p>LANCA2 summary for all 12 scenarios shows identical values (Median 51,698.6, Max 221,565). Row 2 col AF has annotation "Scenario agnostic".</p></div>
+        <div class="response-block">
+          <span class="response-label">Your call</span>
+          <div class="choices" data-q="Q9">
+            <label class="choice"><input type="radio" name="Q9" value="intentional"><div class="choice-text"><strong>Confirm intentional</strong> — same treatment as L3, add narrative note</div></label>
+            <label class="choice"><input type="radio" name="Q9" value="not-intentional"><div class="choice-text"><strong>Not intentional</strong> — LANCA2 should vary by scenario (add fix)</div></label>
+          </div>
+          <label class="notes-label">Notes:</label>
+          <textarea class="notes-area" data-q="Q9" placeholder=""></textarea>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- SECTION 5: Eutro + AP -->
+  <section class="section">
+    <div class="section-label">Part E · Eutrophication + Acidification</div>
+    <h2 class="section-title">Two items (NH₃ scope gap already agreed)</h2>
+
+    <article class="card" data-q="Q10">
+      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+        <span class="q-num">Q10</span>
+        <div class="q-title-wrap">
+          <div class="q-title">P_deposition Triangular(0.3, 0.4, 0.5) — declared locally, not in canonical uncertainty</div>
+          <div class="q-tags"><span class="tag tag-cat">Eutrophication</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">EUTRO-001</span></div>
+        </div>
+        <span class="caret">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="rec"><span class="rec-label">Your call</span><strong>(a)</strong> add to <code>v2.6</code> uncertainty (canon-first), or <strong>(b)</strong> cite inline in eutro workbook.</div>
+        <div class="detail-block"><span class="detail-label">Finding</span><p>P deposition distribution <code>Triangular(0.3, 0.4, 0.5) kg P/ha/yr</code> declared in <code>MC_scenario_params</code>. Not in any canonical uncertainty file.</p></div>
+        <div class="response-block">
+          <span class="response-label">Your call</span>
+          <div class="choices" data-q="Q10">
+            <label class="choice"><input type="radio" name="Q10" value="canon-first"><div class="choice-text"><strong>Add to v2.6</strong> — canon-first, uncertainty stack traceable</div></label>
+            <label class="choice"><input type="radio" name="Q10" value="cite-inline"><div class="choice-text"><strong>Cite inline</strong> in eutro workbook, leave canon alone</div></label>
+          </div>
+          <label class="notes-label">Source citation for P_deposition:</label>
+          <textarea class="notes-area" data-q="Q10" placeholder="e.g. NADP wet deposition network, atmospheric P deposition rates for Midwest…"></textarea>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-q="Q11">
+      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+        <span class="q-num">Q11</span>
+        <div class="q-title-wrap">
+          <div class="q-title">MOP σ_log = 1.323 tail up to <span class="highlight-blob">2,635 kg K₂O/ac</span></div>
+          <div class="q-tags"><span class="tag tag-cat">AP · ADPe · ADPf</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">AP-002</span></div>
+        </div>
+        <span class="caret">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="rec"><span class="rec-label">Your call</span><strong>(a)</strong> refit lower σ_log, <strong>(b)</strong> truncate at plausible max, or <strong>(c)</strong> accept and report median only.</div>
+        <div class="detail-block"><span class="detail-label">Numbers</span><ul>
+          <li><code>Lognormal(scale=43, s=1.323)</code> in <code>v3_FIXED</code> for TDF + TIF</li>
+          <li>TDF Run_82 = <strong>1,593 kg MOP/ac</strong>, Run_100 = <strong>2,635</strong> — vs realistic max ~90 kg/ac</li>
+          <li>Single 2,635-kg draw = ~91 kg SO₂-eq/ac (~18× TDG_GO median total upstream AP)</li>
+        </ul></div>
+        <div class="response-block">
+          <span class="response-label">Your call</span>
+          <div class="choices" data-q="Q11">
+            <label class="choice"><input type="radio" name="Q11" value="refit"><div class="choice-text"><strong>Refit</strong> distribution with lower σ_log (specify target)</div></label>
+            <label class="choice"><input type="radio" name="Q11" value="truncate"><div class="choice-text"><strong>Truncate</strong> at plausible max (~90 kg/ac)</div></label>
+            <label class="choice"><input type="radio" name="Q11" value="accept-median"><div class="choice-text"><strong>Accept + report median only</strong> — flag high uncertainty in narrative</div></label>
+          </div>
+          <label class="notes-label">Target σ_log if refit, or context:</label>
+          <textarea class="notes-area" data-q="Q11" placeholder="e.g. cap σ_log at 0.4 for TDF/TIF K2O; add note in Tier_Assignment about thin-data cluster"></textarea>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- SECTION 6: SOC + Processing -->
+  <section class="section">
+    <div class="section-label">Part F · SOC + Processing</div>
+    <h2 class="section-title">Two items</h2>
+
+    <article class="card" data-q="Q12">
+      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+        <span class="q-num">Q12</span>
+        <div class="q-title-wrap">
+          <div class="q-title">Base LCI omits degumming chemistry (NaOH, phosphoric, citric) that MC includes</div>
+          <div class="q-tags"><span class="tag tag-cat">Processing</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">PROC-016 · PROC-017</span></div>
+        </div>
+        <span class="caret">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="rec"><span class="rec-label">Your call</span><strong>(a)</strong> update base LCI to include chemistry, or <strong>(b)</strong> update MC to match base LCI (chemistry-free).</div>
+        <div class="detail-block"><span class="detail-label">Finding</span><ul>
+          <li><code>LCI Summary!D44/D45</code>: NaOH = <strong>0 kg</strong>, Phosphoric = <strong>0 kg</strong></li>
+          <li><code>LCI MC Summary</code>: NaOH mean = <strong>0.403 kg (S1)</strong></li>
+          <li>Assumptions cite NOPA 2024 refining survey: B29 = 1.56 kg NaOH / t oil, B30 = 0.75 phosphoric, B31 = 0.3 citric</li>
+        </ul></div>
+        <div class="response-block">
+          <span class="response-label">Your call</span>
+          <div class="choices" data-q="Q12">
+            <label class="choice"><input type="radio" name="Q12" value="update-base"><div class="choice-text"><strong>Update base LCI</strong> — MC-path is canonical, base is stale</div></label>
+            <label class="choice"><input type="radio" name="Q12" value="update-mc"><div class="choice-text"><strong>Update MC</strong> — chemistry-free is canonical</div></label>
+            <label class="choice"><input type="radio" name="Q12" value="other"><div class="choice-text"><strong>Other</strong> (add note)</div></label>
+          </div>
+          <label class="notes-label">Notes:</label>
+          <textarea class="notes-area" data-q="Q12" placeholder=""></textarea>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-q="Q13">
+      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+        <span class="q-num">Q13</span>
+        <div class="q-title-wrap">
+          <div class="q-title">SOC allocation-method switch is UI-only — MC always uses mass</div>
+          <div class="q-tags"><span class="tag tag-cat">SOC</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">SOC-009</span></div>
+        </div>
+        <span class="caret">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="rec"><span class="rec-label">Your call</span><strong>(a)</strong> intentional (mass canonical, switch is display-only) or <strong>(b)</strong> wire switch into MC.</div>
+        <div class="detail-block"><span class="detail-label">Finding</span><p>SOC_MC per-run cells use per-run mass allocation regardless of <code>$A$13</code> allocation-method selector. Switch is UI-only.</p></div>
+        <div class="detail-block"><span class="detail-label">Context</span><p>ISO 14044 §4.3.4 defaults to physical (mass) allocation for physically-related co-products — a mass-only SOC MC is defensible.</p></div>
+        <div class="response-block">
+          <span class="response-label">Your call</span>
+          <div class="choices" data-q="Q13">
+            <label class="choice"><input type="radio" name="Q13" value="intentional"><div class="choice-text"><strong>Intentional</strong> — mass is canonical, document switch as display-only</div></label>
+            <label class="choice"><input type="radio" name="Q13" value="wire-switch"><div class="choice-text"><strong>Wire switch into MC</strong> — user should be able to toggle allocation in MC</div></label>
+          </div>
+          <label class="notes-label">Notes:</label>
+          <textarea class="notes-area" data-q="Q13" placeholder=""></textarea>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- General notes -->
+  <div class="general-notes-block">
+    <h3>Anything else — general notes, know-how, context, corrections</h3>
+    <p>Free-form. Anything you want to flag for me that doesn't fit a specific question above.</p>
+    <textarea class="notes-area" data-q="general" placeholder="e.g. Q4 answer depends on Q1 answer; Q8 is more urgent than Q11; here's a paper I want cited…" style="min-height: 100px;"></textarea>
+  </div>
+
+  <footer class="page">
+    <p><strong>What happens next.</strong> Hit <strong style="color:var(--sage)">Send answers</strong>. Choose Copy or Download (or email direct to Joe). Once received, I mark each finding row in the log and Phase 2 starts.</p>
+    <p><strong>Full audit trail.</strong> The exhaustive 155-finding log lives at <code>Projects/Midwest-Hemp-LCA/QAQC/01_Discrepancy_Log.md</code>.</p>
+    <p style="margin-top: 24px; color: var(--muted); font-size: 12px;">LEIF AIOS · Phase 1 QAQC · <a href="mailto:joe@leifllc.com">joe@leifllc.com</a></p>
+  </footer>
+
+</main>
+
+<!-- Sticky submit bar -->
+<div class="submit-bar" role="region" aria-label="Submit responses">
+  <span class="submit-bar-status"><strong id="ans-count">0</strong> of 14 answered · autosaved</span>
+  <button class="submit-btn" id="submitBtn">Send answers →</button>
+</div>
+
+<!-- Response summary modal -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <h2 id="modalTitle">Send your answers to LEIF</h2>
+    <p class="subtle" id="modalSubtitle">One tap — your answers go straight to the platform. Joe and Claude receive them instantly.</p>
+
+    <!-- Password gate (shown when needed) -->
+    <div id="passwordGate" style="display: none; margin-bottom: 20px;">
+      <label class="notes-label" style="margin-bottom: 8px; color: var(--sage);">Access password</label>
+      <input type="password" id="passwordInput" class="notes-area" style="min-height: unset; height: 44px;" placeholder="Enter the password Joe gave you" />
+      <p style="color: var(--muted); font-size: 12px; margin: 8px 0 0;">Your password unlocks the submission — one-time entry.</p>
+    </div>
+
+    <!-- Primary action -->
+    <button class="submit-btn" id="sendToLeifBtn" style="width: 100%; padding: 16px; font-size: 15px; margin-bottom: 14px;">Send to LEIF →</button>
+
+    <!-- Send status area -->
+    <div id="sendStatus" style="display: none; padding: 14px; border-radius: 8px; margin-bottom: 14px; font-size: 14px; line-height: 1.5;"></div>
+
+    <!-- Fallback options (collapsed by default) -->
+    <details style="margin-bottom: 14px;">
+      <summary style="cursor: pointer; color: var(--subtext); font-size: 13px; padding: 8px 0; user-select: none;">Or use a fallback (copy / download / email)</summary>
+      <div class="modal-actions" style="margin-top: 12px;">
+        <button class="action-btn" id="copyBtn"><strong>Copy to clipboard</strong><span>Paste to Joe manually</span></button>
+        <button class="action-btn" id="downloadBtn"><strong>Download JSON</strong><span>Attach to any message</span></button>
+        <button class="action-btn full" id="emailBtn"><strong>Email to Joe</strong><span>Opens your mail client</span></button>
+      </div>
+    </details>
+
+    <div class="response-preview" id="responsePreview" style="display: none;"></div>
+    <button class="close-btn" id="closeBtn">Close (your answers are autosaved)</button>
+  </div>
+</div>
+
+<div class="toast" id="toast">Copied to clipboard</div>
+
+<script>
+  const cards = document.querySelectorAll('.card');
+  const progressFill = document.getElementById('progressFill');
+  const progressCount = document.getElementById('progressCount');
+  const ansCount = document.getElementById('ans-count');
+  const saveState = document.getElementById('saveState');
+  const submitBtn = document.getElementById('submitBtn');
+  const modalBackdrop = document.getElementById('modalBackdrop');
+  const responsePreview = document.getElementById('responsePreview');
+  const toast = document.getElementById('toast');
+  const total = cards.length;
+  const STORAGE_KEY = 'leif_hemp_phase1_rylie_responses_v1';
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return {};
+      return JSON.parse(raw);
+    } catch { return {}; }
+  }
+  function saveStateNow() {
+    const state = {};
+    document.querySelectorAll('input[type="radio"]:checked').forEach(r => {
+      const q = r.name;
+      state[q] = state[q] || {};
+      state[q].choice = r.value;
+    });
+    document.querySelectorAll('textarea.notes-area').forEach(t => {
+      const q = t.dataset.q;
+      if (t.value.trim()) {
+        state[q] = state[q] || {};
+        state[q].notes = t.value.trim();
+      }
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    updateProgress();
+    saveState.innerHTML = '<span class="dot"></span>Saved';
+  }
+  function restoreState() {
+    const state = loadState();
+    for (const q in state) {
+      const s = state[q];
+      if (s.choice) {
+        const radio = document.querySelector('input[name="'+q+'"][value="'+s.choice+'"]');
+        if (radio) { radio.checked = true; radio.closest('.choice')?.classList.add('selected'); }
+      }
+      if (s.notes) {
+        const ta = document.querySelector('textarea[data-q="'+q+'"]');
+        if (ta) ta.value = s.notes;
+      }
+    }
+    updateProgress();
+  }
+
+  function countAnswered() {
+    let n = 0;
+    cards.forEach(card => {
+      const q = card.dataset.q;
+      const hasChoice = document.querySelector('input[name="'+q+'"]:checked');
+      const ta = card.querySelector('textarea.notes-area');
+      const hasNotes = ta && ta.value.trim().length > 0;
+      if (hasChoice || hasNotes) { n++; card.classList.add('answered'); }
+      else { card.classList.remove('answered'); }
+    });
+    return n;
+  }
+  function updateProgress() {
+    const answered = countAnswered();
+    progressFill.style.width = ((answered / total) * 100) + '%';
+    progressCount.textContent = answered + ' of ' + total + ' answered';
+    ansCount.textContent = answered;
+  }
+
+  cards.forEach(card => {
+    const header = card.querySelector('.card-header');
+    const toggle = () => {
+      card.classList.toggle('expanded');
+      header.setAttribute('aria-expanded', card.classList.contains('expanded'));
+    };
+    header.addEventListener('click', toggle);
+    header.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
+  });
+
+  // Choice selection styling
+  document.querySelectorAll('.choice').forEach(label => {
+    const input = label.querySelector('input');
+    if (!input) return;
+    input.addEventListener('change', () => {
+      // clear siblings
+      document.querySelectorAll('input[name="'+input.name+'"]').forEach(r => {
+        r.closest('.choice')?.classList.remove('selected');
+      });
+      if (input.checked) label.classList.add('selected');
+      saveStateNow();
+    });
+  });
+  document.querySelectorAll('textarea.notes-area').forEach(t => {
+    t.addEventListener('input', () => saveStateNow());
+  });
+
+  // Build response payload
+  function buildResponses() {
+    const state = loadState();
+    const responses = {};
+    const cardQs = Array.from(cards).map(c => c.dataset.q);
+    cardQs.forEach(q => {
+      const s = state[q] || {};
+      responses[q] = { choice: s.choice || null, notes: s.notes || null };
+    });
+    return {
+      artifact: "hemp-lca-phase1-rylie-decisions",
+      version: 1,
+      timestamp: new Date().toISOString(),
+      responder: "Rylie Pelton",
+      log_reference: "Projects/Midwest-Hemp-LCA/QAQC/01_Discrepancy_Log.md",
+      questions_total: total,
+      questions_answered: countAnswered(),
+      responses,
+      general_notes: (state["general"] && state["general"].notes) || null
+    };
+  }
+
+  function formatForHumans(payload) {
+    const lines = [];
+    lines.push('LEIF Hemp LCA — Phase 1 · Rylie decisions');
+    lines.push('Submitted: ' + payload.timestamp);
+    lines.push('Answered: ' + payload.questions_answered + ' of ' + payload.questions_total);
+    lines.push('');
+    for (const q in payload.responses) {
+      const r = payload.responses[q];
+      if (!r.choice && !r.notes) continue;
+      lines.push('[' + q + '] ' + (r.choice ? r.choice.toUpperCase() : '(no choice)'));
+      if (r.notes) lines.push('  Notes: ' + r.notes);
+      lines.push('');
+    }
+    if (payload.general_notes) {
+      lines.push('---');
+      lines.push('General notes:');
+      lines.push(payload.general_notes);
+    }
+    return lines.join('\n');
+  }
+
+  const EDGE_ENDPOINT = 'https://mqramtmqfpfkzfbynebf.supabase.co/functions/v1/submit-hemp-review';
+  const PASSWORD_STORAGE_KEY = 'leif_hemp_review_pw_v1';
+
+  submitBtn.addEventListener('click', () => {
+    const payload = buildResponses();
+    const jsonText = JSON.stringify(payload, null, 2);
+    const humanText = formatForHumans(payload);
+    responsePreview.textContent = humanText + '\n\n--- JSON payload ---\n' + jsonText;
+    modalBackdrop.classList.add('open');
+    modalBackdrop.dataset.json = jsonText;
+    modalBackdrop.dataset.human = humanText;
+
+    // Restore password if previously entered
+    const savedPw = sessionStorage.getItem(PASSWORD_STORAGE_KEY);
+    if (savedPw) {
+      document.getElementById('passwordInput').value = savedPw;
+      document.getElementById('passwordGate').style.display = 'none';
+    } else {
+      document.getElementById('passwordGate').style.display = 'block';
+    }
+
+    // Reset status
+    document.getElementById('sendStatus').style.display = 'none';
+    document.getElementById('sendToLeifBtn').disabled = false;
+    document.getElementById('sendToLeifBtn').textContent = 'Send to LEIF →';
+  });
+
+  // The real submit — POST to Supabase Edge Function
+  document.getElementById('sendToLeifBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('sendToLeifBtn');
+    const statusEl = document.getElementById('sendStatus');
+    const pwInput = document.getElementById('passwordInput');
+    const password = pwInput.value.trim() || sessionStorage.getItem(PASSWORD_STORAGE_KEY) || '';
+
+    if (!password) {
+      document.getElementById('passwordGate').style.display = 'block';
+      pwInput.focus();
+      statusEl.style.display = 'block';
+      statusEl.style.background = 'rgba(181, 122, 122, 0.15)';
+      statusEl.style.borderLeft = '3px solid var(--rose)';
+      statusEl.style.color = 'var(--text)';
+      statusEl.textContent = 'Enter the password Joe gave you, then hit Send.';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    statusEl.style.display = 'none';
+
+    const payload = buildResponses();
+
+    try {
+      const res = await fetch(EDGE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          password,
+          submitter_name: 'Rylie Pelton',
+          payload: payload.responses,
+          general_notes: payload.general_notes,
+        }),
+      });
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
+        sessionStorage.setItem(PASSWORD_STORAGE_KEY, password);
+        document.getElementById('passwordGate').style.display = 'none';
+        statusEl.style.display = 'block';
+        statusEl.style.background = 'var(--sage-glow)';
+        statusEl.style.borderLeft = '3px solid var(--sage)';
+        statusEl.style.color = 'var(--text)';
+        statusEl.innerHTML = '<strong style="color:var(--sage);">Sent.</strong> ' + (data.message || 'Your answers were received.') +
+          '<br><span style="color:var(--muted); font-size:12px;">Submission ID: ' + (data.submission_id || 'n/a').slice(0, 8) + '… · ' + new Date(data.submitted_at || Date.now()).toLocaleString() + '</span>';
+        btn.textContent = '✓ Sent to LEIF';
+      } else if (res.status === 401) {
+        statusEl.style.display = 'block';
+        statusEl.style.background = 'rgba(181, 122, 122, 0.15)';
+        statusEl.style.borderLeft = '3px solid var(--rose)';
+        statusEl.style.color = 'var(--text)';
+        statusEl.textContent = 'Password not accepted. Double-check with Joe, then try again.';
+        sessionStorage.removeItem(PASSWORD_STORAGE_KEY);
+        document.getElementById('passwordGate').style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Send to LEIF →';
+      } else {
+        throw new Error(data.error || ('HTTP ' + res.status));
+      }
+    } catch (err) {
+      statusEl.style.display = 'block';
+      statusEl.style.background = 'rgba(181, 122, 122, 0.15)';
+      statusEl.style.borderLeft = '3px solid var(--rose)';
+      statusEl.style.color = 'var(--text)';
+      statusEl.innerHTML = '<strong style="color:var(--rose);">Send failed.</strong> ' + (err.message || 'Network error') + '<br><span style="color:var(--muted); font-size:12px;">Try one of the fallback options below.</span>';
+      btn.disabled = false;
+      btn.textContent = 'Try again →';
+    }
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', async () => {
+    const text = modalBackdrop.dataset.human + '\n\n--- JSON payload ---\n' + modalBackdrop.dataset.json;
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast('Copied to clipboard');
+    } catch (e) {
+      // Fallback
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+      showToast('Copied to clipboard');
+    }
+  });
+
+  document.getElementById('downloadBtn').addEventListener('click', () => {
+    const blob = new Blob([modalBackdrop.dataset.json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const dt = new Date().toISOString().slice(0,10);
+    a.href = url; a.download = 'rylie_phase1_responses_' + dt + '.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Downloaded');
+  });
+
+  document.getElementById('emailBtn').addEventListener('click', () => {
+    const subject = 'Hemp LCA Phase 1 — my decisions (' + new Date().toISOString().slice(0,10) + ')';
+    const body = modalBackdrop.dataset.human;
+    const mailto = 'mailto:joe@leifllc.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    window.location.href = mailto;
+  });
+
+  document.getElementById('closeBtn').addEventListener('click', () => {
+    modalBackdrop.classList.remove('open');
+  });
+  modalBackdrop.addEventListener('click', (e) => {
+    if (e.target === modalBackdrop) modalBackdrop.classList.remove('open');
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modalBackdrop.classList.contains('open')) {
+      modalBackdrop.classList.remove('open');
+    }
+  });
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 1800);
+  }
+
+  restoreState();
+</script>
+
+</body>
+</html>
