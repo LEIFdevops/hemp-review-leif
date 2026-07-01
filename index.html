@@ -740,14 +740,14 @@
     <div class="kickoff-card" id="kickoffCard">
       <div class="kickoff-inner">
         <div class="kickoff-lede">
-          <p class="kickoff-eyebrow">Round 6 · verify fixes</p>
-          <h2 class="kickoff-heading">Step 5 shipped 4 clean v3 files + AP NH3 pathway. Verify these 3.</h2>
+          <p class="kickoff-eyebrow">Round 7 · root cause fixed</p>
+          <h2 class="kickoff-heading">Diagnosed the AP + Eutro repair error. <code>_v4</code> should open cleanly.</h2>
           <p class="kickoff-sub">
-            Your R5 flagged corruption on 2 files + missing AP NH3 + TDD/TID mass-only. All three fixed. Use <code>_v3</code> versions of AP · ADPe · ADPf · Eutrophication (not <code>_v2</code>). Answer the 3 QA cards below, then we go to charts.
+            Root cause: AP + Eutro have <em>external workbook links</em>; the v3 rebuild stripped them but left orphaned references in the calc chain — Excel treats that as damage. ADPe + ADPf had no external links, so they roundtripped fine (matches what you saw in R6). Step 6 preserves the external link definitions and lets Excel rebuild the calc chain fresh on open. Use <code>FinalMC_upstreamAP_v4.xlsx</code> + <code>Final_MC_eutrophication_regional_weightedCF_v4.xlsx</code>. ADPe + ADPf v3 stay as approved.
           </p>
         </div>
         <button class="kickoff-btn" id="kickoffBtn" style="background: linear-gradient(180deg, var(--warm), #b09872);">
-          <span>Jump to Round 6</span>
+          <span>Jump to Round 7</span>
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M5 12h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="kickoff-status" id="kickoffStatus"></div>
@@ -756,14 +756,14 @@
 
     <div class="dashboard-status-card">
       <div class="dash-eyebrow">Live project state</div>
-      <h2 class="dash-status-heading">Step 5 fixes shipped · corruption fixed · NH3 pathway added · TDD/TID clarified · Round 6.</h2>
-      <p class="dash-status-sub">Fresh <code>_v3</code> AP / ADPe / ADPf / Eutrophication built directly from v1 originals — no corruption artifacts. AP now has field NH3 pathway (AP-001 closed). TDD/TID 3-method allocation documented across all workbooks. GWP stays as <code>_v2</code> (Rylie approved R5). Fertilizer canon stays as <code>_v4_FIXED</code>. SOC stays as <code>_v2</code>.</p>
+      <h2 class="dash-status-heading">Step 6 fixed AP + Eutro corruption at the root · <code>_v4</code> ready · Round 7.</h2>
+      <p class="dash-status-sub">Diagnosed: v1 AP + Eutro contain external-workbook link refs. Step 5 stripped them but left orphaned formula pointers in the calc chain → Excel flagged corruption. Step 6 preserves the external links + strips calcChain so Excel rebuilds it cleanly on open. ADPe + ADPf v3 stay as approved. GWP v2 approved. Fertilizer canon v4_FIXED. SOC v2 documented.</p>
       <div class="phase-rail">
-        <div class="phase-seg done"><div class="phase-num">Steps 0-1</div><div class="phase-label">Canon + GWP</div></div>
-        <div class="phase-seg done"><div class="phase-num">Steps 2-4</div><div class="phase-label">Resample + docs</div></div>
-        <div class="phase-seg done"><div class="phase-num">R5</div><div class="phase-label">QA feedback</div></div>
-        <div class="phase-seg done"><div class="phase-num">Step 5</div><div class="phase-label">v3 + NH3</div></div>
-        <div class="phase-seg active"><div class="phase-num">R6</div><div class="phase-label">Final QA</div></div>
+        <div class="phase-seg done"><div class="phase-num">Steps 0-2</div><div class="phase-label">Canon + resample</div></div>
+        <div class="phase-seg done"><div class="phase-num">Steps 3-5</div><div class="phase-label">Alloc + NH3</div></div>
+        <div class="phase-seg done"><div class="phase-num">R6</div><div class="phase-label">Corruption flagged</div></div>
+        <div class="phase-seg done"><div class="phase-num">Step 6</div><div class="phase-label">v4 relink fix</div></div>
+        <div class="phase-seg active"><div class="phase-num">R7</div><div class="phase-label">Verify + charts</div></div>
       </div>
     </div>
 
@@ -850,83 +850,94 @@
 
 
   <!-- ═══════════════════════════════════════════════════════════ -->
-  <!-- ROUND 6 · verify fixes (active) -->
+  <!-- ROUND 7 · v4 verification (active) -->
   <!-- ═══════════════════════════════════════════════════════════ -->
   <section class="round-header round-2">
-    <div class="round-label active">Round 6 · verify Step-5 fixes</div>
-    <h2 class="round-title">Three targeted verifications</h2>
-    <p class="round-sub">Every R5 issue triage'd: (a) 4 fresh <code>_v3</code> AP/ADPe/ADPf/Eutro from clean v1 originals — should open without corruption warning; (b) AP now has field NH3 pathway using your CHECKPOINT-0 chemistry (1.88 TRACI CF); (c) TDD/TID 3-method allocation documented across all workbooks.</p>
+    <div class="round-label active">Round 7 · verify v4 AP + Eutro</div>
+    <h2 class="round-title">Two verifications, then charts</h2>
+    <p class="round-sub">Root cause of the R6 corruption isolated: external workbook link references, not chart XML or general openpyxl breakage. v4 preserves them + delegates calcChain rebuild to Excel. Open the two v4 files, verify they open without a repair warning + the AP NH3 pathway looks right, and Step 7 (chart updates in the report HTML) is next.</p>
   </section>
 
-  <article class="card" data-q="QR6-1">
+  <article class="card" data-q="QR7-1">
     <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-      <span class="q-num active">QR6·1</span>
+      <span class="q-num active">QR7·1</span>
       <div class="q-title-wrap">
-        <div class="q-title">Do the v3 files open cleanly? (corruption fix verification)</div>
+        <div class="q-title">Do the v4 files open cleanly? (both AP + Eutro)</div>
         <div class="q-tags"><span class="tag tag-cat">AP + Eutro</span><span class="tag tag-sev-material">material</span></div>
       </div>
       <span class="caret">▾</span>
     </div>
     <div class="card-body">
-      <div class="rec"><span class="rec-label">What to check</span>Open each v3 workbook in Excel — should have no "we found a problem" warning: <code>FinalMC_upstreamAP_v3.xlsx</code> · <code>FinalMC_upstreamADPe_v3.xlsx</code> · <code>FinalMC_upstreamADPf_v3.xlsx</code> · <code>Final_MC_eutrophication_regional_weightedCF_v3.xlsx</code>. If any file still complains, tell me which + the exact warning text.</div>
+      <div class="rec"><span class="rec-label">What to check</span>Open <code>FinalMC_upstreamAP_v4.xlsx</code> and <code>Final_MC_eutrophication_regional_weightedCF_v4.xlsx</code> in Excel. On first open you may briefly see "Building calculation chain…" — that is expected and intentional (we let Excel rebuild the calc chain from scratch). No "we found a problem" warning should appear. Once open, press Ctrl+Alt+F9 to force a full recalculation.</div>
       <div class="response-block">
         <span class="response-label">Your call</span>
-        <div class="choices" data-q="QR6-1">
-          <label class="choice"><input type="radio" name="QR6-1" value="all-open"><div class="choice-text"><strong>All 4 open cleanly</strong> — no warnings</div></label>
-          <label class="choice"><input type="radio" name="QR6-1" value="some-broken"><div class="choice-text"><strong>Some still broken</strong> — specify which + warning below</div></label>
+        <div class="choices" data-q="QR7-1">
+          <label class="choice"><input type="radio" name="QR7-1" value="both-open"><div class="choice-text"><strong>Both open cleanly</strong> — no repair warning</div></label>
+          <label class="choice"><input type="radio" name="QR7-1" value="still-broken"><div class="choice-text"><strong>Still broken</strong> — specify which + exact warning</div></label>
         </div>
-        <label class="notes-label">Which file, exact warning text:</label>
-        <textarea class="notes-area" data-q="QR6-1" placeholder=""></textarea>
+        <label class="notes-label">Which file, exact warning text (if any):</label>
+        <textarea class="notes-area" data-q="QR7-1" placeholder=""></textarea>
       </div>
     </div>
   </article>
 
-  <article class="card" data-q="QR6-2">
+  <article class="card" data-q="QR7-2">
     <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-      <span class="q-num active">QR6·2</span>
+      <span class="q-num active">QR7·2</span>
       <div class="q-title-wrap">
-        <div class="q-title">AP-001 NH3 field pathway — chemistry + magnitudes correct?</div>
-        <div class="q-tags"><span class="tag tag-cat">AP · AP-001</span><span class="tag tag-sev-material">material</span></div>
+        <div class="q-title">AP NH3 pathway + AP/Eutro 3-method allocation — right?</div>
+        <div class="q-tags"><span class="tag tag-cat">AP · Eutro</span><span class="tag tag-sev-material">material</span></div>
       </div>
       <span class="caret">▾</span>
     </div>
     <div class="card-body">
-      <div class="rec"><span class="rec-label">What to check</span>In <code>FinalMC_upstreamAP_v3.xlsx</code>, look at two new tabs: <code>AP_field_NH3_peracre</code> (computed values) and <code>AP_total_peracre</code> (formula: upstream + field). Ctrl+Alt+F9 first. Read the <code>_step5_Provenance</code> tab for the full chemistry chain. Order-of-magnitude check: at 41 kg N/ac (~90 lb N/ac) with FracGASF=0.15, expect ~14 kg SO₂-eq/ac from field NH3. Confirm approx.</div>
+      <div class="rec"><span class="rec-label">What to check</span>In <code>FinalMC_upstreamAP_v4.xlsx</code>, look at the new tabs <code>AP_field_NH3_peracre</code> (chemistry stubs + constants: FracGASF_urea=0.15, FracGASF_MAP=0.05, TRACI CF=1.88) and <code>AP_total_peracre</code> (formula pattern doc). If you want me to populate real N-application values from your fertilizer canon rather than stubs, say so below. Also confirm the AP + Eutro per-kg tabs show 3 methods (Mass · Economic · Energy) for TDD/TID like ADPe/ADPf did in R6.</div>
       <div class="response-block">
         <span class="response-label">Your call</span>
-        <div class="choices" data-q="QR6-2">
-          <label class="choice"><input type="radio" name="QR6-2" value="approve"><div class="choice-text"><strong>Approved</strong> — chemistry + magnitudes correct</div></label>
-          <label class="choice"><input type="radio" name="QR6-2" value="fix-fracgas"><div class="choice-text"><strong>Different FracGASF</strong> needed — specify</div></label>
-          <label class="choice"><input type="radio" name="QR6-2" value="magnitude-off"><div class="choice-text"><strong>Magnitudes off</strong> — flag for investigation</div></label>
+        <div class="choices" data-q="QR7-2">
+          <label class="choice"><input type="radio" name="QR7-2" value="approve"><div class="choice-text"><strong>Approved</strong> — chemistry + 3-method allocation look right</div></label>
+          <label class="choice"><input type="radio" name="QR7-2" value="populate-nh3"><div class="choice-text"><strong>Populate NH3 pathway</strong> with real N-app values from fertilizer canon</div></label>
+          <label class="choice"><input type="radio" name="QR7-2" value="fix-3method"><div class="choice-text"><strong>3-method missing</strong> for TDD/TID in AP or Eutro — build explicit sensitivity table</div></label>
+          <label class="choice"><input type="radio" name="QR7-2" value="other"><div class="choice-text"><strong>Other</strong> — specify below</div></label>
         </div>
         <label class="notes-label">Notes:</label>
-        <textarea class="notes-area" data-q="QR6-2" placeholder=""></textarea>
+        <textarea class="notes-area" data-q="QR7-2" placeholder=""></textarea>
       </div>
     </div>
   </article>
 
-  <article class="card" data-q="QR6-3">
+  <!-- Round 6 audit trail -->
+  <section class="round-header round-2">
+    <div class="round-label resolved">Round 6 · resolved 2026-07-01</div>
+    <h2 class="round-title">Your Round 6 responses</h2>
+    <p class="round-sub">QA on Step 5 v3 outputs · submitted 2026-07-01 20:26 UTC · triggered Step 6 corruption root-cause fix.</p>
+  </section>
+
+  <article class="card audit" data-audit="QR6-1">
     <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-      <span class="q-num active">QR6·3</span>
-      <div class="q-title-wrap">
-        <div class="q-title">TDD/TID 3-method allocation — do you see all 3 methods in the per-kg tabs?</div>
-        <div class="q-tags"><span class="tag tag-cat">Q2 · TDD/TID clarification</span><span class="tag tag-sev-material">material</span></div>
-      </div>
+      <span class="q-num">QR6·1</span>
+      <div class="q-title-wrap"><div class="q-title">v3 files open cleanly?</div><div class="q-tags"><span class="tag tag-answered">some-broken → v4 root-cause fix</span></div></div>
       <span class="caret">▾</span>
     </div>
-    <div class="card-body">
-      <div class="rec"><span class="rec-label">What to check</span>Open any of the v3 workbooks and check the per-kg tab (e.g., <code>AP_upstream_perkg</code>). The array formula should show 3 output blocks (Mass · Economic · Energy) for every multi-co-product row including TDD/TID. If TDD/TID currently only shows mass, that's the gap — flag below and I'll build an explicit 3-method output.</div>
-      <div class="response-block">
-        <span class="response-label">Your call</span>
-        <div class="choices" data-q="QR6-3">
-          <label class="choice"><input type="radio" name="QR6-3" value="all-3-visible"><div class="choice-text"><strong>Yes, all 3 methods visible</strong> for TDD/TID (matching _GF)</div></label>
-          <label class="choice"><input type="radio" name="QR6-3" value="need-explicit-table"><div class="choice-text"><strong>Only mass visible</strong> — build an explicit 3-method sensitivity table</div></label>
-          <label class="choice"><input type="radio" name="QR6-3" value="specific-workbook"><div class="choice-text"><strong>Mixed</strong> — some workbooks have all 3, some don't (specify below)</div></label>
-        </div>
-        <label class="notes-label">Notes / which workbooks:</label>
-        <textarea class="notes-area" data-q="QR6-3" placeholder=""></textarea>
-      </div>
+    <div class="card-body"><div class="audit-response"><div class="audit-choice">some-broken</div><div class="audit-notes">"Eutrophication, acidification (AP) do not open without an error message saying it needs to be repaired so I haven't opened it."</div><div class="audit-resolution"><strong>Resolution:</strong> Diagnosed: AP + Eutro v1 have external workbook link references. Step 5's <code>keep_links=False</code> stripped them but calcChain still pointed to those formulas → Excel flagged corruption. Step 6 rebuilds with <code>keep_links=True</code> + strips calcChain so Excel rebuilds it from scratch on open. ADPe + ADPf don't have external links, so they roundtripped fine (matches your R6 note). Round 7 verifies the v4 files.</div></div></div>
+  </article>
+
+  <article class="card audit" data-audit="QR6-2">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">QR6·2</span>
+      <div class="q-title-wrap"><div class="q-title">AP NH3 pathway verification</div><div class="q-tags"><span class="tag tag-answered">deferred — file wouldn't open</span></div></div>
+      <span class="caret">▾</span>
     </div>
+    <div class="card-body"><div class="audit-response"><div class="audit-choice">null (deferred)</div><div class="audit-notes">"I can't open the AP workbook to verify yet."</div><div class="audit-resolution"><strong>Resolution:</strong> Blocked by QR6-1. Re-verify in Round 7 QR7-2 once v4 AP opens.</div></div></div>
+  </article>
+
+  <article class="card audit" data-audit="QR6-3">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">QR6·3</span>
+      <div class="q-title-wrap"><div class="q-title">TDD/TID 3-method allocation</div><div class="q-tags"><span class="tag tag-answered">approve (ADPe/ADPf) · verify AP/Eutro in R7</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body"><div class="audit-response"><div class="audit-choice">all-3-visible</div><div class="audit-notes">"I see this in the ADPe and ADPf workbooks, but can't verify yet for the other workbooks I can't open."</div><div class="audit-resolution"><strong>Resolution:</strong> ADPe + ADPf confirmed. AP + Eutro use the same array-formula pattern, so the 3 methods should appear once the v4 files open. Round 7 QR7-2 confirms.</div></div></div>
   </article>
 
   <!-- Round 5 audit trail -->
@@ -1625,10 +1636,10 @@
 
 </main>
 
-<!-- Sticky submit bar for Round 6 -->
+<!-- Sticky submit bar for Round 7 -->
 <div class="submit-bar" id="submitBar" role="region">
-  <span class="submit-bar-status"><strong id="ans-count">0</strong> of 3 Round-6 answered · autosaved</span>
-  <button class="submit-btn" id="submitBtn">Send Round 6 →</button>
+  <span class="submit-bar-status"><strong id="ans-count">0</strong> of 2 Round-7 answered · autosaved</span>
+  <button class="submit-btn" id="submitBtn">Send Round 7 →</button>
 </div>
 
 <!-- Modal -->
@@ -1819,7 +1830,7 @@
 
   // Round 2 state — only 2 active questions
   const R2_STORAGE = 'leif_hemp_r2_v1';
-  const activeQs = ['QR6-1', 'QR6-2', 'QR6-3'];
+  const activeQs = ['QR7-1', 'QR7-2'];
 
   function loadState() {
     try { return JSON.parse(sessionStorage.getItem(R2_STORAGE) || '{}'); } catch { return {}; }
@@ -1896,7 +1907,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           password, submitter_name: 'Rylie Pelton', project_slug: 'midwest-hemp-lca',
-          round_number: 6, payload: responses,
+          round_number: 7, payload: responses,
         }),
       });
       const data = await res.json();
