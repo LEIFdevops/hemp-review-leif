@@ -9,19 +9,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #111318;
-    --surface: #1a1d24;
-    --surface-2: #22262f;
-    --surface-3: #2a2e37;
-    --border: #2a2e37;
-    --border-strong: #3a3f4a;
-    --text: #e8e6e3;
-    --subtext: #9b9a97;
-    --muted: #6b6a67;
+    /* LEIF Platform palette — verified from the live product */
+    --bg: #0a0d10;
+    --bg-2: #0e1116;
+    --surface: #131820;
+    --surface-2: #1a2029;
+    --surface-3: #232a35;
+    --border: #1e2530;
+    --border-strong: #2d3644;
+    --text: #f0efec;
+    --subtext: #a9a8a4;
+    --muted: #6f6e6a;
     --sage: #7aab91;
+    --sage-bright: #8fc8a8;
     --sage-deep: #5b8a72;
-    --sage-glow: rgba(122, 171, 145, 0.12);
-    --sage-glow-strong: rgba(122, 171, 145, 0.20);
+    --sage-glow: rgba(122, 171, 145, 0.14);
+    --sage-glow-strong: rgba(122, 171, 145, 0.24);
+    --sage-glow-soft: rgba(122, 171, 145, 0.06);
     --warm: #c4a882;
     --warm-glow: rgba(196, 168, 130, 0.10);
     --steel: #7a9bb5;
@@ -29,7 +33,26 @@
     --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif;
     --font-head: 'Sora', var(--font-body);
     --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --shadow-sage: 0 0 0 1px rgba(122, 171, 145, 0.4), 0 8px 32px rgba(122, 171, 145, 0.15), 0 2px 8px rgba(122, 171, 145, 0.10);
+    --shadow-sage-hover: 0 0 0 1px rgba(122, 171, 145, 0.6), 0 12px 40px rgba(122, 171, 145, 0.22), 0 4px 12px rgba(122, 171, 145, 0.14);
+    --shadow-card: 0 1px 3px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.25);
+    --shadow-card-hover: 0 1px 3px rgba(0,0,0,0.4), 0 12px 32px rgba(0,0,0,0.35);
   }
+
+  /* Ambient background — subtle radial sage halos, extremely soft */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 800px 500px at 15% -10%, rgba(122, 171, 145, 0.06), transparent 60%),
+      radial-gradient(ellipse 600px 400px at 90% 30%, rgba(122, 171, 145, 0.04), transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  main { position: relative; z-index: 1; }
   * { box-sizing: border-box; }
   html, body {
     background: var(--bg); color: var(--text);
@@ -44,19 +67,104 @@
   .brand { display: flex; align-items: baseline; gap: 10px; margin-bottom: 24px; }
   .brand-mark { font-family: var(--font-head); font-weight: 800; font-size: 20px; letter-spacing: -0.02em; color: var(--sage); }
   .brand-tag { color: var(--muted); font-size: 13px; }
-  h1 { font-family: var(--font-head); font-weight: 700; font-size: 34px; letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 12px; }
-  .lede { color: var(--subtext); font-size: 17px; line-height: 1.5; margin: 0 0 24px; max-width: 640px; }
+  h1 { font-family: var(--font-head); font-weight: 700; font-size: 44px; letter-spacing: -0.025em; line-height: 1.1; margin: 0 0 16px; }
+  .lede { color: var(--subtext); font-size: 17px; line-height: 1.55; margin: 0 0 28px; max-width: 640px; }
+  .section-tag {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin: 0 0 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--sage);
+    box-shadow: 0 0 12px var(--sage), 0 0 4px var(--sage);
+    animation: pulse-dot 2.2s var(--ease) infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
   .meta { display: flex; gap: 24px; color: var(--muted); font-size: 13px; flex-wrap: wrap; }
   .meta-item { display: flex; align-items: center; gap: 6px; }
   .meta-item strong { color: var(--subtext); font-weight: 500; }
 
   /* Progress + save state */
-  .progress { display: flex; align-items: center; gap: 12px; margin: 24px 0 0; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 13px; }
-  .progress-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--sage-deep), var(--sage)); width: 0%; transition: width 0.4s var(--ease); }
-  .progress-count { color: var(--subtext); font-variant-numeric: tabular-nums; }
-  .save-state { color: var(--muted); font-size: 12px; }
-  .save-state .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--sage); margin-right: 6px; vertical-align: middle; }
+  .progress {
+    display: flex; align-items: center; gap: 16px;
+    margin: 28px 0 0;
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 13px;
+    position: relative;
+    overflow: hidden;
+  }
+  .progress::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 0%, var(--sage-glow-soft) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.5s var(--ease);
+    pointer-events: none;
+  }
+  .progress.active::before { opacity: 1; }
+  .progress-track { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; position: relative; }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--sage-deep), var(--sage) 50%, var(--sage-bright));
+    width: 0%;
+    transition: width 0.6s var(--ease-spring);
+    box-shadow: 0 0 12px var(--sage-glow-strong);
+    border-radius: 3px;
+    position: relative;
+  }
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 20px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4));
+    animation: shimmer 2.5s var(--ease) infinite;
+    opacity: 0;
+  }
+  .progress.active .progress-fill::after { opacity: 1; }
+  @keyframes shimmer {
+    0% { transform: translateX(-20px); }
+    100% { transform: translateX(20px); }
+  }
+  .progress-count { color: var(--subtext); font-variant-numeric: tabular-nums; font-weight: 500; position: relative; z-index: 1; }
+  .save-state { color: var(--muted); font-size: 12px; position: relative; z-index: 1; display: flex; align-items: center; gap: 6px; }
+  .save-state .dot {
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--sage);
+    box-shadow: 0 0 8px var(--sage);
+    animation: pulse-dot 2.2s var(--ease) infinite;
+  }
+  .milestone-burst {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+  }
+  .milestone-burst.fire {
+    animation: burst 1.2s var(--ease-out);
+  }
+  @keyframes burst {
+    0% { opacity: 0; background: radial-gradient(circle at var(--x, 50%) 50%, var(--sage-glow-strong), transparent 20%); }
+    30% { opacity: 1; background: radial-gradient(circle at var(--x, 50%) 50%, var(--sage-glow-strong), transparent 60%); }
+    100% { opacity: 0; background: radial-gradient(circle at var(--x, 50%) 50%, var(--sage-glow-strong), transparent 100%); }
+  }
 
   /* Sections */
   .section { margin: 48px 0 20px; animation: fadeUp 0.6s var(--ease) both; }
@@ -65,12 +173,64 @@
   .section-note { color: var(--muted); font-size: 13px; margin: 0 0 20px; }
 
   /* Card */
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: border-color 0.25s var(--ease); position: relative; }
-  .card:hover { border-color: var(--border-strong); }
-  .card.expanded { border-color: var(--sage); }
-  .card.answered { border-left: 3px solid var(--sage); }
-  .card.answered::before { content: ''; position: absolute; top: 22px; right: 22px; width: 8px; height: 8px; border-radius: 50%; background: var(--sage); box-shadow: 0 0 12px var(--sage); }
-  .card-batch { background: linear-gradient(180deg, var(--surface), rgba(122, 171, 145, 0.05)); border-color: rgba(122, 171, 145, 0.3); }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: border-color 0.3s var(--ease), transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+    position: relative;
+    box-shadow: var(--shadow-card);
+  }
+  .card:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-card-hover);
+  }
+  .card.expanded {
+    border-color: rgba(122, 171, 145, 0.5);
+    box-shadow: var(--shadow-card-hover), 0 0 0 1px var(--sage-glow-soft);
+  }
+  .card.answered {
+    border-color: rgba(122, 171, 145, 0.4);
+    background: linear-gradient(180deg, var(--surface) 0%, rgba(122, 171, 145, 0.02) 100%);
+  }
+  .card.answered::before {
+    content: '✓';
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--sage);
+    color: var(--bg);
+    font-weight: 700;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 16px var(--sage-glow-strong), 0 0 4px var(--sage);
+    animation: check-pop 0.5s var(--ease-spring);
+    z-index: 2;
+  }
+  @keyframes check-pop {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.15); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .card-batch {
+    background: linear-gradient(180deg, var(--surface) 0%, rgba(122, 171, 145, 0.04) 100%);
+    border-color: rgba(122, 171, 145, 0.25);
+  }
+  .card-batch::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--sage), var(--sage-deep));
+    box-shadow: 0 0 12px var(--sage-glow-strong);
+    opacity: 0.6;
+  }
 
   .card-header { display: flex; align-items: center; gap: 14px; padding: 18px 22px; cursor: pointer; user-select: none; transition: background 0.2s var(--ease); }
   .card-header:hover { background: rgba(255,255,255,0.02); }
@@ -126,43 +286,68 @@
 
   .choices { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
   .choice {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 12px 14px;
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 14px 16px;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: all 0.2s var(--ease);
+    transition: all 0.25s var(--ease-out);
     user-select: none;
+    position: relative;
+    overflow: hidden;
   }
-  .choice:hover { border-color: var(--border-strong); background: var(--surface-2); }
+  .choice::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, var(--sage-glow-soft), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s var(--ease);
+    pointer-events: none;
+  }
+  .choice:hover {
+    border-color: rgba(122, 171, 145, 0.3);
+    background: var(--surface-2);
+    transform: translateX(2px);
+  }
+  .choice:hover::before { opacity: 1; }
   .choice input[type="radio"], .choice input[type="checkbox"] {
     appearance: none; -webkit-appearance: none;
-    width: 18px; height: 18px;
+    width: 20px; height: 20px;
     border: 2px solid var(--border-strong);
     background: var(--bg);
     cursor: pointer;
     flex-shrink: 0;
     margin-top: 1px;
-    transition: all 0.2s var(--ease);
+    transition: all 0.3s var(--ease-spring);
+    position: relative;
   }
   .choice input[type="radio"] { border-radius: 50%; }
-  .choice input[type="checkbox"] { border-radius: 4px; }
+  .choice input[type="checkbox"] { border-radius: 5px; }
   .choice input:checked {
     border-color: var(--sage);
     background: var(--sage);
-    box-shadow: inset 0 0 0 3px var(--surface);
+    box-shadow: inset 0 0 0 4px var(--surface), 0 0 16px var(--sage-glow-strong);
+    animation: choice-ping 0.55s var(--ease-spring);
+  }
+  @keyframes choice-ping {
+    0% { transform: scale(0.85); }
+    60% { transform: scale(1.15); }
+    100% { transform: scale(1); }
   }
   .choice input[type="checkbox"]:checked {
-    box-shadow: inset 0 0 0 2px var(--surface);
+    box-shadow: inset 0 0 0 2px var(--surface), 0 0 16px var(--sage-glow-strong);
     background-image: linear-gradient(45deg, transparent 45%, var(--surface) 45%, var(--surface) 55%, transparent 55%);
   }
   .choice.selected {
-    border-color: var(--sage);
+    border-color: rgba(122, 171, 145, 0.5);
     background: var(--sage-glow);
+    box-shadow: 0 0 0 1px var(--sage-glow-strong), 0 4px 20px var(--sage-glow-soft);
   }
-  .choice-text { flex: 1; font-size: 14px; line-height: 1.4; }
-  .choice-text strong { color: var(--sage); font-weight: 600; }
+  .choice.selected::before { opacity: 1; }
+  .choice-text { flex: 1; font-size: 14px; line-height: 1.45; position: relative; z-index: 1; }
+  .choice-text strong { color: var(--sage-bright); font-weight: 600; }
 
   .notes-area {
     width: 100%;
@@ -196,40 +381,60 @@
   /* Sticky submit bar */
   .submit-bar {
     position: fixed;
-    bottom: 20px;
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
-    background: var(--surface);
-    border: 1px solid var(--sage);
+    background: rgba(19, 24, 32, 0.85);
+    border: 1px solid rgba(122, 171, 145, 0.35);
     border-radius: 999px;
-    padding: 12px 18px 12px 22px;
+    padding: 12px 18px 12px 24px;
     display: flex;
     align-items: center;
-    gap: 16px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 4px rgba(122, 171, 145, 0.08);
+    gap: 20px;
+    box-shadow:
+      0 16px 48px rgba(0,0,0,0.65),
+      0 0 0 4px rgba(122, 171, 145, 0.06),
+      0 0 40px rgba(122, 171, 145, 0.15);
     z-index: 100;
-    animation: floatUp 0.6s var(--ease) 0.4s both;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    animation: floatUp 0.7s var(--ease) 0.4s both;
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
   }
-  .submit-bar-status { color: var(--subtext); font-size: 13px; }
-  .submit-bar-status strong { color: var(--sage); font-weight: 600; }
+  .submit-bar-status { color: var(--subtext); font-size: 13px; display: flex; align-items: center; gap: 6px; }
+  .submit-bar-status strong { color: var(--sage-bright); font-weight: 700; font-variant-numeric: tabular-nums; }
   .submit-btn {
-    background: var(--sage);
+    background: linear-gradient(180deg, var(--sage-bright), var(--sage));
     color: var(--bg);
     border: none;
-    padding: 10px 24px;
+    padding: 12px 28px;
     border-radius: 999px;
     font-family: var(--font-head);
     font-weight: 700;
     font-size: 14px;
     letter-spacing: 0.02em;
     cursor: pointer;
-    transition: all 0.2s var(--ease);
+    transition: all 0.25s var(--ease-out);
+    box-shadow: 0 4px 16px var(--sage-glow-strong), inset 0 1px 0 rgba(255,255,255,0.2);
+    position: relative;
+    overflow: hidden;
   }
-  .submit-btn:hover { background: #8dbba1; transform: translateY(-1px); }
-  .submit-btn:active { transform: translateY(0); }
-  .submit-btn:disabled { background: var(--surface-3); color: var(--muted); cursor: not-allowed; transform: none; }
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.25), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.7s var(--ease);
+  }
+  .submit-btn:hover {
+    background: linear-gradient(180deg, #a3d8bc, var(--sage-bright));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--sage-glow-strong), 0 0 0 1px rgba(122, 171, 145, 0.6), inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  .submit-btn:hover::before { transform: translateX(100%); }
+  .submit-btn:active { transform: translateY(-1px); }
+  .submit-btn:disabled { background: var(--surface-3); color: var(--muted); cursor: not-allowed; transform: none; box-shadow: none; }
+  .submit-btn:disabled::before { display: none; }
 
   /* Response summary modal */
   .modal-backdrop {
@@ -317,16 +522,92 @@
   }
   .close-btn:hover { border-color: var(--sage); color: var(--sage); }
   .toast {
-    position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
-    background: var(--sage); color: var(--bg);
-    padding: 12px 20px; border-radius: 999px;
+    position: fixed; bottom: 96px; left: 50%; transform: translateX(-50%);
+    background: rgba(19, 24, 32, 0.92);
+    color: var(--text);
+    padding: 14px 22px 14px 18px;
+    border-radius: 999px;
     font-family: var(--font-head); font-weight: 600; font-size: 13px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    letter-spacing: 0.01em;
+    border: 1px solid rgba(122, 171, 145, 0.35);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 32px var(--sage-glow-strong);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     z-index: 300;
     opacity: 0; pointer-events: none;
-    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+    transition: opacity 0.4s var(--ease), transform 0.4s var(--ease-spring);
+    display: flex; align-items: center; gap: 10px;
   }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+  .toast::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--sage);
+    box-shadow: 0 0 12px var(--sage);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(-6px); }
+
+  /* Sent-state celebration */
+  .sent-state {
+    position: relative;
+    padding: 24px 12px 8px;
+    text-align: center;
+  }
+  .sent-glow {
+    position: absolute; inset: -40px;
+    background: radial-gradient(ellipse at center, var(--sage-glow-strong), transparent 60%);
+    opacity: 0;
+    transition: opacity 1.6s var(--ease-out);
+    pointer-events: none;
+  }
+  .sent-glow.fired { opacity: 1; }
+  .sent-check {
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .sent-circle {
+    stroke-dasharray: 151;
+    stroke-dashoffset: 151;
+    animation: draw-circle 0.6s var(--ease-out) 0.15s forwards;
+  }
+  .sent-tick {
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+    animation: draw-tick 0.4s var(--ease-out) 0.65s forwards;
+    filter: drop-shadow(0 0 8px var(--sage));
+  }
+  @keyframes draw-circle { to { stroke-dashoffset: 0; } }
+  @keyframes draw-tick { to { stroke-dashoffset: 0; } }
+  .sent-title {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: -0.02em;
+    margin: 0 0 10px;
+    color: var(--sage-bright);
+    animation: fadeIn 0.5s var(--ease) 0.85s both;
+  }
+  .sent-sub {
+    color: var(--subtext);
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0 auto 24px;
+    max-width: 380px;
+    animation: fadeIn 0.5s var(--ease) 1s both;
+  }
+  .sent-meta {
+    background: rgba(122, 171, 145, 0.06);
+    border: 1px solid rgba(122, 171, 145, 0.18);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex; justify-content: space-between; gap: 24px;
+    margin-bottom: 20px;
+    animation: fadeIn 0.5s var(--ease) 1.15s both;
+  }
+  .sent-meta > div { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .sent-meta span { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .sent-meta strong { font-family: var(--font-head); font-weight: 600; color: var(--text); font-size: 14px; font-variant-numeric: tabular-nums; }
 
   /* Footer */
   footer.page { margin-top: 80px; padding: 32px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; line-height: 1.7; }
@@ -383,22 +664,208 @@
 <body>
 
 <!-- View-time password gate -->
-<div id="viewGate" style="position:fixed; inset:0; background:var(--bg); z-index:1000; display:flex; align-items:center; justify-content:center; padding:20px; animation: fadeIn 0.3s var(--ease);">
-  <div style="max-width:420px; width:100%; background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:40px 32px; text-align:center;">
-    <div class="brand" style="justify-content:center; margin-bottom:24px;">
-      <span class="brand-mark">LEIF</span>
-      <span class="brand-tag">Hemp LCA · Phase 1</span>
+<div id="viewGate">
+  <div class="gate-ambient"></div>
+  <div class="gate-card">
+    <div class="gate-brand">
+      <div class="gate-logo">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+          <path d="M12 2L4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z" stroke="url(#g1)" stroke-width="2" fill="rgba(122,171,145,0.08)"/>
+          <path d="M8 12l3 3 5-6" stroke="url(#g1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs><linearGradient id="g1" x1="0" y1="0" x2="24" y2="24"><stop offset="0" stop-color="#8fc8a8"/><stop offset="1" stop-color="#5b8a72"/></linearGradient></defs>
+        </svg>
+      </div>
+      <div>
+        <div class="gate-brand-name">LEIF</div>
+        <div class="gate-brand-tag">Hemp LCA · Phase 1 QAQC</div>
+      </div>
     </div>
-    <h2 style="font-family:var(--font-head); font-weight:700; font-size:22px; margin:0 0 8px; letter-spacing:-0.01em;">Access</h2>
-    <p style="color:var(--subtext); margin:0 0 28px; font-size:14px; line-height:1.5;">
-      This page holds Rylie's Phase 1 QAQC decisions.<br>
-      Enter the password Joe shared to continue.
-    </p>
-    <input id="viewGateInput" type="password" placeholder="Password" style="width:100%; padding:14px 16px; background:var(--bg); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:inherit; font-size:15px; text-align:center; margin-bottom:14px;" autofocus>
-    <button id="viewGateBtn" style="width:100%; padding:14px; background:var(--sage); color:var(--bg); border:none; border-radius:10px; font-family:var(--font-head); font-weight:700; font-size:14px; cursor:pointer; transition:background 0.2s var(--ease); letter-spacing:0.02em;">Unlock →</button>
-    <div id="viewGateError" style="display:none; color:var(--rose); font-size:13px; margin-top:14px;">Password not recognized — check with Joe.</div>
+    <h2 class="gate-heading">Rylie's decision surface</h2>
+    <p class="gate-lede">Enter the access password Joe shared to review your 14 Phase-1 questions and submit answers directly to the platform.</p>
+    <div class="gate-input-wrap">
+      <input id="viewGateInput" type="password" placeholder="Access password" autofocus autocomplete="off" spellcheck="false">
+    </div>
+    <button id="viewGateBtn" class="gate-btn">
+      <span>Unlock</span>
+      <svg viewBox="0 0 20 20" width="16" height="16" fill="none"><path d="M4 10h11m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div id="viewGateError" class="gate-error">Password not recognized. Ping Joe to double-check.</div>
+    <div class="gate-footer">
+      <span class="gate-footer-dot"></span>
+      Secured by LEIF Platform · Session-scoped
+    </div>
   </div>
 </div>
+
+<style>
+  #viewGate {
+    position: fixed; inset: 0;
+    background: var(--bg);
+    z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    animation: fadeIn 0.4s var(--ease);
+    overflow: hidden;
+  }
+  .gate-ambient {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 900px 600px at 20% 20%, rgba(122, 171, 145, 0.12), transparent 55%),
+      radial-gradient(ellipse 700px 500px at 80% 80%, rgba(122, 171, 145, 0.08), transparent 60%);
+    pointer-events: none;
+  }
+  .gate-card {
+    position: relative;
+    max-width: 460px; width: 100%;
+    background: linear-gradient(180deg, rgba(19, 24, 32, 0.95), rgba(14, 17, 22, 0.98));
+    border: 1px solid rgba(122, 171, 145, 0.20);
+    border-radius: 20px;
+    padding: 44px 40px 36px;
+    box-shadow:
+      0 32px 80px rgba(0,0,0,0.6),
+      0 0 0 1px rgba(122, 171, 145, 0.06),
+      0 0 60px rgba(122, 171, 145, 0.10);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    animation: gateIn 0.7s var(--ease-out);
+  }
+  @keyframes gateIn {
+    0% { opacity: 0; transform: translateY(24px) scale(0.98); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .gate-brand {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 32px;
+  }
+  .gate-logo {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, rgba(122, 171, 145, 0.15), rgba(122, 171, 145, 0.05));
+    border: 1px solid rgba(122, 171, 145, 0.25);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 24px var(--sage-glow-soft);
+  }
+  .gate-brand-name {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    color: var(--sage-bright);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .gate-brand-tag {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+  }
+  .gate-heading {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 0 0 10px;
+    color: var(--text);
+  }
+  .gate-lede {
+    color: var(--subtext);
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0 0 28px;
+  }
+  .gate-input-wrap {
+    position: relative;
+    margin-bottom: 12px;
+  }
+  #viewGateInput {
+    width: 100%;
+    padding: 15px 18px;
+    background: rgba(10, 13, 16, 0.7);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 15px;
+    transition: all 0.25s var(--ease);
+    letter-spacing: 0.02em;
+  }
+  #viewGateInput::placeholder { color: var(--muted); letter-spacing: 0.01em; }
+  #viewGateInput:focus {
+    outline: none;
+    border-color: rgba(122, 171, 145, 0.45);
+    background: rgba(10, 13, 16, 0.9);
+    box-shadow: 0 0 0 4px var(--sage-glow-soft), 0 0 20px var(--sage-glow-soft);
+  }
+  .gate-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(180deg, var(--sage-bright), var(--sage));
+    color: var(--bg);
+    border: none;
+    border-radius: 12px;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: all 0.25s var(--ease-out);
+    box-shadow: 0 4px 16px var(--sage-glow-strong), inset 0 1px 0 rgba(255,255,255,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+  .gate-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s var(--ease);
+  }
+  .gate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px var(--sage-glow-strong), 0 0 0 1px rgba(122, 171, 145, 0.6), inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  .gate-btn:hover::before { transform: translateX(100%); }
+  .gate-btn:active { transform: translateY(-1px); }
+  .gate-btn svg { transition: transform 0.3s var(--ease); }
+  .gate-btn:hover svg { transform: translateX(3px); }
+  .gate-error {
+    display: none;
+    color: var(--rose);
+    font-size: 13px;
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: rgba(181, 122, 122, 0.10);
+    border: 1px solid rgba(181, 122, 122, 0.25);
+    border-radius: 8px;
+    text-align: center;
+    animation: shake 0.4s var(--ease);
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+  .gate-footer {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-align: center;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .gate-footer-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--sage);
+    box-shadow: 0 0 8px var(--sage);
+    animation: pulse-dot 2.2s var(--ease) infinite;
+  }
+</style>
 
 <main>
 
@@ -1041,6 +1508,16 @@
     updateProgress();
   }
 
+  const progressBar = document.querySelector('.progress');
+  let lastAnswered = 0;
+  const milestones = [Math.ceil(total * 0.25), Math.ceil(total * 0.5), Math.ceil(total * 0.75), total];
+  const milestonesFired = new Set();
+  const milestoneMessages = {};
+  milestoneMessages[milestones[0]] = 'A quarter of the way — momentum';
+  milestoneMessages[milestones[1]] = 'Halfway. Nicely done.';
+  milestoneMessages[milestones[2]] = 'Home stretch.';
+  milestoneMessages[milestones[3]] = 'All 14 answered. Send when ready.';
+
   function countAnswered() {
     let n = 0;
     cards.forEach(card => {
@@ -1053,11 +1530,27 @@
     });
     return n;
   }
+  function fireMilestone(answered) {
+    if (milestonesFired.has(answered)) return;
+    if (!milestoneMessages[answered]) return;
+    milestonesFired.add(answered);
+    // Visual burst on the progress bar
+    const burst = document.createElement('div');
+    burst.className = 'milestone-burst fire';
+    progressBar.appendChild(burst);
+    setTimeout(() => burst.remove(), 1300);
+    // Toast message
+    showToast(milestoneMessages[answered]);
+  }
   function updateProgress() {
     const answered = countAnswered();
     progressFill.style.width = ((answered / total) * 100) + '%';
     progressCount.textContent = answered + ' of ' + total + ' answered';
     ansCount.textContent = answered;
+    if (answered > 0) progressBar.classList.add('active');
+    else progressBar.classList.remove('active');
+    if (answered > lastAnswered) fireMilestone(answered);
+    lastAnswered = answered;
   }
 
   cards.forEach(card => {
@@ -1199,12 +1692,8 @@
       if (res.ok && data.ok) {
         sessionStorage.setItem(PASSWORD_STORAGE_KEY, password);
         document.getElementById('passwordGate').style.display = 'none';
-        statusEl.style.display = 'block';
-        statusEl.style.background = 'var(--sage-glow)';
-        statusEl.style.borderLeft = '3px solid var(--sage)';
-        statusEl.style.color = 'var(--text)';
-        statusEl.innerHTML = '<strong style="color:var(--sage);">Sent.</strong> ' + (data.message || 'Your answers were received.') +
-          '<br><span style="color:var(--muted); font-size:12px;">Submission ID: ' + (data.submission_id || 'n/a').slice(0, 8) + '… · ' + new Date(data.submitted_at || Date.now()).toLocaleString() + '</span>';
+        // Full sent state — celebration
+        showSentCelebration(data);
         btn.textContent = '✓ Sent to LEIF';
       } else if (res.status === 401) {
         statusEl.style.display = 'block';
@@ -1277,7 +1766,30 @@
   function showToast(msg) {
     toast.textContent = msg;
     toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 1800);
+    setTimeout(() => toast.classList.remove('show'), 2400);
+  }
+
+  function showSentCelebration(data) {
+    // Replace modal body with a sent state
+    const modal = document.querySelector('.modal');
+    const submissionId = (data.submission_id || 'n/a').slice(0, 8);
+    const submittedAt = new Date(data.submitted_at || Date.now()).toLocaleString();
+    modal.innerHTML = '\
+      <div class="sent-state">\
+        <div class="sent-glow"></div>\
+        <div class="sent-check">\
+          <svg viewBox="0 0 52 52" width="72" height="72"><circle cx="26" cy="26" r="24" fill="none" stroke="var(--sage)" stroke-width="2" class="sent-circle"/><path d="M14 27l8 8 16-18" fill="none" stroke="var(--sage)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="sent-tick"/></svg>\
+        </div>\
+        <h2 class="sent-title">Sent to LEIF</h2>\
+        <p class="sent-sub">Joe and Claude will pick this up immediately. Phase 2 kickoff starts as soon as they review your answers.</p>\
+        <div class="sent-meta"><div><span>Submission</span><strong>' + submissionId + '</strong></div><div><span>Timestamp</span><strong>' + submittedAt + '</strong></div></div>\
+        <button class="close-btn" onclick="document.getElementById(\'modalBackdrop\').classList.remove(\'open\')">Close</button>\
+      </div>';
+    // Delayed subtle confetti-like sparks in the background
+    setTimeout(() => {
+      const glow = modal.querySelector('.sent-glow');
+      if (glow) glow.classList.add('fired');
+    }, 200);
   }
 
   restoreState();
