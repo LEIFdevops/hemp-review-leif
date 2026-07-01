@@ -880,12 +880,57 @@
       <span class="caret">▾</span>
     </div>
     <div class="card-body">
-      <div class="rec"><span class="rec-label">Recommended</span><strong>Option (b)</strong> — Steps 0-2 give you fully-corrected numbers you can drop straight into the paper. Steps 3+ can flow into a rev v2 of the paper.</div>
-      <div class="detail-block"><span class="detail-label">The four levels</span><ul>
-        <li><strong>(a) Corrected workbooks · open + F9.</strong> You already have this — <code>_v4_FIXED</code> + <code>_v2</code> workbooks. Open in Excel, hit F9, formulas recompute, read new numbers. ~10 min on your side. But the MC draws inside GWP still reference stale σ_log values baked into the frozen tabs.</li>
-        <li><strong>(b) + Step 2 · resample fertilizer draws in all downstream workbooks.</strong> I regenerate the urea/MAP/MOP/K2O frozen tabs in FinalMC_GWP_v2, FinalMC_upstreamAP_v2, FinalMC_upstreamADPe_v2, FinalMC_upstreamADPf_v2, Final_MC_eutrophication_v2 using corrected σ_log + Scrucca 135 lb/ac cap on K2O. Numbers you'd read match the corrected canon end-to-end. ~2 hours.</li>
-        <li><strong>(c) + Step 3 · allocation rebuild.</strong> Enforce your rule (allocation only on _GF scenarios), all 3 methods computed, economic default, sensitivity table. Scope depends on current allocation machinery — see QR4-2. 4–8 hours.</li>
-        <li><strong>(d) All of the above + Step 7 · chart JSX updates.</strong> If you want the report figures re-rendered, needs the JSX source path.</li>
+      <div class="rec"><span class="rec-label">Recommended</span><strong>Option (b)</strong> — the reason: option (a) refreshes GWP formulas + EF4_wet only, but the fertilizer MC draws inside GWP were sampled from the STALE σ_log values (that's what R3-1 caught). Step 2 re-samples those with the corrected σ_log so end-to-end numbers reflect the full canon fix. About 2 hours my side.</div>
+
+      <div class="detail-block" style="background: rgba(122,171,145,0.06); border: 1px solid rgba(122,171,145,0.20); border-radius: 10px; padding: 16px 18px; margin: 0 0 16px;">
+        <span class="detail-label" style="color: var(--sage-bright);">Option (a) walkthrough — what "open + F9" actually means</span>
+        <p style="margin: 0 0 12px; color: var(--text); font-size: 14px; line-height: 1.6;">
+          Excel opens a file with the last-saved cached values. My scripts rewrote formulas but did NOT populate new cached values. F9 tells Excel "recompute everything." Here's the step-by-step + what to check to verify Steps 0+1 landed.
+        </p>
+        <ol style="margin: 0 0 12px 20px; color: var(--text); font-size: 13px; line-height: 1.6;">
+          <li>Open both files in Excel:
+            <br><code>Hemp_LCI_Fertilizer_Uncertainty_Workbook_v4_FIXED.xlsx</code>
+            <br><code>FinalMC_GWP_v2.xlsx</code>
+          </li>
+          <li>In each file press <strong>Ctrl+Alt+F9</strong> (Mac: <strong>⌘+⌥+F9</strong>) — force full recalc of every formula, not just dirty ones. Regular F9 is not enough here.</li>
+          <li>Check <strong>Formulas → Calculation Options is set to Automatic</strong> (if it's on Manual, formulas won't refresh even with F9).</li>
+          <li>If you see any <code>#N/A</code> or <code>#VALUE!</code>, ping me — that means a reference broke.</li>
+        </ol>
+        <p style="margin: 12px 0 6px; color: var(--sage-bright); font-family: var(--font-head); font-weight: 600; font-size: 12px; letter-spacing: 0.06em;">
+          VERIFY IN <code>v4_FIXED</code>:
+        </p>
+        <ul style="margin: 0 0 10px 20px; color: var(--text); font-size: 13px; line-height: 1.6;">
+          <li><strong>_v4_Provenance tab</strong> — new tab I added; lists every σ_log change + reasoning</li>
+          <li><strong>Cluster_Stats!G4:G12</strong> — σ_log values should now read:
+            <br>• Grain N rate <strong>0.3229</strong> · Grain P₂O₅ <strong>0.6074</strong> · Grain K₂O <strong>0.5291</strong>
+            <br>• Fiber N rate <strong>0.2595</strong> · Fiber P₂O₅ <strong>0.1661</strong> · Fiber K₂O <strong>0.3704</strong>
+            <br>• Dual N rate <strong>0.1809</strong>
+            <br>(previously showed 0.062, 0.386, 1.323, etc — the stale ones)
+          </li>
+          <li><strong>MC_Inputs tab</strong> — downstream sees the new σ_log; SciPy `lognorm(scale=…, s=…)` code strings will show the corrected values</li>
+        </ul>
+        <p style="margin: 12px 0 6px; color: var(--sage-bright); font-family: var(--font-head); font-weight: 600; font-size: 12px; letter-spacing: 0.06em;">
+          VERIFY IN <code>FinalMC_GWP_v2</code>:
+        </p>
+        <ul style="margin: 0 0 10px 20px; color: var(--text); font-size: 13px; line-height: 1.6;">
+          <li><strong>_v2_Provenance tab</strong> — new tab documenting Q4 + Q5</li>
+          <li><strong>pathway2_wet!B2</strong> formula should be:
+            <br><code style="font-size: 11px;">=(((urea_frozen!B2*0.46)+(MAP_frozen!B2*0.11))*FracGASF_urea_frozen!B$2)*EF4_wet!B$2*(44/28)*273</code>
+            <br>No <code>F_CR</code>, no <code>FracGASM</code>. Same clean formula in <strong>pathway2_dry!B2</strong>.
+          </li>
+          <li><strong>EF4_wet row 2</strong> — median across the 1000 draws should be ~<strong>0.0140</strong> (was ~0.0099). Compute with <code>=MEDIAN(EF4_wet!B2:ALM2)</code> in a spare cell.</li>
+          <li><strong>TotalGWP_peracre_wet</strong> and <strong>TotalGWP_peracre_dry</strong> — compare the median per scenario to the prior version. Expected: net direction is scenario-dependent (EF4_wet fix pushes wet numbers up ~40%; F_CR removal pushes down; scenarios with high crop residue see bigger drops).</li>
+          <li><strong>C2Fg_wet_clim_per_kg_gwp</strong> and <strong>C2Fg_dry_clim_per_kg_gwp</strong> — the cradle-to-farm-gate per-kg numbers should reflect all cascade changes.</li>
+        </ul>
+        <p style="margin: 12px 0 0; padding: 10px 12px; background: rgba(196, 168, 130, 0.10); border-left: 2px solid var(--warm); border-radius: 4px; color: var(--text); font-size: 13px; line-height: 1.55;">
+          <strong style="color: var(--warm);">Caveat if you pick (a):</strong> the <code>urea_frozen</code> / <code>MAP_frozen</code> / <code>MOP_frozen</code> etc. tabs inside FinalMC_GWP_v2 still hold MC draws sampled from the OLD stale-σ_log distributions. Pathway1 (direct N₂O) and pathway3 (leaching) formulas read those draws — so those pieces of the GWP total still use the old fertilizer tails. Only pathway2 volatilization is fully corrected in (a). If you want the fertilizer draws also resampled from the v4 canon, pick (b).
+        </p>
+      </div>
+
+      <div class="detail-block"><span class="detail-label">The other levels — quick summary</span><ul>
+        <li><strong>(b) · Step 2 · resample all fertilizer draws.</strong> I regenerate urea_frozen / MAP_frozen / MOP_frozen tabs in FinalMC_GWP_v2, FinalMC_upstreamAP_v2, FinalMC_upstreamADPe_v2, FinalMC_upstreamADPf_v2, Final_MC_eutrophication_v2 using v4_FIXED σ_log + Scrucca 135 lb/ac K₂O cap. Downstream cascades in Excel. Full end-to-end correctness. ~2 hours.</li>
+        <li><strong>(c) · Step 3 · allocation rebuild.</strong> Enforce your rule (allocation only on _GF scenarios per QR4·2), all 3 methods computed, economic default, sensitivity table. Depends on how much alloc machinery already exists — 4–8 hrs likely, could be more.</li>
+        <li><strong>(d) All of the above + Step 7 · chart JSX updates.</strong> Needs JSX source path (QR4·3).</li>
       </ul></div>
       <div class="response-block">
         <span class="response-label">Your call</span>
