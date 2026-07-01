@@ -394,6 +394,182 @@
     .phase-rail { flex-wrap: wrap; }
     .phase-seg { min-width: calc(50% - 4px); }
   }
+
+  /* ─── Live Activity feed ─── */
+  .live-activity {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .live-activity::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 400px 200px at 90% 0%, var(--sage-glow-soft), transparent 60%);
+    pointer-events: none;
+  }
+  .la-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .la-title {
+    font-family: var(--font-head); font-weight: 600;
+    font-size: 12px; letter-spacing: 0.10em;
+    text-transform: uppercase; color: var(--subtext);
+    display: flex; align-items: center; gap: 10px;
+    margin: 0;
+  }
+  .la-status {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 11px; color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .la-live-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--sage);
+    box-shadow: 0 0 10px var(--sage);
+    position: relative;
+  }
+  .la-live-dot::after {
+    content: ''; position: absolute; inset: -3px;
+    border-radius: 50%;
+    border: 2px solid var(--sage);
+    animation: ripple 2s var(--ease-out) infinite;
+  }
+  .la-live-dot.disconnected { background: var(--muted); box-shadow: none; }
+  .la-live-dot.disconnected::after { border-color: var(--muted); animation: none; opacity: 0.4; }
+  @keyframes ripple {
+    0% { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(2.5); opacity: 0; }
+  }
+  .event-list {
+    display: flex; flex-direction: column; gap: 10px;
+    position: relative;
+    z-index: 1;
+    min-height: 60px;
+  }
+  .event-empty {
+    color: var(--muted);
+    font-size: 13px;
+    text-align: center;
+    padding: 20px 0;
+    font-style: italic;
+  }
+  .event {
+    display: flex; gap: 14px;
+    padding: 12px 14px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    position: relative;
+    transition: border-color 0.3s var(--ease);
+  }
+  .event.active {
+    border-color: rgba(122, 171, 145, 0.35);
+    background: linear-gradient(90deg, var(--sage-glow-soft), var(--bg-2) 80%);
+    box-shadow: 0 0 24px var(--sage-glow-soft);
+  }
+  .event.active::before {
+    content: '';
+    position: absolute;
+    left: -1px; top: -1px; bottom: -1px;
+    width: 3px;
+    background: linear-gradient(180deg, var(--sage-bright), var(--sage-deep));
+    box-shadow: 0 0 12px var(--sage-glow-strong);
+    border-radius: 3px 0 0 3px;
+  }
+  .event.enter {
+    animation: eventEnter 0.6s var(--ease-out);
+  }
+  @keyframes eventEnter {
+    0% { opacity: 0; transform: translateY(-8px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .event-marker {
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+    background: var(--surface-2);
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .event.active .event-marker {
+    background: var(--sage-glow);
+    color: var(--sage-bright);
+    position: relative;
+  }
+  .event.active .event-marker::after {
+    content: ''; position: absolute; inset: -4px;
+    border-radius: 50%;
+    border: 2px solid var(--sage);
+    animation: ripple 2s var(--ease-out) infinite;
+  }
+  .event-body { flex: 1; min-width: 0; }
+  .event-meta {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .event-actor {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-family: var(--font-head); font-weight: 600;
+    font-size: 10px; letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--surface-2);
+    color: var(--subtext);
+  }
+  .event-actor.expert { background: var(--warm-glow); color: var(--warm); }
+  .event-actor.agent { background: var(--sage-glow); color: var(--sage-bright); }
+  .event-actor.claude { background: rgba(122, 155, 181, 0.14); color: var(--steel); }
+  .event-actor.system { background: var(--surface-2); color: var(--muted); }
+  .event-time {
+    font-size: 11px; color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .event-title {
+    font-family: var(--font-head); font-weight: 600;
+    font-size: 14px; color: var(--text);
+    line-height: 1.35;
+    margin: 0 0 4px;
+  }
+  .event.active .event-title { color: var(--sage-bright); }
+  .event-desc {
+    color: var(--subtext); font-size: 13px; line-height: 1.5;
+  }
+  .event-tags {
+    display: flex; gap: 6px; margin-top: 6px;
+  }
+  .event-tag {
+    font-size: 10px; padding: 2px 6px;
+    border-radius: 3px;
+    background: var(--surface-2);
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .working-indicator {
+    display: inline-block;
+    width: 14px; height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, transparent, var(--sage), transparent);
+    background-size: 200% 100%;
+    animation: workingBar 1.8s var(--ease) infinite;
+    vertical-align: middle;
+    margin-left: 8px;
+  }
+  @keyframes workingBar {
+    0% { background-position: 200% 50%; }
+    100% { background-position: -100% 50%; }
+  }
 </style>
 </head>
 <body>
@@ -435,13 +611,27 @@
 
     <div class="dashboard-status-card">
       <div class="dash-eyebrow">Live project state</div>
-      <h2 class="dash-status-heading">Round 2 ready — 2 investigation-derived questions awaiting you.</h2>
-      <p class="dash-status-sub">Round 1 (14 questions) is resolved and archived below. Between rounds, we ran the 3 investigations you requested. One came back cosmetic-only. Two need your judgment before Phase 2 starts.</p>
+      <h2 class="dash-status-heading">Round 3 ready — 1 question on the citation strategy.</h2>
+      <p class="dash-status-sub">Round 1 (14 items) and Round 2 (2 items) are resolved. Between rounds we ran 2 more investigations (R3-1 fertilizer σ_log archaeology · R3-2 Anderson & Downing verification). R3-1 came back clean. R3-2 came back partial — needs one call from you before Phase 2 kicks off.</p>
       <div class="phase-rail">
         <div class="phase-seg done"><div class="phase-num">Phase 0</div><div class="phase-label">Ground truth</div></div>
         <div class="phase-seg done"><div class="phase-num">Phase 1</div><div class="phase-label">Audit + R1</div></div>
-        <div class="phase-seg done"><div class="phase-num">Investigations</div><div class="phase-label">Q8 · Q10 · Q11</div></div>
-        <div class="phase-seg active"><div class="phase-num">Phase 2</div><div class="phase-label">Ready to execute</div></div>
+        <div class="phase-seg done"><div class="phase-num">Round 2</div><div class="phase-label">Cache + citation</div></div>
+        <div class="phase-seg done"><div class="phase-num">R3 probes</div><div class="phase-label">σ_log + paper</div></div>
+        <div class="phase-seg active"><div class="phase-num">Round 3</div><div class="phase-label">1 question</div></div>
+      </div>
+    </div>
+
+    <div class="live-activity">
+      <div class="la-header">
+        <p class="la-title">Live activity</p>
+        <div class="la-status">
+          <span class="la-live-dot" id="laLiveDot"></span>
+          <span id="laStatusText">Connected · watching</span>
+        </div>
+      </div>
+      <div class="event-list" id="eventList">
+        <div class="event-empty">Loading…</div>
       </div>
     </div>
 
@@ -453,18 +643,18 @@
       </div>
       <div class="metric-tile">
         <p class="metric-label">Rounds</p>
-        <div class="metric-value"><span class="accent">1</span> / 2</div>
-        <div class="metric-detail">Round 1 resolved 2026-07-01. Round 2 active.</div>
+        <div class="metric-value"><span class="accent">2</span> / 3</div>
+        <div class="metric-detail">R1 + R2 resolved. R3 active with 1 item.</div>
       </div>
       <div class="metric-tile">
         <p class="metric-label">Categories audited</p>
         <div class="metric-value">7</div>
-        <div class="metric-detail">5 ready for Phase 2 · 2 pending Round 2</div>
+        <div class="metric-detail">6 ready for Phase 2 · Eutrophication pending R3</div>
       </div>
       <div class="metric-tile">
         <p class="metric-label">Phase 2 confidence</p>
         <div class="metric-value">High</div>
-        <div class="metric-detail">Locks after Round 2 sign-off; downstream steps clean</div>
+        <div class="metric-detail">Fertilizer fix scope now proven clean by R3-1</div>
       </div>
     </div>
 
@@ -476,8 +666,8 @@
         <span class="cat-chip ready"><span class="dot"></span>ADPe · ready</span>
         <span class="cat-chip ready"><span class="dot"></span>ADPf · ready</span>
         <span class="cat-chip ready"><span class="dot"></span>SOC + Processing · ready</span>
-        <span class="cat-chip pending"><span class="dot"></span>Eutrophication · pending Q10</span>
-        <span class="cat-chip pending"><span class="dot"></span>Acidification · pending Q11</span>
+        <span class="cat-chip ready"><span class="dot"></span>Acidification · ready · R3-1 clean</span>
+        <span class="cat-chip pending"><span class="dot"></span>Eutrophication · pending R3 citation</span>
       </div>
     </div>
 
@@ -488,89 +678,102 @@
         <div class="tl-item"><span class="tl-marker"></span><div class="tl-body"><div class="tl-when">2026-06-30 late</div><div class="tl-what"><strong>Phase 1 · Audit</strong> — 7 parallel subagents audited all 6 workbooks. 155 findings logged. Cross-workbook consistency pass complete.</div></div></div>
         <div class="tl-item"><span class="tl-marker"></span><div class="tl-body"><div class="tl-when">2026-07-01 mid-day</div><div class="tl-what"><strong>Round 1 · Your review</strong> — 26 explicit decisions + 57 minor batch-deferred. 3 investigations queued.</div></div></div>
         <div class="tl-item"><span class="tl-marker"></span><div class="tl-body"><div class="tl-when">2026-07-01 afternoon</div><div class="tl-what"><strong>3 investigations complete</strong> — Q8 cosmetic. Q10 derivation traced, external citation needed. Q11 discovered systemic Cluster_Stats cache bug — much bigger than the original AP-002 finding.</div></div></div>
-        <div class="tl-item"><span class="tl-marker pending"></span><div class="tl-body"><div class="tl-when">Now</div><div class="tl-what"><strong>Round 2 · Your judgment needed on 2 items</strong> — cache-fix sign-off + P_deposition citation. Phase 2 begins when these land.</div></div></div>
+        <div class="tl-item"><span class="tl-marker"></span><div class="tl-body"><div class="tl-when">2026-07-01 · Round 2</div><div class="tl-what"><strong>Round 2 · resolved</strong> — you approved the full Scrucca-cap fertilizer fix and Anderson & Downing 2006 as citation anchor. Your notes fired 2 more investigations (R3-1 σ_log archaeology · R3-2 paper verification).</div></div></div>
+        <div class="tl-item"><span class="tl-marker"></span><div class="tl-body"><div class="tl-when">2026-07-01 · R3 probes</div><div class="tl-what"><strong>R3-1 clean</strong> — all 5 stale σ_log cache values confirmed; Rylie's approved recompute proceeds. <strong>R3-2 partial</strong> — Anderson & Downing anchors 0.3 (Iowa row-crop) but not the full 0.3–0.5 range; citation strategy needs one call.</div></div></div>
+        <div class="tl-item"><span class="tl-marker pending"></span><div class="tl-body"><div class="tl-when">Now</div><div class="tl-what"><strong>Round 3 · one call needed</strong> — pick the citation strategy for the P_deposition anchor. Phase 2 execution begins the moment it lands.</div></div></div>
       </div>
     </div>
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════ -->
-  <!-- ROUND 2 -->
+  <!-- ROUND 3 -->
   <!-- ═══════════════════════════════════════════════════════════ -->
   <section class="round-header round-2">
-    <div class="round-label active">Round 2 · needs your input</div>
-    <h2 class="round-title">Two questions to lock before Phase 2</h2>
-    <p class="round-sub">Q8 came back cosmetic — no action needed. The other two investigations found things that need your judgment. Answers here gate Phase-2 execution.</p>
+    <div class="round-label active">Round 3 · needs your input</div>
+    <h2 class="round-title">One call on the citation strategy</h2>
+    <p class="round-sub">R3-1 was clean — proceed with the fertilizer σ_log fix you approved in Round 2. R3-2 was partial: Anderson & Downing 2006 anchors the 0.3 kg/ha/yr minimum but not the full 0.3–0.5 range. Pick your strategy and Phase 2 fires.</p>
 
     <div class="round-context">
-      <strong>What the 3 investigations found:</strong>
+      <strong>What the 2 R3 investigations found:</strong>
       <div class="verdicts">
-        <div class="verdict cosmetic"><span class="verdict-tag">Q8 · resolved</span>LANCA4 irrigation units are dimensionally clean end-to-end — cosmetic mislabeling only. Values match LCI targets (TIG 415 m³/ac = 4.04 in/ac ✓ matches target 4.0). No ×4047 bug. Adding a signpost comment in Phase 2 — no action from you needed.</div>
-        <div class="verdict needs"><span class="verdict-tag">Q10 · needs you</span>P_deposition derivation traced to a Claude workflow (2026-04-15) — no external paper was cited. Need you to pick the anchor before the parameter lands in the v2.6 canonical uncertainty file.</div>
-        <div class="verdict needs"><span class="verdict-tag">Q11 · needs you</span>The MOP tail wasn't a distribution judgment — it's a stale-cache bug in <code>Cluster_Stats</code>. Fiber K₂O cached σ_log = 1.323 is arithmetically impossible from the 2 actual observations (which yield 0.370). Same pattern likely in Grain P2O5, Grain K2O, Fiber N, Fiber P2O5. Scope expanded from AP-only to systemic fertilizer workbook fix.</div>
+        <div class="verdict cosmetic"><span class="verdict-tag">R3-1 · resolved</span>All 5 stale σ_log values in <code>Cluster_Stats</code> are arithmetic staleness — <strong>not</strong> intentional expansion. Cache errors go in BOTH directions (some inflated, some deflated) — that's the fingerprint of stale cache, not a design choice. Chat approvals confirm observation-derived values (Fiber K₂O 0.370, Grain P2O5 0.607, Grain K2O 0.529, Fiber N 0.260, Fiber P2O5 0.166). Your full-Scrucca fix proceeds cleanly.</div>
+        <div class="verdict needs"><span class="verdict-tag">R3-2 · needs you</span>Anderson & Downing 2006 verified: reports <strong>0.3 kg P/ha/yr</strong> for Iowa row-crop watersheds (2003–2004, confirmed across 4 index sources). But that's the minimum only — doesn't bracket the 0.3–0.5 range on its own. Full text is paywalled at Springer.</div>
       </div>
     </div>
   </section>
 
-  <article class="card" data-q="QR2-1">
+  <article class="card" data-q="QR3-1">
     <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-      <span class="q-num active">QR2·1</span>
+      <span class="q-num active">QR3·1</span>
       <div class="q-title-wrap">
-        <div class="q-title">Fertilizer workbook cache fix — pick the truncation ceiling</div>
-        <div class="q-tags"><span class="tag tag-cat">AP-002 → systemic</span><span class="tag tag-sev-material">material</span></div>
+        <div class="q-title">P_deposition citation — pick the anchor strategy</div>
+        <div class="q-tags"><span class="tag tag-cat">EUTRO-001 · R3-2 outcome</span><span class="tag tag-sev-material">material</span></div>
       </div>
       <span class="caret">▾</span>
     </div>
     <div class="card-body">
-      <div class="rec"><span class="rec-label">Recommended</span>Full three-part fix (refit + reconcile + truncate at <strong>270 lb/ac / 300 kg K₂O/ha</strong>, alfalfa-analog). That ceiling matches the highest-K crop we have as an analog for hemp's actual K uptake demand, and gives insurance against future cache drift without over-constraining the tail.</div>
-      <div class="detail-block"><span class="detail-label">Q11 investigation summary</span><ul>
-        <li><strong>Root cause</strong> — <code>Cluster_Stats!R9</code> Fiber K₂O cached σ_log = 1.323 is arithmetically impossible from the two actual observations K02=43, K04=75 lb K₂O/ac (real σ_log = 0.370).</li>
-        <li><strong>Systemic</strong> — Grain P2O5 methodology doc reports σ_log = 0.607; workbook caches 0.178. Same discrepancy pattern likely in Grain K2O, Fiber N, Fiber P2O5.</li>
-        <li><strong>Under stale 1.323</strong> — P99 draw = 933 lb/ac, P99.9 = 2,564 lb/ac (matches Run_82 and Run_100 outliers).</li>
-        <li><strong>Under corrected 0.370</strong> — P99 draw = 101 lb/ac (~113 kg K₂O/ha), inside literature envelope.</li>
-        <li><strong>Real envelope</strong> — MHD observed 36–84 kg K₂O/ha; Ip & Miller 2012 UK hemp: 60–150; Scrucca 2014 Italy fiber: similar. Ceiling ~300 kg/ha (alfalfa upper-commercial analog).</li>
+      <div class="rec"><span class="rec-label">Recommended</span><strong>Pivot to NADP</strong> — the National Atmospheric Deposition Program is the definitive US government dataset for atmospheric deposition, Iowa-specific site data 2000–present, publicly available at nadp.slh.wisc.edu. Strongest possible citation in a regulatory QAQC context. Anderson & Downing 2006 stays as supporting reference.</div>
+      <div class="detail-block"><span class="detail-label">The three options</span><ul>
+        <li><strong>NADP as primary anchor.</strong> Pull Iowa NADP site data 2000–2010 for annual P deposition. Site-specific numbers, government dataset, strongest citation. Anderson & Downing 2006 stays as supporting paper. My recommendation.</li>
+        <li><strong>Two-citation approach.</strong> Anderson & Downing 2006 anchors the 0.3 min (Iowa row-crop, confirmed). Verry & Timmons 1977 anchors the 0.48 upper tail (north-central MN agricultural, via Barr 2007 review). Or Noe et al. 2018 for the 50–100 mg/m²/yr agricultural range statement.</li>
+        <li><strong>Wait for Anderson & Downing full PDF.</strong> Ask ISU Interlibrary Loan (~1–2 days). Check the paper's site-level data table — if any Iowa sites read 0.4–0.5, the single citation becomes self-sufficient. Delays Phase 2 slightly.</li>
+      </ul></div>
+      <div class="detail-block"><span class="detail-label">What R3-2 confirmed vs. what's missing</span><ul>
+        <li><strong>Confirmed</strong> — Anderson & Downing 2006 exists, is real, reports 0.3 kg P/ha/yr for Iowa row-crop watersheds (2003–2004, wet+dry). Confirmed across Springer, Semantic Scholar, MDPI cross-citations.</li>
+        <li><strong>Confirmed</strong> — the 0.3–0.5 range is consistent with broader Midwest agricultural deposition literature (0.48 for MN per Verry & Timmons 1977; 50–100 mg/m²/yr agricultural per Noe et al. 2018).</li>
+        <li><strong>Not confirmed</strong> — whether Anderson & Downing's site-level data table (paywalled) contains site variance covering 0.4–0.5.</li>
       </ul></div>
       <div class="response-block">
         <span class="response-label">Your call</span>
-        <div class="choices" data-q="QR2-1">
-          <label class="choice"><input type="radio" name="QR2-1" value="full-alfalfa"><div class="choice-text"><strong>Full fix, alfalfa-analog cap</strong> — refit + reconcile all Cluster_Stats + truncate at <strong>270 lb/ac (300 kg K₂O/ha)</strong>. Recommended.</div></label>
-          <label class="choice"><input type="radio" name="QR2-1" value="full-scrucca"><div class="choice-text"><strong>Full fix, hemp-specific cap</strong> — refit + reconcile + truncate tighter at <strong>135 lb/ac (150 kg K₂O/ha)</strong> per Scrucca 2014.</div></label>
-          <label class="choice"><input type="radio" name="QR2-1" value="refit-only"><div class="choice-text"><strong>Refit + reconcile only, no truncation</strong> — trust the corrected σ_log values; skip the belt-and-suspenders cap.</div></label>
-          <label class="choice"><input type="radio" name="QR2-1" value="modify"><div class="choice-text"><strong>Modify</strong> — different scope or ceiling (add note below).</div></label>
+        <div class="choices" data-q="QR3-1">
+          <label class="choice"><input type="radio" name="QR3-1" value="nadp-primary"><div class="choice-text"><strong>Pivot to NADP as primary anchor</strong>, Anderson & Downing as supporting. Government dataset, strongest citation. My recommendation.</div></label>
+          <label class="choice"><input type="radio" name="QR3-1" value="two-citation-verry"><div class="choice-text"><strong>Two-citation anchor</strong> — Anderson & Downing 2006 (0.3 min) + Verry & Timmons 1977 (0.48 max).</div></label>
+          <label class="choice"><input type="radio" name="QR3-1" value="two-citation-noe"><div class="choice-text"><strong>Two-citation anchor</strong> — Anderson & Downing 2006 + Noe et al. 2018 range statement.</div></label>
+          <label class="choice"><input type="radio" name="QR3-1" value="wait-for-pdf"><div class="choice-text"><strong>Wait for Anderson & Downing PDF via ILL</strong> — delays Phase 2 by 1–2 days but may give a self-sufficient single citation.</div></label>
+          <label class="choice"><input type="radio" name="QR3-1" value="other"><div class="choice-text"><strong>Other</strong> — you have a citation in mind (specify below).</div></label>
         </div>
-        <label class="notes-label">Notes (any additional guidance for scope or targets):</label>
-        <textarea class="notes-area" data-q="QR2-1" placeholder="e.g. also check X distribution, use Y kg/ha ceiling, cite Z reference…"></textarea>
+        <label class="notes-label">Notes (or your preferred alternative):</label>
+        <textarea class="notes-area" data-q="QR3-1" placeholder=""></textarea>
       </div>
     </div>
   </article>
 
-  <article class="card" data-q="QR2-2">
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- ROUND 2 · AUDIT TRAIL -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="round-header round-2">
+    <div class="round-label resolved">Round 2 · resolved 2026-07-01</div>
+    <h2 class="round-title">Your Round 2 responses</h2>
+    <p class="round-sub">2 investigation-derived questions, submitted 2026-07-01 16:56 UTC. Both spawned follow-up R3 probes.</p>
+  </section>
+
+  <article class="card audit" data-audit="QR2-1">
     <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-      <span class="q-num active">QR2·2</span>
-      <div class="q-title-wrap">
-        <div class="q-title">P_deposition — pick the citation anchor</div>
-        <div class="q-tags"><span class="tag tag-cat">EUTRO-001 · Q10 outcome</span><span class="tag tag-sev-material">material</span></div>
-      </div>
+      <span class="q-num">QR2·1</span>
+      <div class="q-title-wrap"><div class="q-title">Fertilizer workbook cache fix — truncation ceiling</div><div class="q-tags"><span class="tag tag-cat">AP-002 → systemic</span><span class="tag tag-answered">full-scrucca</span></div></div>
       <span class="caret">▾</span>
     </div>
     <div class="card-body">
-      <div class="rec"><span class="rec-label">Recommended</span><strong>Anderson & Downing 2006</strong> — most defensible retrofit for the Midwest 0.3–0.5 kg P/ha/yr range. We'll ingest the paper to Vault/Library/Sources/Science-Pubs/ before the parameter lands in v2.6.</div>
-      <div class="detail-block"><span class="detail-label">Q10 investigation summary</span><ul>
-        <li>Distribution traced to Claude workflow 2026-04-15 (phosphorus-emissions-and-eutrophication-characterization-factors) — proposed <code>0.3–0.5 kg P/ha/yr for Midwest</code> as "literature default" without naming a paper.</li>
-        <li>Encoded 2026-06-06 (Joe accepted the range in the review).</li>
-        <li>Workbook MC samples span 0.316–0.473 — matches Triangular(0.3, 0.4, 0.5) exactly.</li>
-        <li>Vault Science-Pubs has zero atmospheric-P-deposition papers indexed.</li>
-      </ul></div>
-      <div class="response-block">
-        <span class="response-label">Your call</span>
-        <div class="choices" data-q="QR2-2">
-          <label class="choice"><input type="radio" name="QR2-2" value="anderson-downing-2006"><div class="choice-text"><strong>Anderson &amp; Downing 2006</strong> — Water Air Soil Pollut. 176:351–374, bulk deposition of N/P/Si in agricultural region. Recommended.</div></label>
-          <label class="choice"><input type="radio" name="QR2-2" value="tipping-2014"><div class="choice-text"><strong>Tipping et al. 2014</strong></div></label>
-          <label class="choice"><input type="radio" name="QR2-2" value="newman-1995"><div class="choice-text"><strong>Newman 1995</strong></div></label>
-          <label class="choice"><input type="radio" name="QR2-2" value="nadp"><div class="choice-text"><strong>NADP annual summary</strong> — atmospheric deposition network (specify year in notes).</div></label>
-          <label class="choice"><input type="radio" name="QR2-2" value="other"><div class="choice-text"><strong>Other</strong> — you have a specific reference in mind (specify below).</div></label>
-        </div>
-        <label class="notes-label">Notes (or your preferred citation):</label>
-        <textarea class="notes-area" data-q="QR2-2" placeholder=""></textarea>
+      <div class="audit-response">
+        <div class="audit-choice">Choice · full-scrucca (refit + reconcile + 135 lb/ac hemp-specific cap)</div>
+        <div class="audit-notes">"We have a previous Claude conversation that describes the log normal value estimates and the assumptions we went through together. Please evaluate the chat history and see if there is any reason why the cached k2o value is 1.323 and the P2O5 method doc reports .607. It is indeed possible these or the other values are stale relative to what we have been discussing for assumptions... If not, then let's move forward with the revised log normals and distributions that you noted."</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> your note fired R3-1 (chat archaeology). Verdict came back: STALE CACHE, not intentional expansion. All 5 σ_log values refit to observation-derived. Your Scrucca-cap fix proceeds cleanly in Phase 2.</div>
+      </div>
+    </div>
+  </article>
+
+  <article class="card audit" data-audit="QR2-2">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">QR2·2</span>
+      <div class="q-title-wrap"><div class="q-title">P_deposition citation anchor</div><div class="q-tags"><span class="tag tag-cat">EUTRO-001</span><span class="tag tag-answered">anderson-downing-2006 · verify pending Round 3</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · anderson-downing-2006</div>
+        <div class="audit-notes">"Once it's in the vault, you need to verify that the triangular distribution could indeed be cited from here."</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> your note fired R3-2 (paper verification). Verdict: PARTIAL SUPPORT — the paper anchors 0.3 min but not the full 0.3–0.5 range. <strong>Citation strategy now Round-3 question (QR3·1).</strong></div>
       </div>
     </div>
   </article>
@@ -813,14 +1016,149 @@
 
 <!-- Sticky submit bar (only shows when active questions have inputs) -->
 <div class="submit-bar" id="submitBar" role="region">
-  <span class="submit-bar-status"><strong id="ans-count">0</strong> of 2 Round-2 answered · autosaved</span>
-  <button class="submit-btn" id="submitBtn">Send Round 2 →</button>
+  <span class="submit-bar-status"><strong id="ans-count">0</strong> of 1 Round-3 answered · autosaved</span>
+  <button class="submit-btn" id="submitBtn">Send Round 3 →</button>
 </div>
 
 <!-- Modal -->
 <div class="modal-backdrop" id="modalBackdrop">
   <div class="modal" id="modalContent"></div>
 </div>
+
+<script type="module">
+  // Supabase client — ESM CDN
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/+esm';
+  const SUPABASE_URL = 'https://mqramtmqfpfkzfbynebf.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1xcmFtdG1xZnBma3pmYnluZWJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNzMwMzQsImV4cCI6MjA5MDY0OTAzNH0.KDuSFziUAUqxmIW9hSznxbC79T4GRCAU6nj_gcWzmyY';
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON, {
+    realtime: { params: { eventsPerSecond: 10 } },
+  });
+
+  const eventList = document.getElementById('eventList');
+  const laLiveDot = document.getElementById('laLiveDot');
+  const laStatusText = document.getElementById('laStatusText');
+  const renderedIds = new Set();
+
+  function relTime(iso) {
+    const then = new Date(iso).getTime();
+    const now = Date.now();
+    const s = Math.max(0, Math.floor((now - then) / 1000));
+    if (s < 10) return 'just now';
+    if (s < 60) return s + 's ago';
+    const m = Math.floor(s / 60);
+    if (m < 60) return m + 'm ago';
+    const h = Math.floor(m / 60);
+    if (h < 24) return h + 'h ago';
+    const d = Math.floor(h / 24);
+    return d + 'd ago';
+  }
+  function actorKindClass(k) {
+    return ({ expert: 'expert', agent: 'agent', claude: 'claude', system: 'system' })[k] || 'system';
+  }
+  function eventMarkerChar(evt) {
+    const map = { round_received: '→', log_updated: '✎', agent_dispatched: '⚡', agent_completed: '✓', status: '·', phase_started: '▶', phase_step_done: '✓', error: '!' };
+    return map[evt.event_type] || '·';
+  }
+  function renderEvent(evt, isNew) {
+    if (renderedIds.has(evt.id)) return;
+    renderedIds.add(evt.id);
+    const el = document.createElement('div');
+    el.className = 'event' + (evt.status === 'active' ? ' active' : '') + (isNew ? ' enter' : '');
+    el.dataset.eventId = evt.id;
+    el.dataset.createdAt = evt.created_at;
+    const actorClass = actorKindClass(evt.actor_kind);
+    const workingMarker = evt.status === 'active' ? '<span class="working-indicator"></span>' : '';
+    el.innerHTML = ''
+      + '<div class="event-marker">' + eventMarkerChar(evt) + '</div>'
+      + '<div class="event-body">'
+      +   '<div class="event-meta">'
+      +     '<span class="event-actor ' + actorClass + '">' + (evt.actor || 'system') + '</span>'
+      +     '<span class="event-time" data-time="' + evt.created_at + '">' + relTime(evt.created_at) + '</span>'
+      +   '</div>'
+      +   '<p class="event-title">' + escapeHtml(evt.title) + workingMarker + '</p>'
+      +   (evt.description ? '<p class="event-desc">' + escapeHtml(evt.description) + '</p>' : '')
+      + '</div>';
+    // Newest events at top
+    if (eventList.firstChild && eventList.firstChild.classList && eventList.firstChild.classList.contains('event-empty')) {
+      eventList.innerHTML = '';
+    }
+    eventList.insertBefore(el, eventList.firstChild);
+  }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  }
+  function refreshTimes() {
+    document.querySelectorAll('.event-time[data-time]').forEach(el => {
+      el.textContent = relTime(el.dataset.time);
+    });
+  }
+  setInterval(refreshTimes, 30000); // update relative timestamps every 30s
+
+  async function loadInitialEvents() {
+    try {
+      const { data, error } = await supabase
+        .from('hemp_lca_review_events')
+        .select('*')
+        .eq('project_slug', 'midwest-hemp-lca')
+        .order('created_at', { ascending: false })
+        .limit(30);
+      if (error) throw error;
+      eventList.innerHTML = '';
+      if (!data || data.length === 0) {
+        eventList.innerHTML = '<div class="event-empty">No activity yet — check back after any updates.</div>';
+      } else {
+        // Insert oldest → newest so newest ends up on top
+        for (let i = data.length - 1; i >= 0; i--) renderEvent(data[i], false);
+      }
+    } catch (err) {
+      eventList.innerHTML = '<div class="event-empty">Could not load activity (' + escapeHtml(err.message || 'unknown') + ')</div>';
+    }
+  }
+
+  function subscribeRealtime() {
+    const channel = supabase.channel('review-events-live')
+      .on('postgres_changes',
+          { event: 'INSERT', schema: 'public', table: 'hemp_lca_review_events', filter: 'project_slug=eq.midwest-hemp-lca' },
+          (payload) => {
+            renderEvent(payload.new, true);
+            // Also update any UI badges if we add them later
+          })
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          laLiveDot.classList.remove('disconnected');
+          laStatusText.textContent = 'Connected · watching';
+        } else if (status === 'CLOSED' || status === 'CHANNEL_ERROR') {
+          laLiveDot.classList.add('disconnected');
+          laStatusText.textContent = 'Reconnecting…';
+        }
+      });
+  }
+
+  // Fire once the gate is passed (or immediately if already unlocked)
+  function activateLive() {
+    loadInitialEvents();
+    subscribeRealtime();
+  }
+  if (sessionStorage.getItem('leif_hemp_view_gate_v1') === '1') {
+    activateLive();
+  } else {
+    // Wait for gate — poll briefly, or hook button
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('viewGateBtn');
+      if (btn) {
+        btn.addEventListener('click', () => {
+          setTimeout(activateLive, 100);
+        }, { once: true });
+      }
+      const inp = document.getElementById('viewGateInput');
+      if (inp) {
+        inp.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') setTimeout(activateLive, 100);
+        });
+      }
+    });
+  }
+</script>
 
 <script>
   // Gate
@@ -870,7 +1208,7 @@
 
   // Round 2 state — only 2 active questions
   const R2_STORAGE = 'leif_hemp_r2_v1';
-  const activeQs = ['QR2-1', 'QR2-2'];
+  const activeQs = ['QR3-1'];
 
   function loadState() {
     try { return JSON.parse(sessionStorage.getItem(R2_STORAGE) || '{}'); } catch { return {}; }
@@ -947,7 +1285,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           password, submitter_name: 'Rylie Pelton', project_slug: 'midwest-hemp-lca',
-          round_number: 2, payload: responses,
+          round_number: 3, payload: responses,
         }),
       });
       const data = await res.json();
