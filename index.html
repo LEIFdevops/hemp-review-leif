@@ -381,6 +381,25 @@
 </style>
 </head>
 <body>
+
+<!-- View-time password gate -->
+<div id="viewGate" style="position:fixed; inset:0; background:var(--bg); z-index:1000; display:flex; align-items:center; justify-content:center; padding:20px; animation: fadeIn 0.3s var(--ease);">
+  <div style="max-width:420px; width:100%; background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:40px 32px; text-align:center;">
+    <div class="brand" style="justify-content:center; margin-bottom:24px;">
+      <span class="brand-mark">LEIF</span>
+      <span class="brand-tag">Hemp LCA · Phase 1</span>
+    </div>
+    <h2 style="font-family:var(--font-head); font-weight:700; font-size:22px; margin:0 0 8px; letter-spacing:-0.01em;">Access</h2>
+    <p style="color:var(--subtext); margin:0 0 28px; font-size:14px; line-height:1.5;">
+      This page holds Rylie's Phase 1 QAQC decisions.<br>
+      Enter the password Joe shared to continue.
+    </p>
+    <input id="viewGateInput" type="password" placeholder="Password" style="width:100%; padding:14px 16px; background:var(--bg); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:inherit; font-size:15px; text-align:center; margin-bottom:14px;" autofocus>
+    <button id="viewGateBtn" style="width:100%; padding:14px; background:var(--sage); color:var(--bg); border:none; border-radius:10px; font-family:var(--font-head); font-weight:700; font-size:14px; cursor:pointer; transition:background 0.2s var(--ease); letter-spacing:0.02em;">Unlock →</button>
+    <div id="viewGateError" style="display:none; color:var(--rose); font-size:13px; margin-top:14px;">Password not recognized — check with Joe.</div>
+  </div>
+</div>
+
 <main>
 
   <header class="page">
@@ -937,6 +956,38 @@
 <div class="toast" id="toast">Copied to clipboard</div>
 
 <script>
+  // View-time password gate
+  const VIEW_GATE_KEY = 'leif_hemp_view_gate_v1';
+  const VIEW_PASSWORD = 'hemp-lca-2026-review';
+  const viewGate = document.getElementById('viewGate');
+  const viewGateInput = document.getElementById('viewGateInput');
+  const viewGateBtn = document.getElementById('viewGateBtn');
+  const viewGateError = document.getElementById('viewGateError');
+  function tryUnlock(pw) {
+    if (pw === VIEW_PASSWORD) {
+      sessionStorage.setItem(VIEW_GATE_KEY, '1');
+      // Prefill the submit-time password too so Rylie doesn't type it twice
+      sessionStorage.setItem('leif_hemp_review_pw_v1', pw);
+      viewGate.style.display = 'none';
+      document.body.style.overflow = '';
+      return true;
+    }
+    viewGateError.style.display = 'block';
+    viewGateInput.value = '';
+    viewGateInput.focus();
+    return false;
+  }
+  if (sessionStorage.getItem(VIEW_GATE_KEY) === '1') {
+    viewGate.style.display = 'none';
+  } else {
+    document.body.style.overflow = 'hidden';
+  }
+  viewGateBtn.addEventListener('click', () => tryUnlock(viewGateInput.value.trim()));
+  viewGateInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); tryUnlock(viewGateInput.value.trim()); }
+    if (viewGateError.style.display === 'block') viewGateError.style.display = 'none';
+  });
+
   const cards = document.querySelectorAll('.card');
   const progressFill = document.getElementById('progressFill');
   const progressCount = document.getElementById('progressCount');
