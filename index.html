@@ -395,6 +395,133 @@
     .phase-seg { min-width: calc(50% - 4px); }
   }
 
+  /* ─── Kick-off CTA ─── */
+  .kickoff-card {
+    position: relative;
+    background: linear-gradient(180deg, rgba(19, 24, 32, 0.9), rgba(14, 17, 22, 0.98));
+    border: 1px solid rgba(122, 171, 145, 0.35);
+    border-radius: 20px;
+    padding: 32px 32px 28px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    box-shadow:
+      0 1px 3px rgba(0,0,0,0.5),
+      0 20px 60px rgba(0,0,0,0.35),
+      0 0 60px rgba(122, 171, 145, 0.18);
+    animation: fadeUp 0.7s var(--ease-out) 0.15s both;
+  }
+  .kickoff-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 500px 300px at 90% 20%, rgba(122, 171, 145, 0.15), transparent 60%),
+      radial-gradient(ellipse 400px 250px at 10% 100%, rgba(122, 171, 145, 0.08), transparent 60%);
+    pointer-events: none;
+  }
+  .kickoff-card::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--sage-bright), var(--sage-deep));
+    box-shadow: 0 0 20px var(--sage-glow-strong);
+  }
+  .kickoff-inner { position: relative; z-index: 1; }
+  .kickoff-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-head); font-weight: 700;
+    font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--sage);
+    margin: 0 0 12px;
+  }
+  .kickoff-eyebrow::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--sage);
+    box-shadow: 0 0 14px var(--sage);
+    animation: pulse-dot 1.8s var(--ease) infinite;
+  }
+  .kickoff-heading {
+    font-family: var(--font-head); font-weight: 700;
+    font-size: 26px; letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin: 0 0 10px;
+    color: var(--text);
+  }
+  .kickoff-sub {
+    color: var(--subtext); font-size: 14px; line-height: 1.55;
+    margin: 0 0 20px; max-width: 640px;
+  }
+  .kickoff-input-wrap { margin-bottom: 16px; }
+  #kickoffNote {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(10, 13, 16, 0.7);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.55;
+    resize: vertical;
+    min-height: 56px;
+    transition: all 0.25s var(--ease);
+  }
+  #kickoffNote::placeholder { color: var(--muted); }
+  #kickoffNote:focus {
+    outline: none;
+    border-color: rgba(122, 171, 145, 0.45);
+    background: rgba(10, 13, 16, 0.9);
+    box-shadow: 0 0 0 4px var(--sage-glow-soft);
+  }
+  .kickoff-btn {
+    background: linear-gradient(180deg, var(--sage-bright), var(--sage));
+    color: var(--bg);
+    border: none;
+    padding: 16px 32px;
+    border-radius: 14px;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 12px;
+    transition: all 0.25s var(--ease-out);
+    box-shadow:
+      0 6px 24px var(--sage-glow-strong),
+      inset 0 1px 0 rgba(255,255,255,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+  .kickoff-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.7s var(--ease);
+  }
+  .kickoff-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px var(--sage-glow-strong), 0 0 0 1px rgba(122, 171, 145, 0.6);
+  }
+  .kickoff-btn:hover::before { transform: translateX(100%); }
+  .kickoff-btn:active { transform: translateY(-1px); }
+  .kickoff-btn svg { transition: transform 0.3s var(--ease); }
+  .kickoff-btn:hover svg { transform: translateX(4px); }
+  .kickoff-btn:disabled { background: var(--surface-3); color: var(--muted); cursor: not-allowed; transform: none; box-shadow: none; }
+  .kickoff-btn:disabled::before { display: none; }
+  .kickoff-status {
+    margin-top: 14px;
+    color: var(--sage-bright);
+    font-size: 13px;
+    line-height: 1.55;
+    display: none;
+  }
+  .kickoff-status.visible { display: block; animation: fadeIn 0.4s var(--ease); }
+  .kickoff-card.fired { border-color: rgba(122, 171, 145, 0.5); }
+  .kickoff-card.fired .kickoff-btn { pointer-events: none; opacity: 0.6; }
+
   /* ─── Live Activity feed ─── */
   .live-activity {
     background: var(--surface);
@@ -608,6 +735,25 @@
   <!-- DASHBOARD -->
   <!-- ═══════════════════════════════════════════════════════════ -->
   <section class="dashboard">
+
+    <!-- KICK-OFF CTA — Rylie approves execution here -->
+    <div class="kickoff-card" id="kickoffCard">
+      <div class="kickoff-inner">
+        <div class="kickoff-lede">
+          <p class="kickoff-eyebrow">Your green light</p>
+          <h2 class="kickoff-heading">Fire Phase 2 when you're ready.</h2>
+          <p class="kickoff-sub">Every step below is downstream of decisions you already made. Optional note field if you have any last direction. Hit Go and it runs — you'll watch it happen in Live Activity below.</p>
+        </div>
+        <div class="kickoff-input-wrap">
+          <textarea id="kickoffNote" placeholder="Optional final direction, priorities, or anything you want me to know before execution…" rows="2"></textarea>
+        </div>
+        <button class="kickoff-btn" id="kickoffBtn">
+          <span>Go · execute Phase 2</span>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M5 12h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="kickoff-status" id="kickoffStatus"></div>
+      </div>
+    </div>
 
     <div class="dashboard-status-card">
       <div class="dash-eyebrow">Live project state</div>
@@ -1309,6 +1455,56 @@
   }
 
   restoreState();
+
+  // ─── Kick-off CTA handler ───
+  const kickoffBtn = document.getElementById('kickoffBtn');
+  const kickoffNote = document.getElementById('kickoffNote');
+  const kickoffStatus = document.getElementById('kickoffStatus');
+  const kickoffCard = document.getElementById('kickoffCard');
+  const KICKOFF_KEY = 'leif_hemp_kickoff_v1';
+
+  if (sessionStorage.getItem(KICKOFF_KEY) === '1') {
+    kickoffCard.classList.add('fired');
+    kickoffBtn.textContent = '✓ Phase 2 kicked off';
+    kickoffStatus.textContent = 'Kick-off already sent this session. Watch Live Activity below for step-by-step progress.';
+    kickoffStatus.classList.add('visible');
+  }
+
+  kickoffBtn.addEventListener('click', async () => {
+    kickoffBtn.disabled = true;
+    kickoffBtn.textContent = 'Sending…';
+    const password = sessionStorage.getItem('leif_hemp_review_pw_v1') || 'hemp-lca-2026-review';
+    const note = kickoffNote.value.trim();
+    try {
+      const res = await fetch('https://mqramtmqfpfkzfbynebf.supabase.co/functions/v1/submit-hemp-review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          password,
+          submitter_name: 'Rylie Pelton',
+          project_slug: 'midwest-hemp-lca',
+          round_number: 4,
+          payload: { phase_2_kickoff: true, kickoff_note: note || null },
+          general_notes: note || null,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.ok) {
+        sessionStorage.setItem(KICKOFF_KEY, '1');
+        kickoffCard.classList.add('fired');
+        kickoffBtn.innerHTML = '<span>✓ Phase 2 kicked off</span>';
+        kickoffStatus.innerHTML = '<strong style="color:var(--sage-bright);">Fired.</strong> Claude sees this instantly. Watch Live Activity below for the play-by-play as each step completes.';
+        kickoffStatus.classList.add('visible');
+      } else {
+        throw new Error(data.error || 'HTTP ' + res.status);
+      }
+    } catch (err) {
+      kickoffBtn.disabled = false;
+      kickoffBtn.innerHTML = '<span>Try again</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M5 12h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      kickoffStatus.innerHTML = '<strong style="color:var(--rose);">Failed:</strong> ' + (err.message || 'network error');
+      kickoffStatus.classList.add('visible');
+    }
+  });
 </script>
 
 </body>
