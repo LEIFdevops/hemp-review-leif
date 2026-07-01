@@ -611,14 +611,14 @@
 
     <div class="dashboard-status-card">
       <div class="dash-eyebrow">Live project state</div>
-      <h2 class="dash-status-heading">Round 3 ready — 1 question on the citation strategy.</h2>
-      <p class="dash-status-sub">Round 1 (14 items) and Round 2 (2 items) are resolved. Between rounds we ran 2 more investigations (R3-1 fertilizer σ_log archaeology · R3-2 Anderson & Downing verification). R3-1 came back clean. R3-2 came back partial — needs one call from you before Phase 2 kicks off.</p>
+      <h2 class="dash-status-heading">All decisions locked · Phase 2 ready to fire.</h2>
+      <p class="dash-status-sub">Round 1 (14 items) · Round 2 (2 items) · Round 3 (1 item) — every question you touched is closed. Five investigations returned verdicts. Every finding row on the discrepancy log carries a Decision. Phase 2 execution begins the moment Joe green-lights it.</p>
       <div class="phase-rail">
         <div class="phase-seg done"><div class="phase-num">Phase 0</div><div class="phase-label">Ground truth</div></div>
         <div class="phase-seg done"><div class="phase-num">Phase 1</div><div class="phase-label">Audit + R1</div></div>
         <div class="phase-seg done"><div class="phase-num">Round 2</div><div class="phase-label">Cache + citation</div></div>
-        <div class="phase-seg done"><div class="phase-num">R3 probes</div><div class="phase-label">σ_log + paper</div></div>
-        <div class="phase-seg active"><div class="phase-num">Round 3</div><div class="phase-label">1 question</div></div>
+        <div class="phase-seg done"><div class="phase-num">Round 3</div><div class="phase-label">NADP anchor</div></div>
+        <div class="phase-seg active"><div class="phase-num">Phase 2</div><div class="phase-label">Ready to execute</div></div>
       </div>
     </div>
 
@@ -643,18 +643,18 @@
       </div>
       <div class="metric-tile">
         <p class="metric-label">Rounds</p>
-        <div class="metric-value"><span class="accent">2</span> / 3</div>
-        <div class="metric-detail">R1 + R2 resolved. R3 active with 1 item.</div>
+        <div class="metric-value"><span class="accent">3</span> / 3</div>
+        <div class="metric-detail">All resolved. R1 · R2 · R3 in audit below.</div>
       </div>
       <div class="metric-tile">
         <p class="metric-label">Categories audited</p>
         <div class="metric-value">7</div>
-        <div class="metric-detail">6 ready for Phase 2 · Eutrophication pending R3</div>
+        <div class="metric-detail">All 7 ready for Phase 2 execution</div>
       </div>
       <div class="metric-tile">
         <p class="metric-label">Phase 2 confidence</p>
         <div class="metric-value">High</div>
-        <div class="metric-detail">Fertilizer fix scope now proven clean by R3-1</div>
+        <div class="metric-detail">Every step downstream of your locked calls</div>
       </div>
     </div>
 
@@ -666,8 +666,24 @@
         <span class="cat-chip ready"><span class="dot"></span>ADPe · ready</span>
         <span class="cat-chip ready"><span class="dot"></span>ADPf · ready</span>
         <span class="cat-chip ready"><span class="dot"></span>SOC + Processing · ready</span>
-        <span class="cat-chip ready"><span class="dot"></span>Acidification · ready · R3-1 clean</span>
-        <span class="cat-chip pending"><span class="dot"></span>Eutrophication · pending R3 citation</span>
+        <span class="cat-chip ready"><span class="dot"></span>Acidification · ready</span>
+        <span class="cat-chip ready"><span class="dot"></span>Eutrophication · ready · NADP anchor</span>
+      </div>
+    </div>
+
+    <div class="category-strip">
+      <p class="strip-title">Phase 2 execution plan · locked</p>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; gap: 12px; align-items: center; padding: 10px 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px;"><span style="font-family: var(--font-head); font-weight: 700; font-size: 11px; color: var(--sage); min-width: 44px; padding: 3px 10px; background: var(--sage-glow); border-radius: 5px; text-align: center;">STEP 0</span><span style="color: var(--text); font-size: 13px; line-height: 1.5;">Fertilizer workbook: refit all 5 stale σ_log values per R3-1 verdict · reconcile Cluster_Stats · apply Scrucca 135 lb/ac truncation cap per R2 · produce <code>_v4_FIXED</code></span></div>
+        <div style="display: flex; gap: 12px; align-items: center; padding: 10px 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px;"><span style="font-family: var(--font-head); font-weight: 700; font-size: 11px; color: var(--sage); min-width: 44px; padding: 3px 10px; background: var(--sage-glow); border-radius: 5px; text-align: center;">0a</span><span style="color: var(--text); font-size: 13px; line-height: 1.5;">Pull NADP Iowa site data 2000–2010 · add P_deposition to <code>_v2.6</code> uncertainty w/ NADP citation · Anderson & Downing stays as supporting stub</span></div>
+        <div style="display: flex; gap: 12px; align-items: center; padding: 10px 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px;"><span style="font-family: var(--font-head); font-weight: 700; font-size: 11px; color: var(--sage); min-width: 44px; padding: 3px 10px; background: var(--sage-glow); border-radius: 5px; text-align: center;">STEP 1</span><span style="color: var(--text); font-size: 13px; line-height: 1.5;">GWP corrections: remove <code>F_CR × FracGASM</code> from pathway2 (Q4 bug) · switch EF4_wet to Triangular(0.011, 0.014, 0.017) (Q5) · regen MC</span></div>
+        <div style="display: flex; gap: 12px; align-items: center; padding: 10px 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px;"><span style="font-family: var(--font-head); font-weight: 700; font-size: 11px; color: var(--sage); min-width: 44px; padding: 3px 10px; background: var(--sage-glow); border-radius: 5px; text-align: center;">STEP 2</span><span style="color: var(--text); font-size: 13px; line-height: 1.5;">Regenerate AP, ADPe, ADPf, Eutrophication upstream workbooks against updated fertilizer canon</span></div>
+        <div style="display: flex; gap: 12px; align-items: center; padding: 10px 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px;"><span style="font-family: var(--font-head); font-weight: 700; font-size: 11px; color: var(--sage); min-width: 44px; padding: 3px 10px; background: var(--sage-glow); border-radius: 5px; text-align: center;">STEP 3</span><span style="color: var(--text); font-size: 13px; line-height: 1.5;">Q2 allocation rebuild: only <code>_GF</code> scenarios · all 3 methods · economic default · sensitivity + stakeholder narrative</span></div>
+        <div style="display: flex; gap: 12px; align-items: center; padding: 10px 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px;"><span style="font-family: var(--font-head); font-weight: 700; font-size: 11px; color: var(--sage); min-width: 44px; padding: 3px 10px; background: var(--sage-glow); border-radius: 5px; text-align: center;">STEP 4</span><span style="color: var(--text); font-size: 13px; line-height: 1.5;">SOC-009: wire <code>$A$13</code> allocation switch into MC · build summary-stats table across 3 methods × co-product scenarios</span></div>
+        <div style="display: flex; gap: 12px; align-items: center; padding: 10px 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px;"><span style="font-family: var(--font-head); font-weight: 700; font-size: 11px; color: var(--sage); min-width: 44px; padding: 3px 10px; background: var(--sage-glow); border-radius: 5px; text-align: center;">STEP 5</span><span style="color: var(--text); font-size: 13px; line-height: 1.5;">Cosmetic sync: Q12 base LCI → MC · Q8 signpost on <code>L4_assumptions!A23</code> conversion</span></div>
+        <div style="display: flex; gap: 12px; align-items: center; padding: 10px 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px;"><span style="font-family: var(--font-head); font-weight: 700; font-size: 11px; color: var(--sage); min-width: 44px; padding: 3px 10px; background: var(--sage-glow); border-radius: 5px; text-align: center;">STEP 6</span><span style="color: var(--text); font-size: 13px; line-height: 1.5;">Narrative notes: Q6 fiber-N simplification · Q7 fuel CRN by equipment profile · Q9 LANCA2 scenario-agnostic · Q1 subregional electricity EF</span></div>
+        <div style="display: flex; gap: 12px; align-items: center; padding: 10px 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px;"><span style="font-family: var(--font-head); font-weight: 700; font-size: 11px; color: var(--sage); min-width: 44px; padding: 3px 10px; background: var(--sage-glow); border-radius: 5px; text-align: center;">STEP 7</span><span style="color: var(--text); font-size: 13px; line-height: 1.5;">Report chart data + JSX edits (JSX source path pending)</span></div>
+        <div style="display: flex; gap: 12px; align-items: center; padding: 10px 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px;"><span style="font-family: var(--font-head); font-weight: 700; font-size: 11px; color: var(--sage); min-width: 44px; padding: 3px 10px; background: var(--sage-glow); border-radius: 5px; text-align: center;">STEP 8</span><span style="color: var(--text); font-size: 13px; line-height: 1.5;">Change log row per every step · full audit trail on 02_Change_Log.md</span></div>
       </div>
     </div>
 
@@ -680,64 +696,37 @@
         <div class="tl-item"><span class="tl-marker"></span><div class="tl-body"><div class="tl-when">2026-07-01 afternoon</div><div class="tl-what"><strong>3 investigations complete</strong> — Q8 cosmetic. Q10 derivation traced, external citation needed. Q11 discovered systemic Cluster_Stats cache bug — much bigger than the original AP-002 finding.</div></div></div>
         <div class="tl-item"><span class="tl-marker"></span><div class="tl-body"><div class="tl-when">2026-07-01 · Round 2</div><div class="tl-what"><strong>Round 2 · resolved</strong> — you approved the full Scrucca-cap fertilizer fix and Anderson & Downing 2006 as citation anchor. Your notes fired 2 more investigations (R3-1 σ_log archaeology · R3-2 paper verification).</div></div></div>
         <div class="tl-item"><span class="tl-marker"></span><div class="tl-body"><div class="tl-when">2026-07-01 · R3 probes</div><div class="tl-what"><strong>R3-1 clean</strong> — all 5 stale σ_log cache values confirmed; Rylie's approved recompute proceeds. <strong>R3-2 partial</strong> — Anderson & Downing anchors 0.3 (Iowa row-crop) but not the full 0.3–0.5 range; citation strategy needs one call.</div></div></div>
-        <div class="tl-item"><span class="tl-marker pending"></span><div class="tl-body"><div class="tl-when">Now</div><div class="tl-what"><strong>Round 3 · one call needed</strong> — pick the citation strategy for the P_deposition anchor. Phase 2 execution begins the moment it lands.</div></div></div>
+        <div class="tl-item"><span class="tl-marker"></span><div class="tl-body"><div class="tl-when">2026-07-01 · Round 3</div><div class="tl-what"><strong>Round 3 resolved</strong> — you picked NADP as primary anchor. Anderson & Downing 2006 stays supporting. Your note about eventual range-verification captured as Phase-3 follow-up.</div></div></div>
+        <div class="tl-item"><span class="tl-marker pending"></span><div class="tl-body"><div class="tl-when">Now</div><div class="tl-what"><strong>Phase 2 ready to fire</strong> — 8-step execution plan locked (see above). Every step is downstream of decisions you already made. Watch this Live Activity feed for real-time progress as each step completes.</div></div></div>
       </div>
     </div>
   </section>
 
+
+
   <!-- ═══════════════════════════════════════════════════════════ -->
-  <!-- ROUND 3 -->
+  <!-- ROUND 3 · AUDIT TRAIL -->
   <!-- ═══════════════════════════════════════════════════════════ -->
   <section class="round-header round-2">
-    <div class="round-label active">Round 3 · needs your input</div>
-    <h2 class="round-title">One call on the citation strategy</h2>
-    <p class="round-sub">R3-1 was clean — proceed with the fertilizer σ_log fix you approved in Round 2. R3-2 was partial: Anderson & Downing 2006 anchors the 0.3 kg/ha/yr minimum but not the full 0.3–0.5 range. Pick your strategy and Phase 2 fires.</p>
-
-    <div class="round-context">
-      <strong>What the 2 R3 investigations found:</strong>
-      <div class="verdicts">
-        <div class="verdict cosmetic"><span class="verdict-tag">R3-1 · resolved</span>All 5 stale σ_log values in <code>Cluster_Stats</code> are arithmetic staleness — <strong>not</strong> intentional expansion. Cache errors go in BOTH directions (some inflated, some deflated) — that's the fingerprint of stale cache, not a design choice. Chat approvals confirm observation-derived values (Fiber K₂O 0.370, Grain P2O5 0.607, Grain K2O 0.529, Fiber N 0.260, Fiber P2O5 0.166). Your full-Scrucca fix proceeds cleanly.</div>
-        <div class="verdict needs"><span class="verdict-tag">R3-2 · needs you</span>Anderson & Downing 2006 verified: reports <strong>0.3 kg P/ha/yr</strong> for Iowa row-crop watersheds (2003–2004, confirmed across 4 index sources). But that's the minimum only — doesn't bracket the 0.3–0.5 range on its own. Full text is paywalled at Springer.</div>
-      </div>
-    </div>
+    <div class="round-label resolved">Round 3 · resolved 2026-07-01</div>
+    <h2 class="round-title">Your Round 3 response</h2>
+    <p class="round-sub">1 question · submitted 2026-07-01 17:51 UTC · locked Phase 2 execution.</p>
   </section>
 
-  <article class="card" data-q="QR3-1">
+  <article class="card audit" data-audit="QR3-1">
     <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-      <span class="q-num active">QR3·1</span>
-      <div class="q-title-wrap">
-        <div class="q-title">P_deposition citation — pick the anchor strategy</div>
-        <div class="q-tags"><span class="tag tag-cat">EUTRO-001 · R3-2 outcome</span><span class="tag tag-sev-material">material</span></div>
-      </div>
+      <span class="q-num">QR3·1</span>
+      <div class="q-title-wrap"><div class="q-title">P_deposition citation anchor strategy</div><div class="q-tags"><span class="tag tag-cat">EUTRO-001</span><span class="tag tag-answered">nadp-primary</span></div></div>
       <span class="caret">▾</span>
     </div>
     <div class="card-body">
-      <div class="rec"><span class="rec-label">Recommended</span><strong>Pivot to NADP</strong> — the National Atmospheric Deposition Program is the definitive US government dataset for atmospheric deposition, Iowa-specific site data 2000–present, publicly available at nadp.slh.wisc.edu. Strongest possible citation in a regulatory QAQC context. Anderson & Downing 2006 stays as supporting reference.</div>
-      <div class="detail-block"><span class="detail-label">The three options</span><ul>
-        <li><strong>NADP as primary anchor.</strong> Pull Iowa NADP site data 2000–2010 for annual P deposition. Site-specific numbers, government dataset, strongest citation. Anderson & Downing 2006 stays as supporting paper. My recommendation.</li>
-        <li><strong>Two-citation approach.</strong> Anderson & Downing 2006 anchors the 0.3 min (Iowa row-crop, confirmed). Verry & Timmons 1977 anchors the 0.48 upper tail (north-central MN agricultural, via Barr 2007 review). Or Noe et al. 2018 for the 50–100 mg/m²/yr agricultural range statement.</li>
-        <li><strong>Wait for Anderson & Downing full PDF.</strong> Ask ISU Interlibrary Loan (~1–2 days). Check the paper's site-level data table — if any Iowa sites read 0.4–0.5, the single citation becomes self-sufficient. Delays Phase 2 slightly.</li>
-      </ul></div>
-      <div class="detail-block"><span class="detail-label">What R3-2 confirmed vs. what's missing</span><ul>
-        <li><strong>Confirmed</strong> — Anderson & Downing 2006 exists, is real, reports 0.3 kg P/ha/yr for Iowa row-crop watersheds (2003–2004, wet+dry). Confirmed across Springer, Semantic Scholar, MDPI cross-citations.</li>
-        <li><strong>Confirmed</strong> — the 0.3–0.5 range is consistent with broader Midwest agricultural deposition literature (0.48 for MN per Verry & Timmons 1977; 50–100 mg/m²/yr agricultural per Noe et al. 2018).</li>
-        <li><strong>Not confirmed</strong> — whether Anderson & Downing's site-level data table (paywalled) contains site variance covering 0.4–0.5.</li>
-      </ul></div>
-      <div class="response-block">
-        <span class="response-label">Your call</span>
-        <div class="choices" data-q="QR3-1">
-          <label class="choice"><input type="radio" name="QR3-1" value="nadp-primary"><div class="choice-text"><strong>Pivot to NADP as primary anchor</strong>, Anderson & Downing as supporting. Government dataset, strongest citation. My recommendation.</div></label>
-          <label class="choice"><input type="radio" name="QR3-1" value="two-citation-verry"><div class="choice-text"><strong>Two-citation anchor</strong> — Anderson & Downing 2006 (0.3 min) + Verry & Timmons 1977 (0.48 max).</div></label>
-          <label class="choice"><input type="radio" name="QR3-1" value="two-citation-noe"><div class="choice-text"><strong>Two-citation anchor</strong> — Anderson & Downing 2006 + Noe et al. 2018 range statement.</div></label>
-          <label class="choice"><input type="radio" name="QR3-1" value="wait-for-pdf"><div class="choice-text"><strong>Wait for Anderson & Downing PDF via ILL</strong> — delays Phase 2 by 1–2 days but may give a self-sufficient single citation.</div></label>
-          <label class="choice"><input type="radio" name="QR3-1" value="other"><div class="choice-text"><strong>Other</strong> — you have a citation in mind (specify below).</div></label>
-        </div>
-        <label class="notes-label">Notes (or your preferred alternative):</label>
-        <textarea class="notes-area" data-q="QR3-1" placeholder=""></textarea>
+      <div class="audit-response">
+        <div class="audit-choice">Choice · nadp-primary</div>
+        <div class="audit-notes">"We need to verify eventually that the NADP does in fact enable the range used."</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> Phase 2 Step 0a pulls NADP Iowa site data (2000–2010) → adds P_deposition row to v2.6 uncertainty file with NADP citation. Anderson & Downing 2006 stays as supporting reference. Eventual range-verification captured as Phase-3 follow-up (does not gate Phase 2 completion).</div>
       </div>
     </div>
   </article>
-
 
   <!-- ═══════════════════════════════════════════════════════════ -->
   <!-- ROUND 2 · AUDIT TRAIL -->
@@ -1014,10 +1003,9 @@
 
 </main>
 
-<!-- Sticky submit bar (only shows when active questions have inputs) -->
+<!-- Sticky status bar — no active questions, just live status -->
 <div class="submit-bar" id="submitBar" role="region">
-  <span class="submit-bar-status"><strong id="ans-count">0</strong> of 1 Round-3 answered · autosaved</span>
-  <button class="submit-btn" id="submitBtn">Send Round 3 →</button>
+  <span class="submit-bar-status"><strong id="ans-count" style="color: var(--sage-bright);">✓</strong> All rounds resolved · Phase 2 executing</span>
 </div>
 
 <!-- Modal -->
