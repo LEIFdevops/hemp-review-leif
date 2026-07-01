@@ -3,56 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hemp LCA — Phase 1 Decisions for Rylie</title>
+<title>Hemp LCA — Rylie's Workspace</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    /* LEIF Platform palette — verified from the live product */
-    --bg: #0a0d10;
-    --bg-2: #0e1116;
-    --surface: #131820;
-    --surface-2: #1a2029;
-    --surface-3: #232a35;
-    --border: #1e2530;
-    --border-strong: #2d3644;
-    --text: #f0efec;
-    --subtext: #a9a8a4;
-    --muted: #6f6e6a;
-    --sage: #7aab91;
-    --sage-bright: #8fc8a8;
-    --sage-deep: #5b8a72;
+    --bg: #0a0d10; --bg-2: #0e1116;
+    --surface: #131820; --surface-2: #1a2029; --surface-3: #232a35;
+    --border: #1e2530; --border-strong: #2d3644;
+    --text: #f0efec; --subtext: #a9a8a4; --muted: #6f6e6a;
+    --sage: #7aab91; --sage-bright: #8fc8a8; --sage-deep: #5b8a72;
     --sage-glow: rgba(122, 171, 145, 0.14);
     --sage-glow-strong: rgba(122, 171, 145, 0.24);
     --sage-glow-soft: rgba(122, 171, 145, 0.06);
-    --warm: #c4a882;
-    --warm-glow: rgba(196, 168, 130, 0.10);
-    --steel: #7a9bb5;
-    --rose: #b57a7a;
+    --warm: #c4a882; --warm-glow: rgba(196, 168, 130, 0.10);
+    --steel: #7a9bb5; --rose: #b57a7a;
     --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif;
     --font-head: 'Sora', var(--font-body);
     --ease: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-    --shadow-sage: 0 0 0 1px rgba(122, 171, 145, 0.4), 0 8px 32px rgba(122, 171, 145, 0.15), 0 2px 8px rgba(122, 171, 145, 0.10);
-    --shadow-sage-hover: 0 0 0 1px rgba(122, 171, 145, 0.6), 0 12px 40px rgba(122, 171, 145, 0.22), 0 4px 12px rgba(122, 171, 145, 0.14);
-    --shadow-card: 0 1px 3px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.25);
-    --shadow-card-hover: 0 1px 3px rgba(0,0,0,0.4), 0 12px 32px rgba(0,0,0,0.35);
   }
-
-  /* Ambient background — subtle radial sage halos, extremely soft */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 800px 500px at 15% -10%, rgba(122, 171, 145, 0.06), transparent 60%),
-      radial-gradient(ellipse 600px 400px at 90% 30%, rgba(122, 171, 145, 0.04), transparent 55%);
-    pointer-events: none;
-    z-index: 0;
-  }
-  main { position: relative; z-index: 1; }
   * { box-sizing: border-box; }
   html, body {
     background: var(--bg); color: var(--text);
@@ -60,604 +32,367 @@
     margin: 0; padding: 0;
     -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
   }
-  main { max-width: 840px; margin: 0 auto; padding: 64px 32px 200px; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 900px 600px at 15% -5%, rgba(122, 171, 145, 0.07), transparent 55%),
+      radial-gradient(ellipse 700px 500px at 90% 40%, rgba(122, 171, 145, 0.04), transparent 60%);
+    pointer-events: none; z-index: 0;
+  }
+  main { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 56px 32px 200px; }
+  code { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace; font-size: 13px; background: var(--surface-2); padding: 1px 6px; border-radius: 4px; color: var(--sage); }
 
-  /* Header */
-  header.page { padding: 32px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; animation: fadeUp 0.6s var(--ease); }
-  .brand { display: flex; align-items: baseline; gap: 10px; margin-bottom: 24px; }
+  /* ─── View gate ─── */
+  #viewGate { position: fixed; inset: 0; background: var(--bg); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 24px; animation: fadeIn 0.4s var(--ease); overflow: hidden; }
+  .gate-ambient { position: absolute; inset: 0; background: radial-gradient(ellipse 900px 600px at 20% 20%, rgba(122, 171, 145, 0.12), transparent 55%), radial-gradient(ellipse 700px 500px at 80% 80%, rgba(122, 171, 145, 0.08), transparent 60%); pointer-events: none; }
+  .gate-card { position: relative; max-width: 460px; width: 100%; background: linear-gradient(180deg, rgba(19, 24, 32, 0.95), rgba(14, 17, 22, 0.98)); border: 1px solid rgba(122, 171, 145, 0.20); border-radius: 20px; padding: 44px 40px 36px; box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(122, 171, 145, 0.06), 0 0 60px rgba(122, 171, 145, 0.10); backdrop-filter: blur(24px); animation: gateIn 0.7s var(--ease-out); }
+  @keyframes gateIn { 0% { opacity: 0; transform: translateY(24px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+  .gate-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+  .gate-logo { width: 44px; height: 44px; background: linear-gradient(135deg, rgba(122, 171, 145, 0.15), rgba(122, 171, 145, 0.05)); border: 1px solid rgba(122, 171, 145, 0.25); border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 24px var(--sage-glow-soft); }
+  .gate-brand-name { font-family: var(--font-head); font-weight: 800; font-size: 18px; letter-spacing: -0.02em; color: var(--sage-bright); line-height: 1; margin-bottom: 4px; }
+  .gate-brand-tag { color: var(--muted); font-size: 11px; letter-spacing: 0.05em; }
+  .gate-heading { font-family: var(--font-head); font-weight: 700; font-size: 26px; letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 10px; color: var(--text); }
+  .gate-lede { color: var(--subtext); font-size: 14px; line-height: 1.55; margin: 0 0 28px; }
+  #viewGateInput { width: 100%; padding: 15px 18px; background: rgba(10, 13, 16, 0.7); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-family: inherit; font-size: 15px; transition: all 0.25s var(--ease); letter-spacing: 0.02em; margin-bottom: 12px; }
+  #viewGateInput::placeholder { color: var(--muted); }
+  #viewGateInput:focus { outline: none; border-color: rgba(122, 171, 145, 0.45); background: rgba(10, 13, 16, 0.9); box-shadow: 0 0 0 4px var(--sage-glow-soft); }
+  .gate-btn { width: 100%; padding: 15px; background: linear-gradient(180deg, var(--sage-bright), var(--sage)); color: var(--bg); border: none; border-radius: 12px; font-family: var(--font-head); font-weight: 700; font-size: 14px; letter-spacing: 0.03em; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.25s var(--ease-out); box-shadow: 0 4px 16px var(--sage-glow-strong), inset 0 1px 0 rgba(255,255,255,0.2); position: relative; overflow: hidden; }
+  .gate-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent); transform: translateX(-100%); transition: transform 0.6s var(--ease); }
+  .gate-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px var(--sage-glow-strong); }
+  .gate-btn:hover::before { transform: translateX(100%); }
+  .gate-btn svg { transition: transform 0.3s var(--ease); }
+  .gate-btn:hover svg { transform: translateX(3px); }
+  .gate-error { display: none; color: var(--rose); font-size: 13px; margin-top: 14px; padding: 10px 14px; background: rgba(181, 122, 122, 0.10); border: 1px solid rgba(181, 122, 122, 0.25); border-radius: 8px; text-align: center; animation: shake 0.4s var(--ease); }
+  @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  .gate-footer { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--muted); font-size: 11px; letter-spacing: 0.04em; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .gate-footer-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--sage); box-shadow: 0 0 8px var(--sage); animation: pulse-dot 2.2s var(--ease) infinite; }
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.85); } }
+
+  /* ─── Header ─── */
+  header.page { padding: 32px 0 24px; margin-bottom: 32px; animation: fadeUp 0.6s var(--ease); }
+  .brand { display: flex; align-items: baseline; gap: 10px; margin-bottom: 32px; }
   .brand-mark { font-family: var(--font-head); font-weight: 800; font-size: 20px; letter-spacing: -0.02em; color: var(--sage); }
   .brand-tag { color: var(--muted); font-size: 13px; }
-  h1 { font-family: var(--font-head); font-weight: 700; font-size: 44px; letter-spacing: -0.025em; line-height: 1.1; margin: 0 0 16px; }
-  .lede { color: var(--subtext); font-size: 17px; line-height: 1.55; margin: 0 0 28px; max-width: 640px; }
-  .section-tag {
-    font-family: var(--font-head);
-    font-weight: 600;
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--sage);
-    margin: 0 0 12px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+  h1 { font-family: var(--font-head); font-weight: 700; font-size: 40px; letter-spacing: -0.025em; line-height: 1.1; margin: 0 0 12px; }
+  .lede { color: var(--subtext); font-size: 16px; line-height: 1.55; margin: 0; max-width: 640px; }
+
+  /* ─── Dashboard ─── */
+  .dashboard { margin-bottom: 56px; animation: fadeUp 0.6s var(--ease) 0.1s both; }
+  .dashboard-status-card {
+    background: linear-gradient(180deg, var(--surface), rgba(122, 171, 145, 0.03));
+    border: 1px solid rgba(122, 171, 145, 0.20);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4), 0 12px 32px rgba(0,0,0,0.25), 0 0 40px var(--sage-glow-soft);
   }
-  .section-tag::before {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--sage);
-    box-shadow: 0 0 12px var(--sage), 0 0 4px var(--sage);
+  .dashboard-status-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(180deg, var(--sage-bright), var(--sage-deep));
+    box-shadow: 0 0 16px var(--sage-glow-strong);
+  }
+  .dash-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-head); font-weight: 600; font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--sage);
+    margin: 0 0 12px;
+  }
+  .dash-eyebrow::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--sage); box-shadow: 0 0 12px var(--sage);
     animation: pulse-dot 2.2s var(--ease) infinite;
   }
-  @keyframes pulse-dot {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.85); }
+  .dash-status-heading {
+    font-family: var(--font-head); font-weight: 700;
+    font-size: 24px; letter-spacing: -0.015em; line-height: 1.25;
+    margin: 0 0 12px;
   }
-  .meta { display: flex; gap: 24px; color: var(--muted); font-size: 13px; flex-wrap: wrap; }
-  .meta-item { display: flex; align-items: center; gap: 6px; }
-  .meta-item strong { color: var(--subtext); font-weight: 500; }
+  .dash-status-sub { color: var(--subtext); font-size: 15px; line-height: 1.55; margin: 0; max-width: 620px; }
 
-  /* Progress + save state */
-  .progress {
-    display: flex; align-items: center; gap: 16px;
-    margin: 28px 0 0;
-    padding: 16px 20px;
+  /* Phase progress rail */
+  .phase-rail { display: flex; gap: 4px; margin-top: 24px; }
+  .phase-seg {
+    flex: 1;
+    padding: 12px 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    position: relative;
+  }
+  .phase-seg.done {
+    background: linear-gradient(180deg, rgba(122, 171, 145, 0.10), rgba(122, 171, 145, 0.04));
+    border-color: rgba(122, 171, 145, 0.35);
+  }
+  .phase-seg.done::after {
+    content: '✓'; position: absolute; top: 12px; right: 14px;
+    color: var(--sage-bright); font-weight: 700; font-size: 14px;
+  }
+  .phase-seg.active {
+    background: linear-gradient(180deg, rgba(196, 168, 130, 0.10), rgba(196, 168, 130, 0.04));
+    border-color: rgba(196, 168, 130, 0.35);
+  }
+  .phase-seg.active::after {
+    content: ''; position: absolute; top: 16px; right: 16px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--warm); box-shadow: 0 0 10px var(--warm);
+    animation: pulse-dot 1.8s var(--ease) infinite;
+  }
+  .phase-num {
+    font-family: var(--font-head); font-weight: 700;
+    font-size: 10px; letter-spacing: 0.12em;
+    color: var(--muted); text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .phase-seg.done .phase-num { color: var(--sage); }
+  .phase-seg.active .phase-num { color: var(--warm); }
+  .phase-label {
+    font-family: var(--font-head); font-weight: 600;
+    font-size: 13px; color: var(--text);
+  }
+
+  /* Metrics tiles */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .metric-tile {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
-    font-size: 13px;
-    position: relative;
-    overflow: hidden;
+    padding: 18px 20px;
+    transition: border-color 0.25s var(--ease);
   }
-  .progress::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(120deg, transparent 0%, var(--sage-glow-soft) 50%, transparent 100%);
-    opacity: 0;
-    transition: opacity 0.5s var(--ease);
-    pointer-events: none;
+  .metric-tile:hover { border-color: var(--border-strong); }
+  .metric-label {
+    font-family: var(--font-head); font-weight: 600;
+    font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted);
+    margin: 0 0 8px;
   }
-  .progress.active::before { opacity: 1; }
-  .progress-track { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; position: relative; }
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--sage-deep), var(--sage) 50%, var(--sage-bright));
-    width: 0%;
-    transition: width 0.6s var(--ease-spring);
-    box-shadow: 0 0 12px var(--sage-glow-strong);
-    border-radius: 3px;
-    position: relative;
+  .metric-value {
+    font-family: var(--font-head); font-weight: 700;
+    font-size: 28px; letter-spacing: -0.02em;
+    color: var(--text); line-height: 1;
+    margin-bottom: 6px;
   }
-  .progress-fill::after {
-    content: '';
-    position: absolute;
-    right: 0; top: 0; bottom: 0;
-    width: 20px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4));
-    animation: shimmer 2.5s var(--ease) infinite;
-    opacity: 0;
-  }
-  .progress.active .progress-fill::after { opacity: 1; }
-  @keyframes shimmer {
-    0% { transform: translateX(-20px); }
-    100% { transform: translateX(20px); }
-  }
-  .progress-count { color: var(--subtext); font-variant-numeric: tabular-nums; font-weight: 500; position: relative; z-index: 1; }
-  .save-state { color: var(--muted); font-size: 12px; position: relative; z-index: 1; display: flex; align-items: center; gap: 6px; }
-  .save-state .dot {
-    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
-    background: var(--sage);
-    box-shadow: 0 0 8px var(--sage);
-    animation: pulse-dot 2.2s var(--ease) infinite;
-  }
-  .milestone-burst {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0;
-  }
-  .milestone-burst.fire {
-    animation: burst 1.2s var(--ease-out);
-  }
-  @keyframes burst {
-    0% { opacity: 0; background: radial-gradient(circle at var(--x, 50%) 50%, var(--sage-glow-strong), transparent 20%); }
-    30% { opacity: 1; background: radial-gradient(circle at var(--x, 50%) 50%, var(--sage-glow-strong), transparent 60%); }
-    100% { opacity: 0; background: radial-gradient(circle at var(--x, 50%) 50%, var(--sage-glow-strong), transparent 100%); }
-  }
+  .metric-value .accent { color: var(--sage-bright); }
+  .metric-detail { color: var(--subtext); font-size: 12px; line-height: 1.4; }
 
-  /* Sections */
-  .section { margin: 48px 0 20px; animation: fadeUp 0.6s var(--ease) both; }
-  .section-label { font-family: var(--font-head); font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sage); margin: 0 0 8px; }
-  .section-title { font-family: var(--font-head); font-weight: 700; font-size: 22px; letter-spacing: -0.01em; margin: 0 0 6px; }
-  .section-note { color: var(--muted); font-size: 13px; margin: 0 0 20px; }
+  /* Category readiness strip */
+  .category-strip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-bottom: 20px;
+  }
+  .strip-title {
+    font-family: var(--font-head); font-weight: 600;
+    font-size: 12px; letter-spacing: 0.10em;
+    text-transform: uppercase; color: var(--subtext);
+    margin: 0 0 14px;
+  }
+  .cat-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cat-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px 6px 10px;
+    border-radius: 999px;
+    font-size: 12px; font-weight: 500;
+    border: 1px solid;
+  }
+  .cat-chip.ready { background: var(--sage-glow); border-color: rgba(122, 171, 145, 0.30); color: var(--sage-bright); }
+  .cat-chip.pending { background: var(--warm-glow); border-color: rgba(196, 168, 130, 0.30); color: var(--warm); }
+  .cat-chip .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .cat-chip.ready .dot { background: var(--sage-bright); box-shadow: 0 0 6px var(--sage); }
+  .cat-chip.pending .dot { background: var(--warm); box-shadow: 0 0 6px var(--warm); animation: pulse-dot 1.8s var(--ease) infinite; }
 
-  /* Card */
+  /* Timeline */
+  .timeline {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+  }
+  .tl-items { display: flex; flex-direction: column; gap: 14px; margin-top: 12px; }
+  .tl-item { display: flex; gap: 12px; align-items: flex-start; }
+  .tl-marker {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--sage-bright); box-shadow: 0 0 8px var(--sage);
+    margin-top: 6px; flex-shrink: 0;
+  }
+  .tl-marker.pending { background: var(--warm); animation: pulse-dot 1.8s var(--ease) infinite; }
+  .tl-body { flex: 1; }
+  .tl-when { color: var(--muted); font-size: 11px; letter-spacing: 0.04em; margin-bottom: 3px; }
+  .tl-what { color: var(--text); font-size: 13px; line-height: 1.5; }
+  .tl-what strong { color: var(--sage-bright); font-weight: 600; }
+
+  /* ─── Section headers ─── */
+  .round-header {
+    margin: 48px 0 20px;
+    animation: fadeUp 0.6s var(--ease) both;
+  }
+  .round-header.round-2 { animation-delay: 0.15s; }
+  .round-header.round-1 { animation-delay: 0.2s; }
+  .round-label {
+    font-family: var(--font-head); font-weight: 600;
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 8px;
+    margin: 0 0 10px;
+  }
+  .round-label.active { color: var(--warm); }
+  .round-label.active::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--warm); box-shadow: 0 0 12px var(--warm); animation: pulse-dot 1.8s var(--ease) infinite; }
+  .round-label.resolved { color: var(--sage); }
+  .round-label.resolved::before { content: '✓'; color: var(--sage); font-weight: 800; }
+  .round-title { font-family: var(--font-head); font-weight: 700; font-size: 26px; letter-spacing: -0.02em; margin: 0 0 6px; }
+  .round-sub { color: var(--muted); font-size: 13px; margin: 0 0 20px; max-width: 640px; line-height: 1.55; }
+
+  .round-context {
+    background: linear-gradient(180deg, var(--surface), var(--sage-glow-soft));
+    border: 1px solid rgba(122, 171, 145, 0.18);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 20px;
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .round-context strong { color: var(--sage-bright); font-weight: 600; }
+  .round-context .verdicts { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+  .verdict { padding: 10px 14px; background: rgba(10, 13, 16, 0.5); border-left: 3px solid; border-radius: 6px; font-size: 13px; }
+  .verdict.cosmetic { border-left-color: var(--sage); }
+  .verdict.needs { border-left-color: var(--warm); }
+  .verdict-tag { font-family: var(--font-head); font-weight: 700; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; margin-right: 8px; }
+  .verdict.cosmetic .verdict-tag { color: var(--sage); }
+  .verdict.needs .verdict-tag { color: var(--warm); }
+
+  /* ─── Card (question) ─── */
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 14px;
     margin-bottom: 12px;
     overflow: hidden;
-    transition: border-color 0.3s var(--ease), transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+    transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
     position: relative;
-    box-shadow: var(--shadow-card);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.25);
   }
-  .card:hover {
-    border-color: var(--border-strong);
-    box-shadow: var(--shadow-card-hover);
-  }
-  .card.expanded {
-    border-color: rgba(122, 171, 145, 0.5);
-    box-shadow: var(--shadow-card-hover), 0 0 0 1px var(--sage-glow-soft);
-  }
-  .card.answered {
-    border-color: rgba(122, 171, 145, 0.4);
-    background: linear-gradient(180deg, var(--surface) 0%, rgba(122, 171, 145, 0.02) 100%);
-  }
-  .card.answered::before {
-    content: '✓';
-    position: absolute;
-    top: 20px;
-    right: 24px;
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    background: var(--sage);
-    color: var(--bg);
-    font-weight: 700;
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 16px var(--sage-glow-strong), 0 0 4px var(--sage);
-    animation: check-pop 0.5s var(--ease-spring);
-    z-index: 2;
-  }
-  @keyframes check-pop {
-    0% { transform: scale(0); opacity: 0; }
-    60% { transform: scale(1.15); }
-    100% { transform: scale(1); opacity: 1; }
-  }
-  .card-batch {
-    background: linear-gradient(180deg, var(--surface) 0%, rgba(122, 171, 145, 0.04) 100%);
-    border-color: rgba(122, 171, 145, 0.25);
-  }
-  .card-batch::after {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 3px;
-    background: linear-gradient(180deg, var(--sage), var(--sage-deep));
-    box-shadow: 0 0 12px var(--sage-glow-strong);
-    opacity: 0.6;
-  }
+  .card:hover { border-color: var(--border-strong); box-shadow: 0 1px 3px rgba(0,0,0,0.4), 0 12px 32px rgba(0,0,0,0.35); }
+  .card.expanded { border-color: rgba(122, 171, 145, 0.5); box-shadow: 0 1px 3px rgba(0,0,0,0.4), 0 12px 32px rgba(0,0,0,0.35), 0 0 0 1px var(--sage-glow-soft); }
+  .card.answered { border-color: rgba(122, 171, 145, 0.4); background: linear-gradient(180deg, var(--surface) 0%, rgba(122, 171, 145, 0.02) 100%); }
+  .card.answered::before { content: '✓'; position: absolute; top: 20px; right: 24px; width: 22px; height: 22px; border-radius: 50%; background: var(--sage); color: var(--bg); font-weight: 700; font-size: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 16px var(--sage-glow-strong); animation: check-pop 0.5s var(--ease-spring); z-index: 2; }
+  .card.audit { background: linear-gradient(180deg, var(--bg-2) 0%, rgba(122, 171, 145, 0.015) 100%); border-color: rgba(122, 171, 145, 0.15); }
+  .card.audit .card-header { opacity: 0.85; }
+  .card.audit::before { content: '✓'; position: absolute; top: 20px; right: 24px; width: 20px; height: 20px; border-radius: 50%; background: rgba(122, 171, 145, 0.20); color: var(--sage-bright); border: 1px solid rgba(122, 171, 145, 0.35); font-weight: 700; font-size: 11px; display: flex; align-items: center; justify-content: center; z-index: 2; }
+  @keyframes check-pop { 0% { transform: scale(0); opacity: 0; } 60% { transform: scale(1.15); } 100% { transform: scale(1); opacity: 1; } }
 
   .card-header { display: flex; align-items: center; gap: 14px; padding: 18px 22px; cursor: pointer; user-select: none; transition: background 0.2s var(--ease); }
   .card-header:hover { background: rgba(255,255,255,0.02); }
   .card-header:focus-visible { outline: 2px solid var(--sage); outline-offset: -2px; }
-  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; height: 32px; padding: 0 10px; background: var(--sage-glow); color: var(--sage); border-radius: 8px; font-family: var(--font-head); font-weight: 700; font-size: 13px; letter-spacing: 0.02em; flex-shrink: 0; }
-  .q-num.batch { background: var(--sage); color: var(--bg); }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 48px; height: 32px; padding: 0 12px; background: var(--sage-glow); color: var(--sage); border-radius: 8px; font-family: var(--font-head); font-weight: 700; font-size: 12px; letter-spacing: 0.02em; flex-shrink: 0; }
+  .q-num.active { background: linear-gradient(135deg, rgba(196, 168, 130, 0.20), rgba(196, 168, 130, 0.08)); color: var(--warm); border: 1px solid rgba(196, 168, 130, 0.30); }
   .q-title-wrap { flex: 1; min-width: 0; }
   .q-title { font-family: var(--font-head); font-weight: 600; font-size: 16px; line-height: 1.35; margin: 0 0 4px; }
   .q-tags { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
   .tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.02em; font-weight: 500; }
   .tag-cat { background: var(--surface-2); color: var(--subtext); }
   .tag-sev-material { background: var(--warm-glow); color: var(--warm); }
-  .tag-sev-batch { background: var(--sage-glow); color: var(--sage); }
-  .tag-affects { background: transparent; color: var(--muted); padding-left: 0; }
+  .tag-answered { background: var(--sage-glow); color: var(--sage-bright); }
   .caret { color: var(--muted); font-size: 16px; transition: transform 0.3s var(--ease); flex-shrink: 0; margin-left: 20px; }
   .card.expanded .caret { transform: rotate(180deg); color: var(--sage); }
 
-  /* Card body */
-  .card-body { padding: 0 22px 22px 80px; display: none; }
+  .card-body { padding: 0 22px 22px 84px; display: none; }
   .card.expanded .card-body { display: block; animation: fadeIn 0.4s var(--ease); }
   @media (max-width: 640px) { .card-body { padding: 0 18px 20px 18px; } }
 
   .rec { padding: 14px 18px; background: var(--sage-glow); border-left: 3px solid var(--sage); border-radius: 4px; margin: 0 0 20px; font-size: 14px; line-height: 1.55; }
   .rec-label { color: var(--sage); font-family: var(--font-head); font-weight: 600; font-size: 11px; letter-spacing: 0.10em; text-transform: uppercase; display: block; margin-bottom: 4px; }
-
   .detail-block { margin-bottom: 16px; }
   .detail-block:last-child { margin-bottom: 0; }
   .detail-label { color: var(--subtext); font-family: var(--font-head); font-weight: 600; font-size: 11px; letter-spacing: 0.10em; text-transform: uppercase; display: block; margin-bottom: 6px; }
   .detail-block p { margin: 0; font-size: 14px; line-height: 1.55; }
-  .detail-block p + p { margin-top: 8px; }
   .detail-block ul { margin: 6px 0 0; padding-left: 20px; font-size: 14px; line-height: 1.6; }
   .detail-block li { margin-bottom: 4px; }
-  .detail-block li strong { color: var(--sage); font-weight: 600; }
+  .detail-block li strong { color: var(--sage-bright); font-weight: 600; }
 
-  /* Response widgets */
-  .response-block {
-    margin-top: 24px;
-    padding: 20px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 10px;
+  /* Audit view — Rylie's completed response */
+  .audit-response {
+    padding: 14px 18px;
+    background: rgba(122, 171, 145, 0.05);
+    border: 1px solid rgba(122, 171, 145, 0.20);
+    border-radius: 8px;
+    margin-top: 8px;
   }
-  .response-label {
-    color: var(--sage);
-    font-family: var(--font-head);
-    font-weight: 600;
-    font-size: 11px;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: 12px;
+  .audit-choice { font-family: var(--font-head); font-weight: 600; color: var(--sage-bright); font-size: 13px; letter-spacing: 0.02em; margin-bottom: 6px; text-transform: uppercase; }
+  .audit-notes { color: var(--text); font-size: 14px; line-height: 1.55; }
+  .audit-notes.empty { color: var(--muted); font-style: italic; font-size: 13px; }
+  .audit-resolution {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    color: var(--subtext);
+    font-size: 12px;
+    line-height: 1.55;
   }
+  .audit-resolution strong { color: var(--sage); font-weight: 600; font-family: var(--font-head); letter-spacing: 0.02em; }
 
+  /* Response widget (active questions only) */
+  .response-block { margin-top: 24px; padding: 20px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; }
+  .response-label { color: var(--sage); font-family: var(--font-head); font-weight: 600; font-size: 11px; letter-spacing: 0.10em; text-transform: uppercase; display: block; margin-bottom: 12px; }
   .choices { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
-  .choice {
-    display: flex; align-items: flex-start; gap: 14px;
-    padding: 14px 16px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.25s var(--ease-out);
-    user-select: none;
-    position: relative;
-    overflow: hidden;
-  }
-  .choice::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at center, var(--sage-glow-soft), transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s var(--ease);
-    pointer-events: none;
-  }
-  .choice:hover {
-    border-color: rgba(122, 171, 145, 0.3);
-    background: var(--surface-2);
-    transform: translateX(2px);
-  }
-  .choice:hover::before { opacity: 1; }
-  .choice input[type="radio"], .choice input[type="checkbox"] {
-    appearance: none; -webkit-appearance: none;
-    width: 20px; height: 20px;
-    border: 2px solid var(--border-strong);
-    background: var(--bg);
-    cursor: pointer;
-    flex-shrink: 0;
-    margin-top: 1px;
-    transition: all 0.3s var(--ease-spring);
-    position: relative;
-  }
-  .choice input[type="radio"] { border-radius: 50%; }
-  .choice input[type="checkbox"] { border-radius: 5px; }
-  .choice input:checked {
-    border-color: var(--sage);
-    background: var(--sage);
-    box-shadow: inset 0 0 0 4px var(--surface), 0 0 16px var(--sage-glow-strong);
-    animation: choice-ping 0.55s var(--ease-spring);
-  }
-  @keyframes choice-ping {
-    0% { transform: scale(0.85); }
-    60% { transform: scale(1.15); }
-    100% { transform: scale(1); }
-  }
-  .choice input[type="checkbox"]:checked {
-    box-shadow: inset 0 0 0 2px var(--surface), 0 0 16px var(--sage-glow-strong);
-    background-image: linear-gradient(45deg, transparent 45%, var(--surface) 45%, var(--surface) 55%, transparent 55%);
-  }
-  .choice.selected {
-    border-color: rgba(122, 171, 145, 0.5);
-    background: var(--sage-glow);
-    box-shadow: 0 0 0 1px var(--sage-glow-strong), 0 4px 20px var(--sage-glow-soft);
-  }
-  .choice.selected::before { opacity: 1; }
-  .choice-text { flex: 1; font-size: 14px; line-height: 1.45; position: relative; z-index: 1; }
+  .choice { display: flex; align-items: flex-start; gap: 14px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.25s var(--ease-out); user-select: none; position: relative; overflow: hidden; }
+  .choice:hover { border-color: rgba(122, 171, 145, 0.3); background: var(--surface-2); transform: translateX(2px); }
+  .choice input[type="radio"] { appearance: none; -webkit-appearance: none; width: 20px; height: 20px; border: 2px solid var(--border-strong); background: var(--bg); border-radius: 50%; cursor: pointer; flex-shrink: 0; margin-top: 1px; transition: all 0.3s var(--ease-spring); }
+  .choice input:checked { border-color: var(--sage); background: var(--sage); box-shadow: inset 0 0 0 4px var(--surface), 0 0 16px var(--sage-glow-strong); animation: choice-ping 0.55s var(--ease-spring); }
+  @keyframes choice-ping { 0% { transform: scale(0.85); } 60% { transform: scale(1.15); } 100% { transform: scale(1); } }
+  .choice.selected { border-color: rgba(122, 171, 145, 0.5); background: var(--sage-glow); box-shadow: 0 0 0 1px var(--sage-glow-strong); }
+  .choice-text { flex: 1; font-size: 14px; line-height: 1.45; }
   .choice-text strong { color: var(--sage-bright); font-weight: 600; }
 
-  .notes-area {
-    width: 100%;
-    min-height: 72px;
-    padding: 12px 14px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-family: inherit;
-    font-size: 14px;
-    line-height: 1.5;
-    resize: vertical;
-    transition: border-color 0.2s var(--ease);
-  }
+  .notes-area { width: 100%; min-height: 72px; padding: 12px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: inherit; font-size: 14px; line-height: 1.5; resize: vertical; transition: border-color 0.2s var(--ease); }
   .notes-area::placeholder { color: var(--muted); }
-  .notes-area:focus {
-    outline: none;
-    border-color: var(--sage);
-    background: var(--surface-2);
-  }
-  .notes-label {
-    display: block;
-    font-size: 12px;
-    color: var(--subtext);
-    margin-bottom: 6px;
-  }
+  .notes-area:focus { outline: none; border-color: var(--sage); background: var(--surface-2); }
+  .notes-label { display: block; font-size: 12px; color: var(--subtext); margin-bottom: 6px; }
 
-  .highlight-blob { font-family: var(--font-head); font-weight: 700; color: var(--warm); }
-
-  /* Sticky submit bar */
-  .submit-bar {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(19, 24, 32, 0.85);
-    border: 1px solid rgba(122, 171, 145, 0.35);
-    border-radius: 999px;
-    padding: 12px 18px 12px 24px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    box-shadow:
-      0 16px 48px rgba(0,0,0,0.65),
-      0 0 0 4px rgba(122, 171, 145, 0.06),
-      0 0 40px rgba(122, 171, 145, 0.15);
-    z-index: 100;
-    animation: floatUp 0.7s var(--ease) 0.4s both;
-    backdrop-filter: blur(16px) saturate(1.4);
-    -webkit-backdrop-filter: blur(16px) saturate(1.4);
-  }
+  /* ─── Sticky submit ─── */
+  .submit-bar { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: rgba(19, 24, 32, 0.85); border: 1px solid rgba(122, 171, 145, 0.35); border-radius: 999px; padding: 12px 18px 12px 24px; display: flex; align-items: center; gap: 20px; box-shadow: 0 16px 48px rgba(0,0,0,0.65), 0 0 40px rgba(122, 171, 145, 0.15); z-index: 100; animation: floatUp 0.7s var(--ease) 0.4s both; backdrop-filter: blur(16px) saturate(1.4); }
+  .submit-bar.hidden { opacity: 0; pointer-events: none; transform: translateX(-50%) translateY(12px); }
   .submit-bar-status { color: var(--subtext); font-size: 13px; display: flex; align-items: center; gap: 6px; }
-  .submit-bar-status strong { color: var(--sage-bright); font-weight: 700; font-variant-numeric: tabular-nums; }
-  .submit-btn {
-    background: linear-gradient(180deg, var(--sage-bright), var(--sage));
-    color: var(--bg);
-    border: none;
-    padding: 12px 28px;
-    border-radius: 999px;
-    font-family: var(--font-head);
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 0.02em;
-    cursor: pointer;
-    transition: all 0.25s var(--ease-out);
-    box-shadow: 0 4px 16px var(--sage-glow-strong), inset 0 1px 0 rgba(255,255,255,0.2);
-    position: relative;
-    overflow: hidden;
-  }
-  .submit-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.25), transparent);
-    transform: translateX(-100%);
-    transition: transform 0.7s var(--ease);
-  }
-  .submit-btn:hover {
-    background: linear-gradient(180deg, #a3d8bc, var(--sage-bright));
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px var(--sage-glow-strong), 0 0 0 1px rgba(122, 171, 145, 0.6), inset 0 1px 0 rgba(255,255,255,0.3);
-  }
-  .submit-btn:hover::before { transform: translateX(100%); }
-  .submit-btn:active { transform: translateY(-1px); }
-  .submit-btn:disabled { background: var(--surface-3); color: var(--muted); cursor: not-allowed; transform: none; box-shadow: none; }
-  .submit-btn:disabled::before { display: none; }
+  .submit-bar-status strong { color: var(--sage-bright); font-weight: 700; }
+  .submit-btn { background: linear-gradient(180deg, var(--sage-bright), var(--sage)); color: var(--bg); border: none; padding: 12px 28px; border-radius: 999px; font-family: var(--font-head); font-weight: 700; font-size: 14px; letter-spacing: 0.02em; cursor: pointer; transition: all 0.25s var(--ease-out); box-shadow: 0 4px 16px var(--sage-glow-strong), inset 0 1px 0 rgba(255,255,255,0.2); position: relative; overflow: hidden; }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--sage-glow-strong); }
 
-  /* Response summary modal */
-  .modal-backdrop {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(4px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 200;
-    animation: fadeIn 0.2s var(--ease);
-  }
+  /* Modal */
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 200; animation: fadeIn 0.2s var(--ease); }
   .modal-backdrop.open { display: flex; }
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    width: 90%;
-    max-width: 600px;
-    max-height: 85vh;
-    overflow-y: auto;
-    padding: 32px;
-    animation: modalIn 0.35s var(--ease);
-  }
-  .modal h2 {
-    font-family: var(--font-head);
-    font-weight: 700;
-    font-size: 22px;
-    letter-spacing: -0.01em;
-    margin: 0 0 8px;
-  }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; width: 90%; max-width: 560px; max-height: 85vh; overflow-y: auto; padding: 32px; animation: modalIn 0.35s var(--ease); }
+  @keyframes modalIn { from { opacity: 0; transform: scale(0.96) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  .modal h2 { font-family: var(--font-head); font-weight: 700; font-size: 22px; letter-spacing: -0.01em; margin: 0 0 8px; }
   .modal p.subtle { color: var(--subtext); margin: 0 0 24px; font-size: 14px; }
-  .modal-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  .action-btn {
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 14px 16px;
-    border-radius: 10px;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    transition: all 0.2s var(--ease);
-  }
-  .action-btn:hover { border-color: var(--sage); background: var(--surface-3); transform: translateY(-1px); }
-  .action-btn strong { color: var(--sage); font-weight: 600; font-size: 14px; }
-  .action-btn span { color: var(--muted); font-size: 12px; }
-  .action-btn.full { grid-column: 1 / -1; }
-
-  .response-preview {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px;
-    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
-    font-size: 12px;
-    line-height: 1.6;
-    color: var(--subtext);
-    max-height: 300px;
-    overflow-y: auto;
-    white-space: pre-wrap;
-    margin-bottom: 20px;
-  }
-  .close-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--subtext);
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-family: inherit;
-    font-size: 13px;
-    cursor: pointer;
-    width: 100%;
-    transition: all 0.2s var(--ease);
-  }
-  .close-btn:hover { border-color: var(--sage); color: var(--sage); }
-  .toast {
-    position: fixed; bottom: 96px; left: 50%; transform: translateX(-50%);
-    background: rgba(19, 24, 32, 0.92);
-    color: var(--text);
-    padding: 14px 22px 14px 18px;
-    border-radius: 999px;
-    font-family: var(--font-head); font-weight: 600; font-size: 13px;
-    letter-spacing: 0.01em;
-    border: 1px solid rgba(122, 171, 145, 0.35);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 32px var(--sage-glow-strong);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    z-index: 300;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.4s var(--ease), transform 0.4s var(--ease-spring);
-    display: flex; align-items: center; gap: 10px;
-  }
-  .toast::before {
-    content: '';
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--sage);
-    box-shadow: 0 0 12px var(--sage);
-  }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(-6px); }
-
-  /* Sent-state celebration */
-  .sent-state {
-    position: relative;
-    padding: 24px 12px 8px;
-    text-align: center;
-  }
-  .sent-glow {
-    position: absolute; inset: -40px;
-    background: radial-gradient(ellipse at center, var(--sage-glow-strong), transparent 60%);
-    opacity: 0;
-    transition: opacity 1.6s var(--ease-out);
-    pointer-events: none;
-  }
-  .sent-glow.fired { opacity: 1; }
-  .sent-check {
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 20px;
-    position: relative;
-  }
-  .sent-circle {
-    stroke-dasharray: 151;
-    stroke-dashoffset: 151;
-    animation: draw-circle 0.6s var(--ease-out) 0.15s forwards;
-  }
-  .sent-tick {
-    stroke-dasharray: 40;
-    stroke-dashoffset: 40;
-    animation: draw-tick 0.4s var(--ease-out) 0.65s forwards;
-    filter: drop-shadow(0 0 8px var(--sage));
-  }
+  .sent-check { display: flex; align-items: center; justify-content: center; margin: 20px 0 24px; }
+  .sent-circle { stroke-dasharray: 151; stroke-dashoffset: 151; animation: draw-circle 0.6s var(--ease-out) 0.15s forwards; }
+  .sent-tick { stroke-dasharray: 40; stroke-dashoffset: 40; animation: draw-tick 0.4s var(--ease-out) 0.65s forwards; filter: drop-shadow(0 0 8px var(--sage)); }
   @keyframes draw-circle { to { stroke-dashoffset: 0; } }
   @keyframes draw-tick { to { stroke-dashoffset: 0; } }
-  .sent-title {
-    font-family: var(--font-head);
-    font-weight: 700;
-    font-size: 26px;
-    letter-spacing: -0.02em;
-    margin: 0 0 10px;
-    color: var(--sage-bright);
-    animation: fadeIn 0.5s var(--ease) 0.85s both;
-  }
-  .sent-sub {
-    color: var(--subtext);
-    font-size: 14px;
-    line-height: 1.55;
-    margin: 0 auto 24px;
-    max-width: 380px;
-    animation: fadeIn 0.5s var(--ease) 1s both;
-  }
-  .sent-meta {
-    background: rgba(122, 171, 145, 0.06);
-    border: 1px solid rgba(122, 171, 145, 0.18);
-    border-radius: 12px;
-    padding: 16px 20px;
-    display: flex; justify-content: space-between; gap: 24px;
-    margin-bottom: 20px;
-    animation: fadeIn 0.5s var(--ease) 1.15s both;
-  }
-  .sent-meta > div { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
-  .sent-meta span { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-  .sent-meta strong { font-family: var(--font-head); font-weight: 600; color: var(--text); font-size: 14px; font-variant-numeric: tabular-nums; }
+  .sent-title { font-family: var(--font-head); font-weight: 700; font-size: 24px; text-align: center; color: var(--sage-bright); margin: 0 0 8px; }
+  .sent-sub { text-align: center; color: var(--subtext); font-size: 14px; line-height: 1.55; max-width: 380px; margin: 0 auto 24px; }
+  .close-btn { background: transparent; border: 1px solid var(--border); color: var(--subtext); padding: 12px 20px; border-radius: 8px; font-family: inherit; font-size: 13px; cursor: pointer; width: 100%; transition: all 0.2s var(--ease); }
+  .close-btn:hover { border-color: var(--sage); color: var(--sage); }
 
-  /* Footer */
-  footer.page { margin-top: 80px; padding: 32px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; line-height: 1.7; }
-  footer.page strong { color: var(--subtext); font-weight: 500; }
-  footer.page a { color: var(--sage); text-decoration: none; }
-  footer.page a:hover { text-decoration: underline; }
-
-  /* General notes big block */
-  .general-notes-block {
-    margin-top: 40px;
-    padding: 24px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-  }
-  .general-notes-block h3 {
-    font-family: var(--font-head);
-    font-weight: 600;
-    font-size: 15px;
-    margin: 0 0 6px;
-  }
-  .general-notes-block p { color: var(--subtext); font-size: 13px; margin: 0 0 12px; }
-
-  code { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace; font-size: 13px; background: var(--surface-2); padding: 1px 6px; border-radius: 4px; color: var(--sage); }
-
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  /* Utility */
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  @keyframes modalIn { from { opacity: 0; transform: scale(0.96) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes floatUp { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
 
-  .section:nth-of-type(1) { animation-delay: 0.05s; }
-  .section:nth-of-type(2) { animation-delay: 0.10s; }
-  .section:nth-of-type(3) { animation-delay: 0.15s; }
-  .section:nth-of-type(4) { animation-delay: 0.20s; }
-  .section:nth-of-type(5) { animation-delay: 0.25s; }
-  .section:nth-of-type(6) { animation-delay: 0.30s; }
-  .section:nth-of-type(7) { animation-delay: 0.35s; }
-
-  @media (max-width: 640px) {
+  @media (max-width: 720px) {
     main { padding: 32px 20px 200px; }
-    h1 { font-size: 26px; }
-    .q-tags { display: none; }
-    .modal-actions { grid-template-columns: 1fr; }
-  }
-
-  @media print {
-    html, body { background: white; color: black; }
-    .submit-bar, .modal-backdrop, .toast, .expand-all, .caret { display: none !important; }
-    .card-body { display: block !important; }
-    .card { break-inside: avoid; }
+    h1 { font-size: 28px; }
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    .phase-rail { flex-wrap: wrap; }
+    .phase-seg { min-width: calc(50% - 4px); }
   }
 </style>
 </head>
@@ -669,761 +404,426 @@
   <div class="gate-card">
     <div class="gate-brand">
       <div class="gate-logo">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
-          <path d="M12 2L4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z" stroke="url(#g1)" stroke-width="2" fill="rgba(122,171,145,0.08)"/>
-          <path d="M8 12l3 3 5-6" stroke="url(#g1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <defs><linearGradient id="g1" x1="0" y1="0" x2="24" y2="24"><stop offset="0" stop-color="#8fc8a8"/><stop offset="1" stop-color="#5b8a72"/></linearGradient></defs>
-        </svg>
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none"><path d="M12 2L4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z" stroke="url(#g1)" stroke-width="2" fill="rgba(122,171,145,0.08)"/><path d="M8 12l3 3 5-6" stroke="url(#g1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="g1" x1="0" y1="0" x2="24" y2="24"><stop offset="0" stop-color="#8fc8a8"/><stop offset="1" stop-color="#5b8a72"/></linearGradient></defs></svg>
       </div>
-      <div>
-        <div class="gate-brand-name">LEIF</div>
-        <div class="gate-brand-tag">Hemp LCA · Phase 1 QAQC</div>
-      </div>
+      <div><div class="gate-brand-name">LEIF</div><div class="gate-brand-tag">Hemp LCA · Rylie's Workspace</div></div>
     </div>
-    <h2 class="gate-heading">Rylie's decision surface</h2>
-    <p class="gate-lede">Enter the access password Joe shared to review your 14 Phase-1 questions and submit answers directly to the platform.</p>
-    <div class="gate-input-wrap">
-      <input id="viewGateInput" type="password" placeholder="Access password" autofocus autocomplete="off" spellcheck="false">
-    </div>
-    <button id="viewGateBtn" class="gate-btn">
-      <span>Unlock</span>
-      <svg viewBox="0 0 20 20" width="16" height="16" fill="none"><path d="M4 10h11m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div id="viewGateError" class="gate-error">Password not recognized. Ping Joe to double-check.</div>
-    <div class="gate-footer">
-      <span class="gate-footer-dot"></span>
-      Secured by LEIF Platform · Session-scoped
-    </div>
+    <h2 class="gate-heading">Welcome back</h2>
+    <p class="gate-lede">Your Midwest Hemp LCA review workspace is here. Round 1 is closed. Round 2 (2 investigation-derived questions) is ready for your judgment.</p>
+    <input id="viewGateInput" type="password" placeholder="Access password" autofocus autocomplete="off" spellcheck="false">
+    <button id="viewGateBtn" class="gate-btn"><span>Enter workspace</span><svg viewBox="0 0 20 20" width="16" height="16" fill="none"><path d="M4 10h11m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div id="viewGateError" class="gate-error">Password not recognized. Ping Joe.</div>
+    <div class="gate-footer"><span class="gate-footer-dot"></span>LEIF Platform · Session-scoped</div>
   </div>
 </div>
-
-<style>
-  #viewGate {
-    position: fixed; inset: 0;
-    background: var(--bg);
-    z-index: 1000;
-    display: flex; align-items: center; justify-content: center;
-    padding: 24px;
-    animation: fadeIn 0.4s var(--ease);
-    overflow: hidden;
-  }
-  .gate-ambient {
-    position: absolute; inset: 0;
-    background:
-      radial-gradient(ellipse 900px 600px at 20% 20%, rgba(122, 171, 145, 0.12), transparent 55%),
-      radial-gradient(ellipse 700px 500px at 80% 80%, rgba(122, 171, 145, 0.08), transparent 60%);
-    pointer-events: none;
-  }
-  .gate-card {
-    position: relative;
-    max-width: 460px; width: 100%;
-    background: linear-gradient(180deg, rgba(19, 24, 32, 0.95), rgba(14, 17, 22, 0.98));
-    border: 1px solid rgba(122, 171, 145, 0.20);
-    border-radius: 20px;
-    padding: 44px 40px 36px;
-    box-shadow:
-      0 32px 80px rgba(0,0,0,0.6),
-      0 0 0 1px rgba(122, 171, 145, 0.06),
-      0 0 60px rgba(122, 171, 145, 0.10);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    animation: gateIn 0.7s var(--ease-out);
-  }
-  @keyframes gateIn {
-    0% { opacity: 0; transform: translateY(24px) scale(0.98); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
-  }
-  .gate-brand {
-    display: flex; align-items: center; gap: 12px;
-    margin-bottom: 32px;
-  }
-  .gate-logo {
-    width: 44px; height: 44px;
-    background: linear-gradient(135deg, rgba(122, 171, 145, 0.15), rgba(122, 171, 145, 0.05));
-    border: 1px solid rgba(122, 171, 145, 0.25);
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 0 24px var(--sage-glow-soft);
-  }
-  .gate-brand-name {
-    font-family: var(--font-head);
-    font-weight: 800;
-    font-size: 18px;
-    letter-spacing: -0.02em;
-    color: var(--sage-bright);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .gate-brand-tag {
-    color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 0.05em;
-  }
-  .gate-heading {
-    font-family: var(--font-head);
-    font-weight: 700;
-    font-size: 26px;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    margin: 0 0 10px;
-    color: var(--text);
-  }
-  .gate-lede {
-    color: var(--subtext);
-    font-size: 14px;
-    line-height: 1.55;
-    margin: 0 0 28px;
-  }
-  .gate-input-wrap {
-    position: relative;
-    margin-bottom: 12px;
-  }
-  #viewGateInput {
-    width: 100%;
-    padding: 15px 18px;
-    background: rgba(10, 13, 16, 0.7);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    color: var(--text);
-    font-family: inherit;
-    font-size: 15px;
-    transition: all 0.25s var(--ease);
-    letter-spacing: 0.02em;
-  }
-  #viewGateInput::placeholder { color: var(--muted); letter-spacing: 0.01em; }
-  #viewGateInput:focus {
-    outline: none;
-    border-color: rgba(122, 171, 145, 0.45);
-    background: rgba(10, 13, 16, 0.9);
-    box-shadow: 0 0 0 4px var(--sage-glow-soft), 0 0 20px var(--sage-glow-soft);
-  }
-  .gate-btn {
-    width: 100%;
-    padding: 15px;
-    background: linear-gradient(180deg, var(--sage-bright), var(--sage));
-    color: var(--bg);
-    border: none;
-    border-radius: 12px;
-    font-family: var(--font-head);
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    transition: all 0.25s var(--ease-out);
-    box-shadow: 0 4px 16px var(--sage-glow-strong), inset 0 1px 0 rgba(255,255,255,0.2);
-    position: relative;
-    overflow: hidden;
-  }
-  .gate-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
-    transform: translateX(-100%);
-    transition: transform 0.6s var(--ease);
-  }
-  .gate-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 28px var(--sage-glow-strong), 0 0 0 1px rgba(122, 171, 145, 0.6), inset 0 1px 0 rgba(255,255,255,0.3);
-  }
-  .gate-btn:hover::before { transform: translateX(100%); }
-  .gate-btn:active { transform: translateY(-1px); }
-  .gate-btn svg { transition: transform 0.3s var(--ease); }
-  .gate-btn:hover svg { transform: translateX(3px); }
-  .gate-error {
-    display: none;
-    color: var(--rose);
-    font-size: 13px;
-    margin-top: 14px;
-    padding: 10px 14px;
-    background: rgba(181, 122, 122, 0.10);
-    border: 1px solid rgba(181, 122, 122, 0.25);
-    border-radius: 8px;
-    text-align: center;
-    animation: shake 0.4s var(--ease);
-  }
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-6px); }
-    75% { transform: translateX(6px); }
-  }
-  .gate-footer {
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 0.04em;
-    text-align: center;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
-  .gate-footer-dot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: var(--sage);
-    box-shadow: 0 0 8px var(--sage);
-    animation: pulse-dot 2.2s var(--ease) infinite;
-  }
-</style>
 
 <main>
 
   <header class="page">
     <div class="brand">
       <span class="brand-mark">LEIF</span>
-      <span class="brand-tag">Hemp LCA · Phase 1 QAQC</span>
+      <span class="brand-tag">Midwest Hemp LCA · Review Workspace</span>
     </div>
-    <h1>Rylie — 14 decisions to close Phase 1</h1>
-    <p class="lede">
-      Read time <strong style="color:var(--text)">~10 min</strong>. All 6 blockers already resolved from your CHECKPOINT-0 answers.
-      Below is the remaining material set, bundled by decision. Every card has my recommendation up front. Pick a choice, add notes if you have know-how to add, and hit <strong style="color:var(--sage)">Send answers</strong> at the bottom.
-      Your progress autosaves as you go.
-    </p>
-    <div class="meta">
-      <div class="meta-item"><strong>Prepared</strong> 2026-07-01</div>
-      <div class="meta-item"><strong>For</strong> Rylie Pelton, LEIF LLC</div>
-      <div class="meta-item"><strong>Full log</strong> <code>Projects/Midwest-Hemp-LCA/QAQC/01_Discrepancy_Log.md</code></div>
-    </div>
-    <div class="progress" aria-live="polite">
-      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-      <span class="progress-count" id="progressCount">0 of 14 answered</span>
-      <span class="save-state" id="saveState"><span class="dot"></span>Autosave on</span>
-    </div>
+    <h1>Rylie's Workspace</h1>
+    <p class="lede">Everything about the Phase-1 QAQC review — audit trail, project state, and any new questions that need your judgment — lives here. Bookmark it. Come back anytime.</p>
   </header>
 
-  <!-- SECTION 1: BATCH ACTIONS -->
-  <section class="section">
-    <div class="section-label">Batch actions · click-through</div>
-    <h2 class="section-title">Three sweeping decisions clear ~120 rows</h2>
-    <p class="section-note">Each has a clear recommended default. Approve or override.</p>
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- DASHBOARD -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="dashboard">
 
-    <article class="card card-batch" data-q="B1">
-      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-        <span class="q-num batch">BATCH</span>
-        <div class="q-title-wrap">
-          <div class="q-title">Reject 3 LANCA false positives (same misread as LANCA-001/002)</div>
-          <div class="q-tags">
-            <span class="tag tag-cat">LANCA</span>
-            <span class="tag tag-sev-batch">verified</span>
-            <span class="tag tag-affects">LANCA-003 · LANCA-007 · LANCA-008</span>
-          </div>
-        </div>
-        <span class="caret">▾</span>
+    <div class="dashboard-status-card">
+      <div class="dash-eyebrow">Live project state</div>
+      <h2 class="dash-status-heading">Round 2 ready — 2 investigation-derived questions awaiting you.</h2>
+      <p class="dash-status-sub">Round 1 (14 questions) is resolved and archived below. Between rounds, we ran the 3 investigations you requested. One came back cosmetic-only. Two need your judgment before Phase 2 starts.</p>
+      <div class="phase-rail">
+        <div class="phase-seg done"><div class="phase-num">Phase 0</div><div class="phase-label">Ground truth</div></div>
+        <div class="phase-seg done"><div class="phase-num">Phase 1</div><div class="phase-label">Audit + R1</div></div>
+        <div class="phase-seg done"><div class="phase-num">Investigations</div><div class="phase-label">Q8 · Q10 · Q11</div></div>
+        <div class="phase-seg active"><div class="phase-num">Phase 2</div><div class="phase-label">Ready to execute</div></div>
       </div>
-      <div class="card-body">
-        <div class="rec"><span class="rec-label">Recommended</span>Reject all three — verified false positives from the same subagent misread. No workbook fix needed.</div>
-        <div class="detail-block">
-          <span class="detail-label">What they claimed</span>
-          <ul>
-            <li><strong>LANCA-003</strong> — MC sheets 5000 rows, not 12000</li>
-            <li><strong>LANCA-007</strong> — only 5 of 12 scenarios present</li>
-            <li><strong>LANCA-008</strong> — L4_irrigation_MC has 99 Run cols instead of 1000</li>
-          </ul>
-        </div>
-        <div class="detail-block">
-          <span class="detail-label">Direct verification via openpyxl</span>
-          <ul>
-            <li>LANCA1_MC_peracre_calc: <strong>12001 × 41</strong>, all 12 scenarios in summary block cols AC-AJ rows 2-13</li>
-            <li>LANCA1_MC_perkg_calc: <strong>42001 × 37</strong></li>
-            <li>L4_irrigation_MC: row 1 has <strong>Run_1 through Run_1000</strong></li>
-          </ul>
-        </div>
-        <div class="response-block">
-          <span class="response-label">Your call</span>
-          <div class="choices" data-q="B1">
-            <label class="choice"><input type="radio" name="B1" value="approve"><div class="choice-text"><strong>Reject all three</strong> as recommended — false positives confirmed</div></label>
-            <label class="choice"><input type="radio" name="B1" value="override"><div class="choice-text"><strong>Override</strong> — I want to look at one specifically (add note below)</div></label>
-          </div>
-          <label class="notes-label">Notes (optional)</label>
-          <textarea class="notes-area" data-q="B1" placeholder="Anything I should know…"></textarea>
-        </div>
-      </div>
-    </article>
+    </div>
 
-    <article class="card card-batch" data-q="B2">
-      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-        <span class="q-num batch">BATCH</span>
-        <div class="q-title-wrap">
-          <div class="q-title">Ship a Provenance-tab template to all 6 workbooks</div>
-          <div class="q-tags">
-            <span class="tag tag-cat">Cross-workbook</span>
-            <span class="tag tag-sev-batch">universal</span>
-            <span class="tag tag-affects">XW-005 · EUTRO-013 · ADPe-006 · ADPf-006 · +5 provenance items</span>
-          </div>
-        </div>
-        <span class="caret">▾</span>
+    <div class="metrics-grid">
+      <div class="metric-tile">
+        <p class="metric-label">Findings</p>
+        <div class="metric-value">155</div>
+        <div class="metric-detail">26 explicitly decided · 57 batch-deferred · 5 investigation outcomes</div>
       </div>
-      <div class="card-body">
-        <div class="rec"><span class="rec-label">Recommended</span>Approve. One template per workbook: version · MC seed · iteration count · methodology citations · uncertainty-file version reference · regeneration date · changelog.</div>
-        <div class="detail-block"><span class="detail-label">Why</span><p>None of the 6 core workbooks carries a README/Provenance tab. ISO 14044 §5.1.1 documentation gets easier. Future audits get cheaper. ~30 min per workbook = one afternoon.</p></div>
-        <div class="response-block">
-          <span class="response-label">Your call</span>
-          <div class="choices" data-q="B2">
-            <label class="choice"><input type="radio" name="B2" value="approve"><div class="choice-text"><strong>Approve</strong> — ship the template to all 6</div></label>
-            <label class="choice"><input type="radio" name="B2" value="modify"><div class="choice-text"><strong>Modify template</strong> — add / remove fields (specify below)</div></label>
-            <label class="choice"><input type="radio" name="B2" value="reject"><div class="choice-text"><strong>Reject</strong> — not now, defer to Phase 3+</div></label>
-          </div>
-          <label class="notes-label">Fields to add / remove, or any modifications:</label>
-          <textarea class="notes-area" data-q="B2" placeholder="e.g. also include reviewer name, ISO conformance status…"></textarea>
-        </div>
+      <div class="metric-tile">
+        <p class="metric-label">Rounds</p>
+        <div class="metric-value"><span class="accent">1</span> / 2</div>
+        <div class="metric-detail">Round 1 resolved 2026-07-01. Round 2 active.</div>
       </div>
-    </article>
+      <div class="metric-tile">
+        <p class="metric-label">Categories audited</p>
+        <div class="metric-value">7</div>
+        <div class="metric-detail">5 ready for Phase 2 · 2 pending Round 2</div>
+      </div>
+      <div class="metric-tile">
+        <p class="metric-label">Phase 2 confidence</p>
+        <div class="metric-value">High</div>
+        <div class="metric-detail">Locks after Round 2 sign-off; downstream steps clean</div>
+      </div>
+    </div>
 
-    <article class="card card-batch" data-q="B3">
-      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-        <span class="q-num batch">BATCH</span>
-        <div class="q-title-wrap">
-          <div class="q-title">Batch-approve ~99 minor items into Phase-2 housekeeping</div>
-          <div class="q-tags">
-            <span class="tag tag-cat">All categories</span>
-            <span class="tag tag-sev-batch">documentation</span>
-            <span class="tag tag-affects">all minor severities</span>
-          </div>
-        </div>
-        <span class="caret">▾</span>
+    <div class="category-strip">
+      <p class="strip-title">Category readiness — Phase 2</p>
+      <div class="cat-chips">
+        <span class="cat-chip ready"><span class="dot"></span>GWP · ready</span>
+        <span class="cat-chip ready"><span class="dot"></span>LANCA · ready</span>
+        <span class="cat-chip ready"><span class="dot"></span>ADPe · ready</span>
+        <span class="cat-chip ready"><span class="dot"></span>ADPf · ready</span>
+        <span class="cat-chip ready"><span class="dot"></span>SOC + Processing · ready</span>
+        <span class="cat-chip pending"><span class="dot"></span>Eutrophication · pending Q10</span>
+        <span class="cat-chip pending"><span class="dot"></span>Acidification · pending Q11</span>
       </div>
-      <div class="card-body">
-        <div class="rec"><span class="rec-label">Recommended</span>Approve — none of these change calculation output. All are label bugs, provenance stamps, README notes, cosmetic cleanup.</div>
-        <div class="detail-block">
-          <span class="detail-label">Examples in the batch</span>
-          <ul>
-            <li>Label copy-paste bugs (EF1_dry titled "N₂O EF1 wet")</li>
-            <li>Uncertainty README says v2.4 (canon is v2.5)</li>
-            <li>Missing CML / TRACI vintage citations</li>
-            <li>Documentation notes on intentional design patterns (mass allocation identity, L2/L3 scenario-agnostic treatment)</li>
-          </ul>
-        </div>
-        <div class="response-block">
-          <span class="response-label">Your call</span>
-          <div class="choices" data-q="B3">
-            <label class="choice"><input type="radio" name="B3" value="approve"><div class="choice-text"><strong>Approve batch</strong> — sweep all into Phase 2 housekeeping</div></label>
-            <label class="choice"><input type="radio" name="B3" value="defer"><div class="choice-text"><strong>Defer</strong> — mark as backlog, Phase 3+ only</div></label>
-            <label class="choice"><input type="radio" name="B3" value="selective"><div class="choice-text"><strong>Selective</strong> — I want to walk specific ones (specify below)</div></label>
-          </div>
-          <label class="notes-label">Notes (which minor items you want to walk, or anything else):</label>
-          <textarea class="notes-area" data-q="B3" placeholder="e.g. show me minor items that touch the CF vintage stamps first"></textarea>
-        </div>
+    </div>
+
+    <div class="timeline">
+      <p class="strip-title">What's happened</p>
+      <div class="tl-items">
+        <div class="tl-item"><span class="tl-marker"></span><div class="tl-body"><div class="tl-when">2026-06-30 evening</div><div class="tl-what"><strong>Phase 0 · Ground Truth</strong> — 32 hemp files ingested. 7 impact categories mapped to workbooks. 5 blockers cleared with your CHECKPOINT-0 answers.</div></div></div>
+        <div class="tl-item"><span class="tl-marker"></span><div class="tl-body"><div class="tl-when">2026-06-30 late</div><div class="tl-what"><strong>Phase 1 · Audit</strong> — 7 parallel subagents audited all 6 workbooks. 155 findings logged. Cross-workbook consistency pass complete.</div></div></div>
+        <div class="tl-item"><span class="tl-marker"></span><div class="tl-body"><div class="tl-when">2026-07-01 mid-day</div><div class="tl-what"><strong>Round 1 · Your review</strong> — 26 explicit decisions + 57 minor batch-deferred. 3 investigations queued.</div></div></div>
+        <div class="tl-item"><span class="tl-marker"></span><div class="tl-body"><div class="tl-when">2026-07-01 afternoon</div><div class="tl-what"><strong>3 investigations complete</strong> — Q8 cosmetic. Q10 derivation traced, external citation needed. Q11 discovered systemic Cluster_Stats cache bug — much bigger than the original AP-002 finding.</div></div></div>
+        <div class="tl-item"><span class="tl-marker pending"></span><div class="tl-body"><div class="tl-when">Now</div><div class="tl-what"><strong>Round 2 · Your judgment needed on 2 items</strong> — cache-fix sign-off + P_deposition citation. Phase 2 begins when these land.</div></div></div>
       </div>
-    </article>
+    </div>
   </section>
 
-  <!-- SECTION 2: CROSS-CUTTING -->
-  <section class="section">
-    <div class="section-label">Part B · cross-cutting</div>
-    <h2 class="section-title">Two decisions that touch multiple categories</h2>
-    <p class="section-note">Your answers cascade across 4-of-7 workbooks.</p>
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- ROUND 2 -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="round-header round-2">
+    <div class="round-label active">Round 2 · needs your input</div>
+    <h2 class="round-title">Two questions to lock before Phase 2</h2>
+    <p class="round-sub">Q8 came back cosmetic — no action needed. The other two investigations found things that need your judgment. Answers here gate Phase-2 execution.</p>
 
-    <article class="card" data-q="Q1">
-      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-        <span class="q-num">Q1</span>
-        <div class="q-title-wrap">
-          <div class="q-title">Does v5 present GWP / AP / ADPe / ADPf per-state?</div>
-          <div class="q-tags"><span class="tag tag-cat">Spatial resolution</span><span class="tag tag-sev-material">material · cascades</span><span class="tag tag-affects">7 rows resolve</span></div>
-        </div>
-        <span class="caret">▾</span>
+    <div class="round-context">
+      <strong>What the 3 investigations found:</strong>
+      <div class="verdicts">
+        <div class="verdict cosmetic"><span class="verdict-tag">Q8 · resolved</span>LANCA4 irrigation units are dimensionally clean end-to-end — cosmetic mislabeling only. Values match LCI targets (TIG 415 m³/ac = 4.04 in/ac ✓ matches target 4.0). No ×4047 bug. Adding a signpost comment in Phase 2 — no action from you needed.</div>
+        <div class="verdict needs"><span class="verdict-tag">Q10 · needs you</span>P_deposition derivation traced to a Claude workflow (2026-04-15) — no external paper was cited. Need you to pick the anchor before the parameter lands in the v2.6 canonical uncertainty file.</div>
+        <div class="verdict needs"><span class="verdict-tag">Q11 · needs you</span>The MOP tail wasn't a distribution judgment — it's a stale-cache bug in <code>Cluster_Stats</code>. Fiber K₂O cached σ_log = 1.323 is arithmetically impossible from the 2 actual observations (which yield 0.370). Same pattern likely in Grain P2O5, Grain K2O, Fiber N, Fiber P2O5. Scope expanded from AP-only to systemic fertilizer workbook fix.</div>
       </div>
-      <div class="card-body">
-        <div class="rec"><span class="rec-label">Your call</span><strong>Per-state / aggregate / hybrid?</strong> Biggest architectural question left.</div>
-        <div class="detail-block"><span class="detail-label">Current state</span><ul>
-          <li><strong>Eutro + LANCA:</strong> already county-level</li>
-          <li><strong>GWP:</strong> 12 states → 4 NERC regions probabilistically weighted; no per-state output</li>
-          <li><strong>AP / ADPe / ADPf:</strong> same NERC-only pattern on electricity CF; no per-state anywhere</li>
-        </ul></div>
-        <div class="detail-block"><span class="detail-label">If per-state (Phase-2 impact)</span><p>Add state × scenario axis to 4 workbooks. ~1 week per workbook.</p></div>
-        <div class="detail-block"><span class="detail-label">If aggregate only</span><p>Update v5 narrative to explicitly frame as national/regional aggregates. Cheap.</p></div>
-        <div class="response-block">
-          <span class="response-label">Your call</span>
-          <div class="choices" data-q="Q1">
-            <label class="choice"><input type="radio" name="Q1" value="aggregate"><div class="choice-text"><strong>Aggregate only</strong> — update v5 narrative to frame these as national/regional</div></label>
-            <label class="choice"><input type="radio" name="Q1" value="per-state"><div class="choice-text"><strong>Per-state</strong> — add state × scenario axis to all 4 workbooks in Phase 2</div></label>
-            <label class="choice"><input type="radio" name="Q1" value="hybrid"><div class="choice-text"><strong>Hybrid</strong> — some categories per-state, others aggregate (specify below)</div></label>
-            <label class="choice"><input type="radio" name="Q1" value="defer"><div class="choice-text"><strong>Defer</strong> — decide after Q1a review</div></label>
-          </div>
-          <label class="notes-label">If hybrid, which categories go per-state, and any other guidance:</label>
-          <textarea class="notes-area" data-q="Q1" placeholder="e.g. GWP per-state (customer-facing), rest aggregate"></textarea>
-        </div>
-      </div>
-    </article>
-
-    <article class="card" data-q="Q2">
-      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-        <span class="q-num">Q2</span>
-        <div class="q-title-wrap">
-          <div class="q-title">Allocation drift across workbooks — intentional or drift?</div>
-          <div class="q-tags"><span class="tag tag-cat">Cross-workbook</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">XW-003</span></div>
-        </div>
-        <span class="caret">▾</span>
-      </div>
-      <div class="card-body">
-        <div class="rec"><span class="rec-label">Your call</span><strong>(a)</strong> category-specific allocation with rationale, or <strong>(b)</strong> should share, propagate canonical.</div>
-        <div class="detail-block"><span class="detail-label">Finding</span><p><code>alloc</code> tab is 30×7 in AP/ADPe/ADPf/Eutro/LANCA — same structure, <strong>different content hashes per workbook.</strong> GWP is 30×12. SOC has no alloc.</p></div>
-        <div class="detail-block"><span class="detail-label">Why it matters</span><p>ISO 14044 §4.3.4 wants consistent allocation across impact categories unless documented as category-specific.</p></div>
-        <div class="response-block">
-          <span class="response-label">Your call</span>
-          <div class="choices" data-q="Q2">
-            <label class="choice"><input type="radio" name="Q2" value="category-specific"><div class="choice-text"><strong>Category-specific</strong> — different allocation per category is intentional (I'll document rationale per workbook)</div></label>
-            <label class="choice"><input type="radio" name="Q2" value="shared"><div class="choice-text"><strong>Should share</strong> — propagate canonical <code>alloc</code> values across all workbooks</div></label>
-            <label class="choice"><input type="radio" name="Q2" value="unsure"><div class="choice-text"><strong>Unsure</strong> — need to investigate history</div></label>
-          </div>
-          <label class="notes-label">Which allocation method per category, or context:</label>
-          <textarea class="notes-area" data-q="Q2" placeholder="e.g. economic for GWP, mass for LANCA, energy for CED…"></textarea>
-        </div>
-      </div>
-    </article>
+    </div>
   </section>
 
-  <!-- SECTION 3: GWP -->
-  <section class="section">
-    <div class="section-label">Part C · GWP methodology</div>
-    <h2 class="section-title">Four judgment calls in the flagship workbook</h2>
+  <article class="card" data-q="QR2-1">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num active">QR2·1</span>
+      <div class="q-title-wrap">
+        <div class="q-title">Fertilizer workbook cache fix — pick the truncation ceiling</div>
+        <div class="q-tags"><span class="tag tag-cat">AP-002 → systemic</span><span class="tag tag-sev-material">material</span></div>
+      </div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec"><span class="rec-label">Recommended</span>Full three-part fix (refit + reconcile + truncate at <strong>270 lb/ac / 300 kg K₂O/ha</strong>, alfalfa-analog). That ceiling matches the highest-K crop we have as an analog for hemp's actual K uptake demand, and gives insurance against future cache drift without over-constraining the tail.</div>
+      <div class="detail-block"><span class="detail-label">Q11 investigation summary</span><ul>
+        <li><strong>Root cause</strong> — <code>Cluster_Stats!R9</code> Fiber K₂O cached σ_log = 1.323 is arithmetically impossible from the two actual observations K02=43, K04=75 lb K₂O/ac (real σ_log = 0.370).</li>
+        <li><strong>Systemic</strong> — Grain P2O5 methodology doc reports σ_log = 0.607; workbook caches 0.178. Same discrepancy pattern likely in Grain K2O, Fiber N, Fiber P2O5.</li>
+        <li><strong>Under stale 1.323</strong> — P99 draw = 933 lb/ac, P99.9 = 2,564 lb/ac (matches Run_82 and Run_100 outliers).</li>
+        <li><strong>Under corrected 0.370</strong> — P99 draw = 101 lb/ac (~113 kg K₂O/ha), inside literature envelope.</li>
+        <li><strong>Real envelope</strong> — MHD observed 36–84 kg K₂O/ha; Ip & Miller 2012 UK hemp: 60–150; Scrucca 2014 Italy fiber: similar. Ceiling ~300 kg/ha (alfalfa upper-commercial analog).</li>
+      </ul></div>
+      <div class="response-block">
+        <span class="response-label">Your call</span>
+        <div class="choices" data-q="QR2-1">
+          <label class="choice"><input type="radio" name="QR2-1" value="full-alfalfa"><div class="choice-text"><strong>Full fix, alfalfa-analog cap</strong> — refit + reconcile all Cluster_Stats + truncate at <strong>270 lb/ac (300 kg K₂O/ha)</strong>. Recommended.</div></label>
+          <label class="choice"><input type="radio" name="QR2-1" value="full-scrucca"><div class="choice-text"><strong>Full fix, hemp-specific cap</strong> — refit + reconcile + truncate tighter at <strong>135 lb/ac (150 kg K₂O/ha)</strong> per Scrucca 2014.</div></label>
+          <label class="choice"><input type="radio" name="QR2-1" value="refit-only"><div class="choice-text"><strong>Refit + reconcile only, no truncation</strong> — trust the corrected σ_log values; skip the belt-and-suspenders cap.</div></label>
+          <label class="choice"><input type="radio" name="QR2-1" value="modify"><div class="choice-text"><strong>Modify</strong> — different scope or ceiling (add note below).</div></label>
+        </div>
+        <label class="notes-label">Notes (any additional guidance for scope or targets):</label>
+        <textarea class="notes-area" data-q="QR2-1" placeholder="e.g. also check X distribution, use Y kg/ha ceiling, cite Z reference…"></textarea>
+      </div>
+    </div>
+  </article>
 
-    <article class="card" data-q="Q4">
-      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-        <span class="q-num">Q4</span>
-        <div class="q-title-wrap">
-          <div class="q-title">pathway2 volatilization applies FracGASM to crop-residue N — intentional?</div>
-          <div class="q-tags"><span class="tag tag-cat">GWP · N₂O</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">GWP-003</span></div>
-        </div>
-        <span class="caret">▾</span>
+  <article class="card" data-q="QR2-2">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num active">QR2·2</span>
+      <div class="q-title-wrap">
+        <div class="q-title">P_deposition — pick the citation anchor</div>
+        <div class="q-tags"><span class="tag tag-cat">EUTRO-001 · Q10 outcome</span><span class="tag tag-sev-material">material</span></div>
       </div>
-      <div class="card-body">
-        <div class="rec"><span class="rec-label">Your call</span><strong>Intentional research override</strong> (add citation) or <strong>bug</strong> (remove the F_CR × FracGASM term).</div>
-        <div class="detail-block"><span class="detail-label">What the workbook does</span><p><code>pathway2_wet</code> and <code>pathway2_dry</code> include <code>(F_CR × FracGASM_frozen)</code>.</p></div>
-        <div class="detail-block"><span class="detail-label">What IPCC 2019 says</span><p>Refinement Vol 4 Ch 11 Eq 11.9 — FracGASM applies only to organic amendments (F_ON) and grazing deposition (F_PRP). Crop residue N goes into pathway1 and pathway3, not pathway2.</p></div>
-        <div class="detail-block"><span class="detail-label">If bug</span><p>Reduces pathway2 by F_CR contribution — largest in TDD/TID (high residue biomass).</p></div>
-        <div class="response-block">
-          <span class="response-label">Your call</span>
-          <div class="choices" data-q="Q4">
-            <label class="choice"><input type="radio" name="Q4" value="intentional"><div class="choice-text"><strong>Intentional override</strong> — cite research source (add citation below)</div></label>
-            <label class="choice"><input type="radio" name="Q4" value="bug"><div class="choice-text"><strong>Bug</strong> — remove F_CR × FracGASM from pathway2</div></label>
-          </div>
-          <label class="notes-label">Citation if intentional, or any implementation guidance:</label>
-          <textarea class="notes-area" data-q="Q4" placeholder="e.g. citation for the research override, or scope of the fix"></textarea>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec"><span class="rec-label">Recommended</span><strong>Anderson & Downing 2006</strong> — most defensible retrofit for the Midwest 0.3–0.5 kg P/ha/yr range. We'll ingest the paper to Vault/Library/Sources/Science-Pubs/ before the parameter lands in v2.6.</div>
+      <div class="detail-block"><span class="detail-label">Q10 investigation summary</span><ul>
+        <li>Distribution traced to Claude workflow 2026-04-15 (phosphorus-emissions-and-eutrophication-characterization-factors) — proposed <code>0.3–0.5 kg P/ha/yr for Midwest</code> as "literature default" without naming a paper.</li>
+        <li>Encoded 2026-06-06 (Joe accepted the range in the review).</li>
+        <li>Workbook MC samples span 0.316–0.473 — matches Triangular(0.3, 0.4, 0.5) exactly.</li>
+        <li>Vault Science-Pubs has zero atmospheric-P-deposition papers indexed.</li>
+      </ul></div>
+      <div class="response-block">
+        <span class="response-label">Your call</span>
+        <div class="choices" data-q="QR2-2">
+          <label class="choice"><input type="radio" name="QR2-2" value="anderson-downing-2006"><div class="choice-text"><strong>Anderson &amp; Downing 2006</strong> — Water Air Soil Pollut. 176:351–374, bulk deposition of N/P/Si in agricultural region. Recommended.</div></label>
+          <label class="choice"><input type="radio" name="QR2-2" value="tipping-2014"><div class="choice-text"><strong>Tipping et al. 2014</strong></div></label>
+          <label class="choice"><input type="radio" name="QR2-2" value="newman-1995"><div class="choice-text"><strong>Newman 1995</strong></div></label>
+          <label class="choice"><input type="radio" name="QR2-2" value="nadp"><div class="choice-text"><strong>NADP annual summary</strong> — atmospheric deposition network (specify year in notes).</div></label>
+          <label class="choice"><input type="radio" name="QR2-2" value="other"><div class="choice-text"><strong>Other</strong> — you have a specific reference in mind (specify below).</div></label>
         </div>
+        <label class="notes-label">Notes (or your preferred citation):</label>
+        <textarea class="notes-area" data-q="QR2-2" placeholder=""></textarea>
       </div>
-    </article>
+    </div>
+  </article>
 
-    <article class="card" data-q="Q5">
-      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-        <span class="q-num">Q5</span>
-        <div class="q-title-wrap">
-          <div class="q-title">EF4_wet uses aggregate distribution — switch to wet-disaggregated?</div>
-          <div class="q-tags"><span class="tag tag-cat">GWP · N₂O</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">GWP-005</span></div>
-        </div>
-        <span class="caret">▾</span>
-      </div>
-      <div class="card-body">
-        <div class="rec"><span class="rec-label">Your call</span>Switch to wet-disaggregated. Under-estimates wet-climate pathway2 by ~30-40% currently.</div>
-        <div class="detail-block"><span class="detail-label">Numbers</span><ul>
-          <li>Current EF4_wet median: <strong>0.00987 kg N₂O-N/kg N volatilized</strong> (aggregate distribution)</li>
-          <li>Per v2.5 §6 row 52: should be <strong>Triangular(0.011, 0.014, 0.017)</strong> — median ~0.014</li>
-          <li>Fix raises EF4_wet ~40%</li>
-        </ul></div>
-        <div class="response-block">
-          <span class="response-label">Your call</span>
-          <div class="choices" data-q="Q5">
-            <label class="choice"><input type="radio" name="Q5" value="switch"><div class="choice-text"><strong>Switch</strong> to wet-disaggregated Triangular(0.011, 0.014, 0.017)</div></label>
-            <label class="choice"><input type="radio" name="Q5" value="keep"><div class="choice-text"><strong>Keep aggregate</strong> — reasoning (add note below)</div></label>
-          </div>
-          <label class="notes-label">Notes:</label>
-          <textarea class="notes-area" data-q="Q5" placeholder=""></textarea>
-        </div>
-      </div>
-    </article>
-
-    <article class="card" data-q="Q6">
-      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-        <span class="q-num">Q6</span>
-        <div class="q-title-wrap">
-          <div class="q-title">N_AG_BG applies "Fiber N" uniformly to all residue — simplification or split?</div>
-          <div class="q-tags"><span class="tag tag-cat">GWP · N inventory</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">GWP-007</span></div>
-        </div>
-        <span class="caret">▾</span>
-      </div>
-      <div class="card-body">
-        <div class="rec"><span class="rec-label">Your call</span><strong>Deliberate simplification</strong> (narrative note) or <strong>split by tissue</strong> (Stover-N / Fiber-N / Root-N per scenario).</div>
-        <div class="detail-block"><span class="detail-label">Current</span><p><code>F_CR!row 17</code> uses <code>N_AG_BG!B$2</code> (labeled "Fiber N", median 0.008) as N content for both AG residue AND BG roots for ALL 12 scenarios.</p></div>
-        <div class="detail-block"><span class="detail-label">Typical realistic values</span><ul>
-          <li>Grain stover N: 0.005-0.007</li>
-          <li>Hemp fiber N: ~0.008</li>
-          <li>Root N: 0.010-0.012</li>
-        </ul></div>
-        <div class="response-block">
-          <span class="response-label">Your call</span>
-          <div class="choices" data-q="Q6">
-            <label class="choice"><input type="radio" name="Q6" value="simplification"><div class="choice-text"><strong>Deliberate simplification</strong> — add narrative note explaining</div></label>
-            <label class="choice"><input type="radio" name="Q6" value="split"><div class="choice-text"><strong>Split by tissue</strong> — Stover-N / Fiber-N / Root-N per scenario</div></label>
-          </div>
-          <label class="notes-label">Notes:</label>
-          <textarea class="notes-area" data-q="Q6" placeholder="e.g. use these specific N-content values by tissue"></textarea>
-        </div>
-      </div>
-    </article>
-
-    <article class="card" data-q="Q7">
-      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-        <span class="q-num">Q7</span>
-        <div class="q-title-wrap">
-          <div class="q-title">Fuel MC draws identical across 4 scenario pairs — CRN or copy-paste?</div>
-          <div class="q-tags"><span class="tag tag-cat">GWP · MC design</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">GWP-009</span></div>
-        </div>
-        <span class="caret">▾</span>
-      </div>
-      <div class="card-body">
-        <div class="rec"><span class="rec-label">Your call</span><strong>Intentional common-random-numbers</strong> (document) or <strong>accidental copy-paste</strong> (redraw independent MC).</div>
-        <div class="detail-block"><span class="detail-label">Finding</span><p>Fuel MC realizations byte-identical across TDG_GF, TDD, HDG_GF, HIG_GF (Run_1=251.53, Run_2=689.62, …). TIG_GF and TID share another identical series.</p></div>
-        <div class="response-block">
-          <span class="response-label">Your call</span>
-          <div class="choices" data-q="Q7">
-            <label class="choice"><input type="radio" name="Q7" value="crn"><div class="choice-text"><strong>Intentional CRN</strong> — document explicitly in workbook README</div></label>
-            <label class="choice"><input type="radio" name="Q7" value="redraw"><div class="choice-text"><strong>Accidental</strong> — redraw independent MC per scenario</div></label>
-            <label class="choice"><input type="radio" name="Q7" value="unsure"><div class="choice-text"><strong>Not sure</strong> — need to check the sampling code</div></label>
-          </div>
-          <label class="notes-label">Notes:</label>
-          <textarea class="notes-area" data-q="Q7" placeholder=""></textarea>
-        </div>
-      </div>
-    </article>
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- ROUND 1 · AUDIT TRAIL -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="round-header round-1">
+    <div class="round-label resolved">Round 1 · resolved 2026-07-01</div>
+    <h2 class="round-title">Your Round 1 responses</h2>
+    <p class="round-sub">14 questions, submitted 2026-07-01 14:10 UTC. Every row on the discrepancy log is marked with your Decision. Click any card to review.</p>
   </section>
 
-  <!-- SECTION 4: LANCA -->
-  <section class="section">
-    <div class="section-label">Part D · LANCA</div>
-    <h2 class="section-title">Two remaining LANCA items</h2>
+  <article class="card audit" data-audit="B1">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">B1</span>
+      <div class="q-title-wrap"><div class="q-title">Reject 3 LANCA false positives</div><div class="q-tags"><span class="tag tag-cat">Batch</span><span class="tag tag-answered">approve</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · approve</div>
+        <div class="audit-notes empty">(no notes)</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> LANCA-003, LANCA-007, LANCA-008 rejected as false positives (subagent misread horizontal-block layout). Verified via openpyxl.</div>
+      </div>
+    </div>
+  </article>
 
-    <article class="card" data-q="Q8">
-      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-        <span class="q-num">Q8</span>
-        <div class="q-title-wrap">
-          <div class="q-title">LANCA4 irrigation units — <span class="highlight-blob">possible ×4047 error</span></div>
-          <div class="q-tags"><span class="tag tag-cat">LANCA4</span><span class="tag tag-sev-material">material · verify</span><span class="tag tag-affects">LANCA-038</span></div>
-        </div>
-        <span class="caret">▾</span>
+  <article class="card audit" data-audit="B2">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">B2</span>
+      <div class="q-title-wrap"><div class="q-title">Ship Provenance template to all 6 workbooks</div><div class="q-tags"><span class="tag tag-cat">Batch</span><span class="tag tag-answered">reject</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · reject</div>
+        <div class="audit-notes empty">(no notes)</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> no provenance-template work in Phase 2. XW-005, EUTRO-013, ADPe-006, ADPf-006 all closed.</div>
       </div>
-      <div class="card-body">
-        <div class="rec"><span class="rec-label">Your call</span>Confirm the canonical unit — I'll trace the conversion path end-to-end.</div>
-        <div class="detail-block"><span class="detail-label">Finding</span><ul>
-          <li><code>L4_assumptions</code> rows 23-35: labeled <strong>m³/ac</strong></li>
-          <li><code>LANCA4_MC_peracre_calc</code> col H: labeled <strong>Irrigation_mm_yr</strong></li>
-          <li>Acre-to-m² conversion = 4047, so if mismatch is real, LANCA4 results off by ~4047×</li>
-        </ul></div>
-        <div class="response-block">
-          <span class="response-label">Your call</span>
-          <div class="choices" data-q="Q8">
-            <label class="choice"><input type="radio" name="Q8" value="mm-per-yr"><div class="choice-text"><strong>mm/yr is canonical</strong> — L4_assumptions label is wrong (cosmetic fix)</div></label>
-            <label class="choice"><input type="radio" name="Q8" value="m3-per-ac"><div class="choice-text"><strong>m³/ac is canonical</strong> — LANCA4 calc has implicit conversion (verify)</div></label>
-            <label class="choice"><input type="radio" name="Q8" value="unsure"><div class="choice-text"><strong>Need me to investigate</strong> — trace the derivation both ways and report</div></label>
-          </div>
-          <label class="notes-label">Any context on the intended unit or source:</label>
-          <textarea class="notes-area" data-q="Q8" placeholder=""></textarea>
-        </div>
-      </div>
-    </article>
+    </div>
+  </article>
 
-    <article class="card" data-q="Q9">
-      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-        <span class="q-num">Q9</span>
-        <div class="q-title-wrap">
-          <div class="q-title">LANCA2 (mechanical filtration) scenario-agnostic like L3 — confirm intentional?</div>
-          <div class="q-tags"><span class="tag tag-cat">LANCA2</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">LANCA-018</span></div>
-        </div>
-        <span class="caret">▾</span>
+  <article class="card audit" data-audit="B3">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">B3</span>
+      <div class="q-title-wrap"><div class="q-title">Batch-approve ~99 minor items</div><div class="q-tags"><span class="tag tag-cat">Batch</span><span class="tag tag-answered">defer</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · defer</div>
+        <div class="audit-notes empty">(no notes)</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> 57 minor rows moved to Phase 3+ backlog.</div>
       </div>
-      <div class="card-body">
-        <div class="rec"><span class="rec-label">Your call</span>Same treatment as L3 (per your CHECKPOINT-0)? If yes, I add a narrative note explaining L2 + L3 as per-acre constants varying only by yield.</div>
-        <div class="detail-block"><span class="detail-label">Finding</span><p>LANCA2 summary for all 12 scenarios shows identical values (Median 51,698.6, Max 221,565). Row 2 col AF has annotation "Scenario agnostic".</p></div>
-        <div class="response-block">
-          <span class="response-label">Your call</span>
-          <div class="choices" data-q="Q9">
-            <label class="choice"><input type="radio" name="Q9" value="intentional"><div class="choice-text"><strong>Confirm intentional</strong> — same treatment as L3, add narrative note</div></label>
-            <label class="choice"><input type="radio" name="Q9" value="not-intentional"><div class="choice-text"><strong>Not intentional</strong> — LANCA2 should vary by scenario (add fix)</div></label>
-          </div>
-          <label class="notes-label">Notes:</label>
-          <textarea class="notes-area" data-q="Q9" placeholder=""></textarea>
-        </div>
-      </div>
-    </article>
-  </section>
+    </div>
+  </article>
 
-  <!-- SECTION 5: Eutro + AP -->
-  <section class="section">
-    <div class="section-label">Part E · Eutrophication + Acidification</div>
-    <h2 class="section-title">Two items (NH₃ scope gap already agreed)</h2>
+  <article class="card audit" data-audit="Q1">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">Q1</span>
+      <div class="q-title-wrap"><div class="q-title">Spatial resolution — per-state or aggregate?</div><div class="q-tags"><span class="tag tag-cat">Cross-cutting</span><span class="tag tag-answered">aggregate</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · aggregate</div>
+        <div class="audit-notes">"The electricity EFs are based on the subregional electricity EFs and a probabilistic distribution of selecting the EFs for a given subregion within the midwest at any given time. If you'd like to clarify this in the narrative that would be good."</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> 7 rows resolve (GWP-010, ADPe-005/010, ADPf-005/010, PROC-020, XW-006). Phase 4 narrative task queued.</div>
+      </div>
+    </div>
+  </article>
 
-    <article class="card" data-q="Q10">
-      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-        <span class="q-num">Q10</span>
-        <div class="q-title-wrap">
-          <div class="q-title">P_deposition Triangular(0.3, 0.4, 0.5) — declared locally, not in canonical uncertainty</div>
-          <div class="q-tags"><span class="tag tag-cat">Eutrophication</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">EUTRO-001</span></div>
-        </div>
-        <span class="caret">▾</span>
+  <article class="card audit" data-audit="Q2">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">Q2</span>
+      <div class="q-title-wrap"><div class="q-title">Allocation drift — intentional or shared?</div><div class="q-tags"><span class="tag tag-cat">Cross-cutting</span><span class="tag tag-answered">modify</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · modify (substantive)</div>
+        <div class="audit-notes">"Only the grain-only with residue harvest scenarios should receive any allocation. Results should be available across all allocation approaches (mass, economic, energy). Report shows economic as default with sensitivity analysis + narrative framing on why different stakeholders prefer different methods."</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> allocation applies to TDG_GF, TIG_GF, HDG_GF, HIG_GF only; 3 methods computed; economic default; sensitivity table + narrative — all in Phase 2 scope.</div>
       </div>
-      <div class="card-body">
-        <div class="rec"><span class="rec-label">Your call</span><strong>(a)</strong> add to <code>v2.6</code> uncertainty (canon-first), or <strong>(b)</strong> cite inline in eutro workbook.</div>
-        <div class="detail-block"><span class="detail-label">Finding</span><p>P deposition distribution <code>Triangular(0.3, 0.4, 0.5) kg P/ha/yr</code> declared in <code>MC_scenario_params</code>. Not in any canonical uncertainty file.</p></div>
-        <div class="response-block">
-          <span class="response-label">Your call</span>
-          <div class="choices" data-q="Q10">
-            <label class="choice"><input type="radio" name="Q10" value="canon-first"><div class="choice-text"><strong>Add to v2.6</strong> — canon-first, uncertainty stack traceable</div></label>
-            <label class="choice"><input type="radio" name="Q10" value="cite-inline"><div class="choice-text"><strong>Cite inline</strong> in eutro workbook, leave canon alone</div></label>
-          </div>
-          <label class="notes-label">Source citation for P_deposition:</label>
-          <textarea class="notes-area" data-q="Q10" placeholder="e.g. NADP wet deposition network, atmospheric P deposition rates for Midwest…"></textarea>
-        </div>
-      </div>
-    </article>
+    </div>
+  </article>
 
-    <article class="card" data-q="Q11">
-      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-        <span class="q-num">Q11</span>
-        <div class="q-title-wrap">
-          <div class="q-title">MOP σ_log = 1.323 tail up to <span class="highlight-blob">2,635 kg K₂O/ac</span></div>
-          <div class="q-tags"><span class="tag tag-cat">AP · ADPe · ADPf</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">AP-002</span></div>
-        </div>
-        <span class="caret">▾</span>
+  <article class="card audit" data-audit="Q4">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">Q4</span>
+      <div class="q-title-wrap"><div class="q-title">pathway2 crop-residue N — bug?</div><div class="q-tags"><span class="tag tag-cat">GWP</span><span class="tag tag-answered">bug</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · bug</div>
+        <div class="audit-notes">"Great catch, this was indeed an error. Crop residue N should not be included in volatilization N₂O — only direct N₂O and runoff/leaching. Need to remove from workbook and update GWP results."</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> remove F_CR × FracGASM from pathway2_wet/dry. Regenerate GWP.</div>
       </div>
-      <div class="card-body">
-        <div class="rec"><span class="rec-label">Your call</span><strong>(a)</strong> refit lower σ_log, <strong>(b)</strong> truncate at plausible max, or <strong>(c)</strong> accept and report median only.</div>
-        <div class="detail-block"><span class="detail-label">Numbers</span><ul>
-          <li><code>Lognormal(scale=43, s=1.323)</code> in <code>v3_FIXED</code> for TDF + TIF</li>
-          <li>TDF Run_82 = <strong>1,593 kg MOP/ac</strong>, Run_100 = <strong>2,635</strong> — vs realistic max ~90 kg/ac</li>
-          <li>Single 2,635-kg draw = ~91 kg SO₂-eq/ac (~18× TDG_GO median total upstream AP)</li>
-        </ul></div>
-        <div class="response-block">
-          <span class="response-label">Your call</span>
-          <div class="choices" data-q="Q11">
-            <label class="choice"><input type="radio" name="Q11" value="refit"><div class="choice-text"><strong>Refit</strong> distribution with lower σ_log (specify target)</div></label>
-            <label class="choice"><input type="radio" name="Q11" value="truncate"><div class="choice-text"><strong>Truncate</strong> at plausible max (~90 kg/ac)</div></label>
-            <label class="choice"><input type="radio" name="Q11" value="accept-median"><div class="choice-text"><strong>Accept + report median only</strong> — flag high uncertainty in narrative</div></label>
-          </div>
-          <label class="notes-label">Target σ_log if refit, or context:</label>
-          <textarea class="notes-area" data-q="Q11" placeholder="e.g. cap σ_log at 0.4 for TDF/TIF K2O; add note in Tier_Assignment about thin-data cluster"></textarea>
-        </div>
-      </div>
-    </article>
-  </section>
+    </div>
+  </article>
 
-  <!-- SECTION 6: SOC + Processing -->
-  <section class="section">
-    <div class="section-label">Part F · SOC + Processing</div>
-    <h2 class="section-title">Two items</h2>
-
-    <article class="card" data-q="Q12">
-      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-        <span class="q-num">Q12</span>
-        <div class="q-title-wrap">
-          <div class="q-title">Base LCI omits degumming chemistry (NaOH, phosphoric, citric) that MC includes</div>
-          <div class="q-tags"><span class="tag tag-cat">Processing</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">PROC-016 · PROC-017</span></div>
-        </div>
-        <span class="caret">▾</span>
+  <article class="card audit" data-audit="Q5">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">Q5</span>
+      <div class="q-title-wrap"><div class="q-title">EF4_wet aggregate → wet-disaggregated?</div><div class="q-tags"><span class="tag tag-cat">GWP</span><span class="tag tag-answered">switch</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · switch</div>
+        <div class="audit-notes empty">(no notes)</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> regenerate EF4_wet as Triangular(0.011, 0.014, 0.017) per v2.5 §6 row 52.</div>
       </div>
-      <div class="card-body">
-        <div class="rec"><span class="rec-label">Your call</span><strong>(a)</strong> update base LCI to include chemistry, or <strong>(b)</strong> update MC to match base LCI (chemistry-free).</div>
-        <div class="detail-block"><span class="detail-label">Finding</span><ul>
-          <li><code>LCI Summary!D44/D45</code>: NaOH = <strong>0 kg</strong>, Phosphoric = <strong>0 kg</strong></li>
-          <li><code>LCI MC Summary</code>: NaOH mean = <strong>0.403 kg (S1)</strong></li>
-          <li>Assumptions cite NOPA 2024 refining survey: B29 = 1.56 kg NaOH / t oil, B30 = 0.75 phosphoric, B31 = 0.3 citric</li>
-        </ul></div>
-        <div class="response-block">
-          <span class="response-label">Your call</span>
-          <div class="choices" data-q="Q12">
-            <label class="choice"><input type="radio" name="Q12" value="update-base"><div class="choice-text"><strong>Update base LCI</strong> — MC-path is canonical, base is stale</div></label>
-            <label class="choice"><input type="radio" name="Q12" value="update-mc"><div class="choice-text"><strong>Update MC</strong> — chemistry-free is canonical</div></label>
-            <label class="choice"><input type="radio" name="Q12" value="other"><div class="choice-text"><strong>Other</strong> (add note)</div></label>
-          </div>
-          <label class="notes-label">Notes:</label>
-          <textarea class="notes-area" data-q="Q12" placeholder=""></textarea>
-        </div>
-      </div>
-    </article>
+    </div>
+  </article>
 
-    <article class="card" data-q="Q13">
-      <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-        <span class="q-num">Q13</span>
-        <div class="q-title-wrap">
-          <div class="q-title">SOC allocation-method switch is UI-only — MC always uses mass</div>
-          <div class="q-tags"><span class="tag tag-cat">SOC</span><span class="tag tag-sev-material">material</span><span class="tag tag-affects">SOC-009</span></div>
-        </div>
-        <span class="caret">▾</span>
+  <article class="card audit" data-audit="Q6">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">Q6</span>
+      <div class="q-title-wrap"><div class="q-title">N_AG_BG uniform Fiber N — split or simplification?</div><div class="q-tags"><span class="tag tag-cat">GWP</span><span class="tag tag-answered">simplification</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · simplification</div>
+        <div class="audit-notes empty">(no notes)</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> add narrative note explaining fiber-N applied uniformly across all AG+BG. No calc change.</div>
       </div>
-      <div class="card-body">
-        <div class="rec"><span class="rec-label">Your call</span><strong>(a)</strong> intentional (mass canonical, switch is display-only) or <strong>(b)</strong> wire switch into MC.</div>
-        <div class="detail-block"><span class="detail-label">Finding</span><p>SOC_MC per-run cells use per-run mass allocation regardless of <code>$A$13</code> allocation-method selector. Switch is UI-only.</p></div>
-        <div class="detail-block"><span class="detail-label">Context</span><p>ISO 14044 §4.3.4 defaults to physical (mass) allocation for physically-related co-products — a mass-only SOC MC is defensible.</p></div>
-        <div class="response-block">
-          <span class="response-label">Your call</span>
-          <div class="choices" data-q="Q13">
-            <label class="choice"><input type="radio" name="Q13" value="intentional"><div class="choice-text"><strong>Intentional</strong> — mass is canonical, document switch as display-only</div></label>
-            <label class="choice"><input type="radio" name="Q13" value="wire-switch"><div class="choice-text"><strong>Wire switch into MC</strong> — user should be able to toggle allocation in MC</div></label>
-          </div>
-          <label class="notes-label">Notes:</label>
-          <textarea class="notes-area" data-q="Q13" placeholder=""></textarea>
-        </div>
+    </div>
+  </article>
+
+  <article class="card audit" data-audit="Q7">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">Q7</span>
+      <div class="q-title-wrap"><div class="q-title">Fuel MC identical draws — CRN or copy-paste?</div><div class="q-tags"><span class="tag tag-cat">GWP</span><span class="tag tag-answered">CRN</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · CRN (intentional)</div>
+        <div class="audit-notes">"Intentional — each operation type has its own equipment processes: all fiber shares one profile, all grain-only shares another, dual-purpose and grain-with-fiber-harvest share the grain+bale profile. Not copy-paste."</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> document CRN by equipment-process profile in workbook README + narrative.</div>
       </div>
-    </article>
-  </section>
+    </div>
+  </article>
 
-  <!-- General notes -->
-  <div class="general-notes-block">
-    <h3>Anything else — general notes, know-how, context, corrections</h3>
-    <p>Free-form. Anything you want to flag for me that doesn't fit a specific question above.</p>
-    <textarea class="notes-area" data-q="general" placeholder="e.g. Q4 answer depends on Q1 answer; Q8 is more urgent than Q11; here's a paper I want cited…" style="min-height: 100px;"></textarea>
-  </div>
+  <article class="card audit" data-audit="Q8">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">Q8</span>
+      <div class="q-title-wrap"><div class="q-title">LANCA4 irrigation units — investigate?</div><div class="q-tags"><span class="tag tag-cat">LANCA</span><span class="tag tag-answered">unsure → cosmetic</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · unsure — investigate first</div>
+        <div class="audit-notes">"Possible mislabeling or calc error. Check LCI irrigation values → LANCA4 conversion."</div>
+        <div class="audit-resolution"><strong>Resolution (post-investigation):</strong> COSMETIC ONLY. Chain dimensionally clean end-to-end. TIG 415 m³/ac = 4.04 in/ac ✓ matches LCI target. No ×4047 error. Add signpost comment on L4_assumptions!A23.</div>
+      </div>
+    </div>
+  </article>
 
-  <footer class="page">
-    <p><strong>What happens next.</strong> Hit <strong style="color:var(--sage)">Send answers</strong>. Choose Copy or Download (or email direct to Joe). Once received, I mark each finding row in the log and Phase 2 starts.</p>
-    <p><strong>Full audit trail.</strong> The exhaustive 155-finding log lives at <code>Projects/Midwest-Hemp-LCA/QAQC/01_Discrepancy_Log.md</code>.</p>
-    <p style="margin-top: 24px; color: var(--muted); font-size: 12px;">LEIF AIOS · Phase 1 QAQC · <a href="mailto:joe@leifllc.com">joe@leifllc.com</a></p>
-  </footer>
+  <article class="card audit" data-audit="Q9">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">Q9</span>
+      <div class="q-title-wrap"><div class="q-title">LANCA2 scenario-agnostic — intentional?</div><div class="q-tags"><span class="tag tag-cat">LANCA</span><span class="tag tag-answered">intentional</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · intentional (same as L3)</div>
+        <div class="audit-notes empty">(no notes)</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> narrative note explaining L2 and L3 are per-acre constants that vary only by yield when converted to per-kg.</div>
+      </div>
+    </div>
+  </article>
+
+  <article class="card audit" data-audit="Q10">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">Q10</span>
+      <div class="q-title-wrap"><div class="q-title">P_deposition source — canon-first or cite inline?</div><div class="q-tags"><span class="tag tag-cat">Eutrophication</span><span class="tag tag-answered">canon-first · pending Round 2</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · canon-first (search vault for derivation)</div>
+        <div class="audit-notes">"The distribution came from Claude workflows/chats — see if you can find the reasoning."</div>
+        <div class="audit-resolution"><strong>Resolution (post-investigation):</strong> derivation traced to 2026-04-15 Claude workflow; no external paper was cited. <strong>Anchor citation now Round-2 question (QR2·2).</strong></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="card audit" data-audit="Q11">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">Q11</span>
+      <div class="q-title-wrap"><div class="q-title">MOP σ_log tail — refit / truncate / accept-median?</div><div class="q-tags"><span class="tag tag-cat">AP</span><span class="tag tag-answered">investigate · pending Round 2</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · investigate first</div>
+        <div class="audit-notes">"Need more info on where the ~90 kg/ac claim comes from. Review LCI + literature."</div>
+        <div class="audit-resolution"><strong>Resolution (post-investigation):</strong> not a distribution judgment — a stale <code>Cluster_Stats</code> cache bug that likely affects Grain P2O5, Grain K2O, Fiber N, Fiber P2O5 too. <strong>Fix scope now Round-2 question (QR2·1).</strong></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="card audit" data-audit="Q12">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">Q12</span>
+      <div class="q-title-wrap"><div class="q-title">Base LCI missing degumming — update base or MC?</div><div class="q-tags"><span class="tag tag-cat">Processing</span><span class="tag tag-answered">update-base</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · update-base</div>
+        <div class="audit-notes">"Base LCI is no longer used, only the MC, but feel free to update the base LCI for consistency."</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> sync base LCI to MC (cosmetic — no downstream impact).</div>
+      </div>
+    </div>
+  </article>
+
+  <article class="card audit" data-audit="Q13">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">Q13</span>
+      <div class="q-title-wrap"><div class="q-title">SOC allocation switch — wire into MC or intentional?</div><div class="q-tags"><span class="tag tag-cat">SOC</span><span class="tag tag-answered">wire-switch</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="audit-response">
+        <div class="audit-choice">Choice · wire-switch</div>
+        <div class="audit-notes">"We then need a summary table of the summary statistics from the MC run across allocation approaches and scenarios where relevant (dual purpose and grain with fiber residue harvest)."</div>
+        <div class="audit-resolution"><strong>Resolution:</strong> wire the $A$13 switch into SOC MC + build summary-stats table across 3 methods × co-product scenarios (TDD, TID, TDG_GF, TIG_GF, HDG_GF, HIG_GF).</div>
+      </div>
+    </div>
+  </article>
 
 </main>
 
-<!-- Sticky submit bar -->
-<div class="submit-bar" role="region" aria-label="Submit responses">
-  <span class="submit-bar-status"><strong id="ans-count">0</strong> of 14 answered · autosaved</span>
-  <button class="submit-btn" id="submitBtn">Send answers →</button>
+<!-- Sticky submit bar (only shows when active questions have inputs) -->
+<div class="submit-bar" id="submitBar" role="region">
+  <span class="submit-bar-status"><strong id="ans-count">0</strong> of 2 Round-2 answered · autosaved</span>
+  <button class="submit-btn" id="submitBtn">Send Round 2 →</button>
 </div>
 
-<!-- Response summary modal -->
+<!-- Modal -->
 <div class="modal-backdrop" id="modalBackdrop">
-  <div class="modal">
-    <h2 id="modalTitle">Send your answers to LEIF</h2>
-    <p class="subtle" id="modalSubtitle">One tap — your answers go straight to the platform. Joe and Claude receive them instantly.</p>
-
-    <!-- Password gate (shown when needed) -->
-    <div id="passwordGate" style="display: none; margin-bottom: 20px;">
-      <label class="notes-label" style="margin-bottom: 8px; color: var(--sage);">Access password</label>
-      <input type="password" id="passwordInput" class="notes-area" style="min-height: unset; height: 44px;" placeholder="Enter the password Joe gave you" />
-      <p style="color: var(--muted); font-size: 12px; margin: 8px 0 0;">Your password unlocks the submission — one-time entry.</p>
-    </div>
-
-    <!-- Primary action -->
-    <button class="submit-btn" id="sendToLeifBtn" style="width: 100%; padding: 16px; font-size: 15px; margin-bottom: 14px;">Send to LEIF →</button>
-
-    <!-- Send status area -->
-    <div id="sendStatus" style="display: none; padding: 14px; border-radius: 8px; margin-bottom: 14px; font-size: 14px; line-height: 1.5;"></div>
-
-    <!-- Fallback options (collapsed by default) -->
-    <details style="margin-bottom: 14px;">
-      <summary style="cursor: pointer; color: var(--subtext); font-size: 13px; padding: 8px 0; user-select: none;">Or use a fallback (copy / download / email)</summary>
-      <div class="modal-actions" style="margin-top: 12px;">
-        <button class="action-btn" id="copyBtn"><strong>Copy to clipboard</strong><span>Paste to Joe manually</span></button>
-        <button class="action-btn" id="downloadBtn"><strong>Download JSON</strong><span>Attach to any message</span></button>
-        <button class="action-btn full" id="emailBtn"><strong>Email to Joe</strong><span>Opens your mail client</span></button>
-      </div>
-    </details>
-
-    <div class="response-preview" id="responsePreview" style="display: none;"></div>
-    <button class="close-btn" id="closeBtn">Close (your answers are autosaved)</button>
-  </div>
+  <div class="modal" id="modalContent"></div>
 </div>
-
-<div class="toast" id="toast">Copied to clipboard</div>
 
 <script>
-  // View-time password gate
+  // Gate
   const VIEW_GATE_KEY = 'leif_hemp_view_gate_v1';
   const VIEW_PASSWORD = 'hemp-lca-2026-review';
   const viewGate = document.getElementById('viewGate');
@@ -1433,7 +833,6 @@
   function tryUnlock(pw) {
     if (pw === VIEW_PASSWORD) {
       sessionStorage.setItem(VIEW_GATE_KEY, '1');
-      // Prefill the submit-time password too so Rylie doesn't type it twice
       sessionStorage.setItem('leif_hemp_review_pw_v1', pw);
       viewGate.style.display = 'none';
       document.body.style.overflow = '';
@@ -1455,104 +854,8 @@
     if (viewGateError.style.display === 'block') viewGateError.style.display = 'none';
   });
 
+  // Card expand/collapse
   const cards = document.querySelectorAll('.card');
-  const progressFill = document.getElementById('progressFill');
-  const progressCount = document.getElementById('progressCount');
-  const ansCount = document.getElementById('ans-count');
-  const saveState = document.getElementById('saveState');
-  const submitBtn = document.getElementById('submitBtn');
-  const modalBackdrop = document.getElementById('modalBackdrop');
-  const responsePreview = document.getElementById('responsePreview');
-  const toast = document.getElementById('toast');
-  const total = cards.length;
-  const STORAGE_KEY = 'leif_hemp_phase1_rylie_responses_v1';
-
-  function loadState() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return {};
-      return JSON.parse(raw);
-    } catch { return {}; }
-  }
-  function saveStateNow() {
-    const state = {};
-    document.querySelectorAll('input[type="radio"]:checked').forEach(r => {
-      const q = r.name;
-      state[q] = state[q] || {};
-      state[q].choice = r.value;
-    });
-    document.querySelectorAll('textarea.notes-area').forEach(t => {
-      const q = t.dataset.q;
-      if (t.value.trim()) {
-        state[q] = state[q] || {};
-        state[q].notes = t.value.trim();
-      }
-    });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    updateProgress();
-    saveState.innerHTML = '<span class="dot"></span>Saved';
-  }
-  function restoreState() {
-    const state = loadState();
-    for (const q in state) {
-      const s = state[q];
-      if (s.choice) {
-        const radio = document.querySelector('input[name="'+q+'"][value="'+s.choice+'"]');
-        if (radio) { radio.checked = true; radio.closest('.choice')?.classList.add('selected'); }
-      }
-      if (s.notes) {
-        const ta = document.querySelector('textarea[data-q="'+q+'"]');
-        if (ta) ta.value = s.notes;
-      }
-    }
-    updateProgress();
-  }
-
-  const progressBar = document.querySelector('.progress');
-  let lastAnswered = 0;
-  const milestones = [Math.ceil(total * 0.25), Math.ceil(total * 0.5), Math.ceil(total * 0.75), total];
-  const milestonesFired = new Set();
-  const milestoneMessages = {};
-  milestoneMessages[milestones[0]] = 'A quarter of the way — momentum';
-  milestoneMessages[milestones[1]] = 'Halfway. Nicely done.';
-  milestoneMessages[milestones[2]] = 'Home stretch.';
-  milestoneMessages[milestones[3]] = 'All 14 answered. Send when ready.';
-
-  function countAnswered() {
-    let n = 0;
-    cards.forEach(card => {
-      const q = card.dataset.q;
-      const hasChoice = document.querySelector('input[name="'+q+'"]:checked');
-      const ta = card.querySelector('textarea.notes-area');
-      const hasNotes = ta && ta.value.trim().length > 0;
-      if (hasChoice || hasNotes) { n++; card.classList.add('answered'); }
-      else { card.classList.remove('answered'); }
-    });
-    return n;
-  }
-  function fireMilestone(answered) {
-    if (milestonesFired.has(answered)) return;
-    if (!milestoneMessages[answered]) return;
-    milestonesFired.add(answered);
-    // Visual burst on the progress bar
-    const burst = document.createElement('div');
-    burst.className = 'milestone-burst fire';
-    progressBar.appendChild(burst);
-    setTimeout(() => burst.remove(), 1300);
-    // Toast message
-    showToast(milestoneMessages[answered]);
-  }
-  function updateProgress() {
-    const answered = countAnswered();
-    progressFill.style.width = ((answered / total) * 100) + '%';
-    progressCount.textContent = answered + ' of ' + total + ' answered';
-    ansCount.textContent = answered;
-    if (answered > 0) progressBar.classList.add('active');
-    else progressBar.classList.remove('active');
-    if (answered > lastAnswered) fireMilestone(answered);
-    lastAnswered = answered;
-  }
-
   cards.forEach(card => {
     const header = card.querySelector('.card-header');
     const toggle = () => {
@@ -1565,231 +868,118 @@
     });
   });
 
-  // Choice selection styling
-  document.querySelectorAll('.choice').forEach(label => {
-    const input = label.querySelector('input');
-    if (!input) return;
+  // Round 2 state — only 2 active questions
+  const R2_STORAGE = 'leif_hemp_r2_v1';
+  const activeQs = ['QR2-1', 'QR2-2'];
+
+  function loadState() {
+    try { return JSON.parse(sessionStorage.getItem(R2_STORAGE) || '{}'); } catch { return {}; }
+  }
+  function saveState() {
+    const state = {};
+    document.querySelectorAll('input[type="radio"]:checked').forEach(r => {
+      state[r.name] = state[r.name] || {};
+      state[r.name].choice = r.value;
+    });
+    document.querySelectorAll('textarea.notes-area').forEach(t => {
+      const q = t.dataset.q;
+      if (t.value.trim()) {
+        state[q] = state[q] || {};
+        state[q].notes = t.value.trim();
+      }
+    });
+    sessionStorage.setItem(R2_STORAGE, JSON.stringify(state));
+    updateProgress();
+  }
+  function restoreState() {
+    const state = loadState();
+    for (const q in state) {
+      if (state[q].choice) {
+        const radio = document.querySelector('input[name="'+q+'"][value="'+state[q].choice+'"]');
+        if (radio) { radio.checked = true; radio.closest('.choice')?.classList.add('selected'); }
+      }
+      if (state[q].notes) {
+        const ta = document.querySelector('textarea[data-q="'+q+'"]');
+        if (ta) ta.value = state[q].notes;
+      }
+    }
+    updateProgress();
+  }
+  function updateProgress() {
+    let n = 0;
+    activeQs.forEach(q => {
+      const hasChoice = document.querySelector('input[name="'+q+'"]:checked');
+      const ta = document.querySelector('textarea[data-q="'+q+'"]');
+      const hasNotes = ta && ta.value.trim().length > 0;
+      const card = document.querySelector('.card[data-q="'+q+'"]');
+      if (hasChoice || hasNotes) { n++; card?.classList.add('answered'); }
+      else { card?.classList.remove('answered'); }
+    });
+    document.getElementById('ans-count').textContent = n;
+  }
+
+  document.querySelectorAll('.choice input').forEach(input => {
     input.addEventListener('change', () => {
-      // clear siblings
-      document.querySelectorAll('input[name="'+input.name+'"]').forEach(r => {
-        r.closest('.choice')?.classList.remove('selected');
-      });
-      if (input.checked) label.classList.add('selected');
-      saveStateNow();
+      document.querySelectorAll('input[name="'+input.name+'"]').forEach(r => r.closest('.choice')?.classList.remove('selected'));
+      if (input.checked) input.closest('.choice')?.classList.add('selected');
+      saveState();
     });
   });
-  document.querySelectorAll('textarea.notes-area').forEach(t => {
-    t.addEventListener('input', () => saveStateNow());
-  });
+  document.querySelectorAll('textarea.notes-area').forEach(t => t.addEventListener('input', saveState));
 
-  // Build response payload
-  function buildResponses() {
+  // Submit — POST to Edge Function with round_number=2
+  const EDGE_ENDPOINT = 'https://mqramtmqfpfkzfbynebf.supabase.co/functions/v1/submit-hemp-review';
+  const PASSWORD_KEY = 'leif_hemp_review_pw_v1';
+
+  document.getElementById('submitBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('submitBtn');
     const state = loadState();
     const responses = {};
-    const cardQs = Array.from(cards).map(c => c.dataset.q);
-    cardQs.forEach(q => {
-      const s = state[q] || {};
-      responses[q] = { choice: s.choice || null, notes: s.notes || null };
-    });
-    return {
-      artifact: "hemp-lca-phase1-rylie-decisions",
-      version: 1,
-      timestamp: new Date().toISOString(),
-      responder: "Rylie Pelton",
-      log_reference: "Projects/Midwest-Hemp-LCA/QAQC/01_Discrepancy_Log.md",
-      questions_total: total,
-      questions_answered: countAnswered(),
-      responses,
-      general_notes: (state["general"] && state["general"].notes) || null
-    };
-  }
-
-  function formatForHumans(payload) {
-    const lines = [];
-    lines.push('LEIF Hemp LCA — Phase 1 · Rylie decisions');
-    lines.push('Submitted: ' + payload.timestamp);
-    lines.push('Answered: ' + payload.questions_answered + ' of ' + payload.questions_total);
-    lines.push('');
-    for (const q in payload.responses) {
-      const r = payload.responses[q];
-      if (!r.choice && !r.notes) continue;
-      lines.push('[' + q + '] ' + (r.choice ? r.choice.toUpperCase() : '(no choice)'));
-      if (r.notes) lines.push('  Notes: ' + r.notes);
-      lines.push('');
-    }
-    if (payload.general_notes) {
-      lines.push('---');
-      lines.push('General notes:');
-      lines.push(payload.general_notes);
-    }
-    return lines.join('\n');
-  }
-
-  const EDGE_ENDPOINT = 'https://mqramtmqfpfkzfbynebf.supabase.co/functions/v1/submit-hemp-review';
-  const PASSWORD_STORAGE_KEY = 'leif_hemp_review_pw_v1';
-
-  submitBtn.addEventListener('click', () => {
-    const payload = buildResponses();
-    const jsonText = JSON.stringify(payload, null, 2);
-    const humanText = formatForHumans(payload);
-    responsePreview.textContent = humanText + '\n\n--- JSON payload ---\n' + jsonText;
-    modalBackdrop.classList.add('open');
-    modalBackdrop.dataset.json = jsonText;
-    modalBackdrop.dataset.human = humanText;
-
-    // Restore password if previously entered
-    const savedPw = sessionStorage.getItem(PASSWORD_STORAGE_KEY);
-    if (savedPw) {
-      document.getElementById('passwordInput').value = savedPw;
-      document.getElementById('passwordGate').style.display = 'none';
-    } else {
-      document.getElementById('passwordGate').style.display = 'block';
-    }
-
-    // Reset status
-    document.getElementById('sendStatus').style.display = 'none';
-    document.getElementById('sendToLeifBtn').disabled = false;
-    document.getElementById('sendToLeifBtn').textContent = 'Send to LEIF →';
-  });
-
-  // The real submit — POST to Supabase Edge Function
-  document.getElementById('sendToLeifBtn').addEventListener('click', async () => {
-    const btn = document.getElementById('sendToLeifBtn');
-    const statusEl = document.getElementById('sendStatus');
-    const pwInput = document.getElementById('passwordInput');
-    const password = pwInput.value.trim() || sessionStorage.getItem(PASSWORD_STORAGE_KEY) || '';
-
-    if (!password) {
-      document.getElementById('passwordGate').style.display = 'block';
-      pwInput.focus();
-      statusEl.style.display = 'block';
-      statusEl.style.background = 'rgba(181, 122, 122, 0.15)';
-      statusEl.style.borderLeft = '3px solid var(--rose)';
-      statusEl.style.color = 'var(--text)';
-      statusEl.textContent = 'Enter the password Joe gave you, then hit Send.';
-      return;
-    }
+    activeQs.forEach(q => { responses[q] = { choice: state[q]?.choice || null, notes: state[q]?.notes || null }; });
 
     btn.disabled = true;
     btn.textContent = 'Sending…';
-    statusEl.style.display = 'none';
 
-    const payload = buildResponses();
-
+    const password = sessionStorage.getItem(PASSWORD_KEY) || VIEW_PASSWORD;
     try {
       const res = await fetch(EDGE_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          password,
-          submitter_name: 'Rylie Pelton',
-          payload: payload.responses,
-          general_notes: payload.general_notes,
+          password, submitter_name: 'Rylie Pelton', project_slug: 'midwest-hemp-lca',
+          round_number: 2, payload: responses,
         }),
       });
       const data = await res.json();
-
       if (res.ok && data.ok) {
-        sessionStorage.setItem(PASSWORD_STORAGE_KEY, password);
-        document.getElementById('passwordGate').style.display = 'none';
-        // Full sent state — celebration
-        showSentCelebration(data);
-        btn.textContent = '✓ Sent to LEIF';
+        showSentModal(data);
+        btn.textContent = '✓ Sent';
       } else if (res.status === 401) {
-        statusEl.style.display = 'block';
-        statusEl.style.background = 'rgba(181, 122, 122, 0.15)';
-        statusEl.style.borderLeft = '3px solid var(--rose)';
-        statusEl.style.color = 'var(--text)';
-        statusEl.textContent = 'Password not accepted. Double-check with Joe, then try again.';
-        sessionStorage.removeItem(PASSWORD_STORAGE_KEY);
-        document.getElementById('passwordGate').style.display = 'block';
-        btn.disabled = false;
-        btn.textContent = 'Send to LEIF →';
+        alert('Password rejected. Ping Joe.');
+        btn.disabled = false; btn.textContent = 'Send Round 2 →';
       } else {
-        throw new Error(data.error || ('HTTP ' + res.status));
+        throw new Error(data.error || 'HTTP ' + res.status);
       }
     } catch (err) {
-      statusEl.style.display = 'block';
-      statusEl.style.background = 'rgba(181, 122, 122, 0.15)';
-      statusEl.style.borderLeft = '3px solid var(--rose)';
-      statusEl.style.color = 'var(--text)';
-      statusEl.innerHTML = '<strong style="color:var(--rose);">Send failed.</strong> ' + (err.message || 'Network error') + '<br><span style="color:var(--muted); font-size:12px;">Try one of the fallback options below.</span>';
-      btn.disabled = false;
-      btn.textContent = 'Try again →';
+      alert('Send failed: ' + err.message);
+      btn.disabled = false; btn.textContent = 'Try again →';
     }
   });
 
-  document.getElementById('copyBtn').addEventListener('click', async () => {
-    const text = modalBackdrop.dataset.human + '\n\n--- JSON payload ---\n' + modalBackdrop.dataset.json;
-    try {
-      await navigator.clipboard.writeText(text);
-      showToast('Copied to clipboard');
-    } catch (e) {
-      // Fallback
-      const ta = document.createElement('textarea');
-      ta.value = text; document.body.appendChild(ta); ta.select();
-      document.execCommand('copy'); document.body.removeChild(ta);
-      showToast('Copied to clipboard');
-    }
-  });
-
-  document.getElementById('downloadBtn').addEventListener('click', () => {
-    const blob = new Blob([modalBackdrop.dataset.json], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    const dt = new Date().toISOString().slice(0,10);
-    a.href = url; a.download = 'rylie_phase1_responses_' + dt + '.json';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    showToast('Downloaded');
-  });
-
-  document.getElementById('emailBtn').addEventListener('click', () => {
-    const subject = 'Hemp LCA Phase 1 — my decisions (' + new Date().toISOString().slice(0,10) + ')';
-    const body = modalBackdrop.dataset.human;
-    const mailto = 'mailto:joe@leifllc.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-    window.location.href = mailto;
-  });
-
-  document.getElementById('closeBtn').addEventListener('click', () => {
-    modalBackdrop.classList.remove('open');
-  });
-  modalBackdrop.addEventListener('click', (e) => {
-    if (e.target === modalBackdrop) modalBackdrop.classList.remove('open');
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modalBackdrop.classList.contains('open')) {
-      modalBackdrop.classList.remove('open');
-    }
-  });
-
-  function showToast(msg) {
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2400);
-  }
-
-  function showSentCelebration(data) {
-    // Replace modal body with a sent state
-    const modal = document.querySelector('.modal');
+  function showSentModal(data) {
+    const modal = document.getElementById('modalContent');
     const submissionId = (data.submission_id || 'n/a').slice(0, 8);
     const submittedAt = new Date(data.submitted_at || Date.now()).toLocaleString();
-    modal.innerHTML = '\
-      <div class="sent-state">\
-        <div class="sent-glow"></div>\
-        <div class="sent-check">\
-          <svg viewBox="0 0 52 52" width="72" height="72"><circle cx="26" cy="26" r="24" fill="none" stroke="var(--sage)" stroke-width="2" class="sent-circle"/><path d="M14 27l8 8 16-18" fill="none" stroke="var(--sage)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="sent-tick"/></svg>\
-        </div>\
-        <h2 class="sent-title">Sent to LEIF</h2>\
-        <p class="sent-sub">Joe and Claude will pick this up immediately. Phase 2 kickoff starts as soon as they review your answers.</p>\
-        <div class="sent-meta"><div><span>Submission</span><strong>' + submissionId + '</strong></div><div><span>Timestamp</span><strong>' + submittedAt + '</strong></div></div>\
-        <button class="close-btn" onclick="document.getElementById(\'modalBackdrop\').classList.remove(\'open\')">Close</button>\
-      </div>';
-    // Delayed subtle confetti-like sparks in the background
-    setTimeout(() => {
-      const glow = modal.querySelector('.sent-glow');
-      if (glow) glow.classList.add('fired');
-    }, 200);
+    modal.innerHTML = '' +
+      '<div class="sent-check"><svg viewBox="0 0 52 52" width="72" height="72"><circle cx="26" cy="26" r="24" fill="none" stroke="var(--sage)" stroke-width="2" class="sent-circle"/><path d="M14 27l8 8 16-18" fill="none" stroke="var(--sage)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="sent-tick"/></svg></div>' +
+      '<h2 class="sent-title">Round 2 sent</h2>' +
+      '<p class="sent-sub">Joe and Claude are on it. Phase 2 execution begins as soon as they review your answers. You can close this tab — come back here anytime to see project state.</p>' +
+      '<div style="background: rgba(122, 171, 145, 0.06); border: 1px solid rgba(122, 171, 145, 0.18); border-radius: 12px; padding: 16px 20px; display: flex; justify-content: space-between; gap: 24px; margin-bottom: 20px;">' +
+      '<div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);">Submission</span><strong style="font-family: var(--font-head); font-weight: 600; color: var(--text); font-size: 14px;">' + submissionId + '</strong></div>' +
+      '<div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);">Timestamp</span><strong style="font-family: var(--font-head); font-weight: 600; color: var(--text); font-size: 14px;">' + submittedAt + '</strong></div>' +
+      '</div>' +
+      '<button class="close-btn" onclick="document.getElementById(\'modalBackdrop\').classList.remove(\'open\')">Close</button>';
+    document.getElementById('modalBackdrop').classList.add('open');
   }
 
   restoreState();
