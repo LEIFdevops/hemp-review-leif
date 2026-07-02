@@ -802,7 +802,7 @@
           <p class="kickoff-eyebrow">Round 11 · charts · drop-in prompt for Claude Design</p>
           <h2 class="kickoff-heading">Data extracted from all 6 workbooks. Download the drop-in prompt, paste into Claude Design.</h2>
           <p class="kickoff-sub">
-            Per-scenario × per-impact medians + p25/p75 pulled from every workbook (GWP v2, AP v7, ADPe/ADPf v3 computed from first principles, Eutro v6). Assembled as a self-contained prompt Rylie can paste into a fresh Claude Design conversation — it includes context, all data as JSON, chart-by-chart directives, design system hints, and deliverable spec. No manual number-typing.
+            Per-scenario × per-impact medians + p25/p75 pulled from every workbook (GWP v2, AP v7, ADPe/ADPf v3 computed from first principles, Eutro v6). Now includes <strong>Chart 5 — allocation sensitivity per-kg</strong> with all 3 methods (Mass · Economic · Energy) for every multi-co-product scenario × output. Self-contained prompt Rylie pastes into a fresh Claude Design conversation — no manual number-typing.
           </p>
         </div>
         <button class="kickoff-btn" id="kickoffBtn" style="background: linear-gradient(180deg, var(--warm), #b09872);">
@@ -815,8 +815,8 @@
 
     <div class="dashboard-status-card">
       <div class="dash-eyebrow">Live project state</div>
-      <h2 class="dash-status-heading">Charts stage · drop-in Claude Design prompt ready + full JSON data package.</h2>
-      <p class="dash-status-sub">Step 11 extracted per-scenario × per-impact medians (with p25/p75) from all 6 workbooks: GWP v2, AP v7 (including new field NH3), ADPe v3 + ADPf v3 (computed from first principles since cold cache), Eutro v6, plus contribution breakdown by activity for the stacked charts. Packaged as a self-contained prompt for Claude Design — includes chart-by-chart directives, allocation-scenario callouts, and design-system hints. Rylie's flow: download prompt → open Claude Design → paste + attach v5 HTML → get updated report back.</p>
+      <h2 class="dash-status-heading">Charts stage · full package for all 5 charts including allocation sensitivity.</h2>
+      <p class="dash-status-sub">Step 11 extracted per-scenario × per-impact medians (p25/p75) from all 6 workbooks: GWP v2, AP v7 (new field NH3), ADPe v3 + ADPf v3 (computed from first principles since cold cache), Eutro v6. Added <strong>Chart 5</strong>: per-kg output × 3-method allocation (Mass / Economic / Energy) — pulled from cache for GWP/AP/Eutro, computed programmatically for ADPe/ADPf using grain+fiber yields × prices ($1.93/kg grain, $0.46/kg fiber) + energy content (19.29/14.94 MJ/kg). Rylie's flow: download prompt → paste into Claude Design → attach v5 HTML → new report back.</p>
       <div class="phase-rail">
         <div class="phase-seg done"><div class="phase-num">Steps 0-10</div><div class="phase-label">All workbooks corrected</div></div>
         <div class="phase-seg done"><div class="phase-num">Step 11</div><div class="phase-label">Chart data extracted</div></div>
@@ -930,20 +930,27 @@
       <span class="caret">▾</span>
     </div>
     <div class="card-body">
-      <div class="rec"><span class="rec-label">Files to grab</span>
+      <div class="rec"><span class="rec-label">Files to grab (updated with Chart 5)</span>
         <div style="display: flex; flex-direction: column; gap: 12px; padding: 8px 0 16px;">
           <a href="downloads/claude_design_prompt.md" download style="display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: linear-gradient(180deg, rgba(122,171,145,0.14), rgba(122,171,145,0.06)); border: 1px solid rgba(122,171,145,0.35); border-radius: 12px; color: var(--text); text-decoration: none; font-family: var(--font-head); font-weight: 600; transition: all 0.2s var(--ease);">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" style="flex-shrink:0;"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="var(--sage-bright)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <div style="flex:1;">
               <div style="font-size: 15px; color: var(--sage-bright);">claude_design_prompt.md</div>
-              <div style="font-size: 12px; color: var(--muted); font-weight: 400; margin-top: 4px;">20 KB · self-contained prompt with all data + directives · paste into Claude Design</div>
+              <div style="font-size: 12px; color: var(--muted); font-weight: 400; margin-top: 4px;">35 KB · self-contained prompt covering all 5 charts including allocation-sensitivity Chart 5 · paste into Claude Design</div>
             </div>
           </a>
           <a href="downloads/lca_summary.json" download style="display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; color: var(--text); text-decoration: none; font-family: var(--font-head); font-weight: 600; transition: all 0.2s var(--ease);">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" style="flex-shrink:0;"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="var(--subtext)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <div style="flex:1;">
               <div style="font-size: 15px; color: var(--text);">lca_summary.json</div>
-              <div style="font-size: 12px; color: var(--muted); font-weight: 400; margin-top: 4px;">40 KB · full data (medians + p25/p75 + contribution breakdown) · reference file if Claude Design asks</div>
+              <div style="font-size: 12px; color: var(--muted); font-weight: 400; margin-top: 4px;">40 KB · per-acre + contribution breakdown · Charts 1–4 reference data</div>
+            </div>
+          </a>
+          <a href="downloads/lca_perkg_allocation.json" download style="display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; color: var(--text); text-decoration: none; font-family: var(--font-head); font-weight: 600; transition: all 0.2s var(--ease);">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" style="flex-shrink:0;"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="var(--subtext)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div style="flex:1;">
+              <div style="font-size: 15px; color: var(--text);">lca_perkg_allocation.json</div>
+              <div style="font-size: 12px; color: var(--muted); font-weight: 400; margin-top: 4px;">93 KB · per-kg output × 3 allocation methods (Mass · Economic · Energy) · Chart 5 reference data</div>
             </div>
           </a>
         </div>

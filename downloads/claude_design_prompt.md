@@ -1,33 +1,42 @@
 # Midwest Hemp LCA v5 → v6 Chart Update — Drop-in Prompt for Claude Design
 
-**Paste this entire message into a fresh Claude Design conversation. Attach the current v5 report HTML as context. Claude Design will regenerate the charts with the updated numbers below.**
+**Paste this entire message into a fresh Claude Design conversation. Attach the current v5 report HTML (`Midwest Hemp Environmental Footprint v5 - LEIF.html`) as context. Claude Design will regenerate the charts with the updated numbers below and return a new HTML report.**
 
 ---
 
 ## Context: what changed between v5 and this update
 
-Since the v5 report was generated, the underlying LCA workbooks underwent Phase-2 QAQC corrections:
+Since the v5 report was generated, the underlying LCA workbooks went through Phase-2 QAQC corrections:
 
 1. **Fertilizer distributions refit** — stale `Cluster_Stats` cache values fixed for 5 σ_log parameters (Grain P₂O₅, Grain K₂O, Fiber N, Fiber P₂O₅, Fiber K₂O). MOP pathological tail truncated at 135 lb K₂O/ac (Scrucca cap).
 2. **GWP pathway2 bug fixed** — spurious `F_CR × FracGASM` term removed from all 24,000 pathway2 cells. EF4_wet resampled from Triangular(0.011, 0.014, 0.017) with seed 20260701.
 3. **AP field NH₃ pathway added** — AP-001 finding closed. Field emissions now include NH₃ volatilization using IPCC 2019 Vol4 Ch11 Eq11.9 breakdown: FracGASF_urea = 0.15, FracGASF_MAP = 0.05, ratio 17/14 NH₃/N, TRACI 2.1 CF = 1.88 kg SO₂-eq/kg NH₃.
-4. **Allocation clarified** — Multi-co-product scenarios (TDG_GF, TIG_GF, HDG_GF, HIG_GF, TDD, TID) get all 3 allocation methods (Mass · Economic · Energy). Economic is report default. SOC exception: `_GF` scenarios attribute 100% SOC to grain (no allocation).
-5. **File-format fixes** — All workbooks now open without repair prompts. Byte-perfect preservation of v1 cells.
+4. **Allocation clarified + shipped** — Multi-co-product scenarios (TDG_GF, TIG_GF, HDG_GF, HIG_GF, TDD, TID) computed with all 3 allocation methods (Mass · Economic · Energy). Economic is the report default; energy and mass are shown as sensitivity. SOC exception: `_GF` scenarios attribute 100% SOC to grain (no allocation).
+5. **File-format corruption fixed** — All workbooks now open without repair prompts. Byte-perfect preservation of v1 cells.
 
 ---
 
-## Data: chart-ready numbers
+## Scenario naming key
 
 Twelve scenarios: `TDG_GO, TDG_GF, TDF, TDD, TIG_GO, TIG_GF, TIF, TID, HDG_GO, HDG_GF, HIG_GO, HIG_GF`
 
-Scenario naming key:
-- **First letter (T/H)**: Tillage regime — T = Traditional (conventional), H = High-management (reduced-till)
-- **Second letter (D/I)**: Water regime — D = Dryland, I = Irrigated
-- **Third+ letters**: Crop/output — G_GO = Grain-Only (no fiber harvest), G_GF = Grain with Fiber-residue harvest, F = Fiber-only, D = Dual-purpose (both harvested equally)
+- **1st letter (T/H)**: Tillage — T = Traditional (conventional), H = High-management (reduced-till)
+- **2nd letter (D/I)**: Water regime — D = Dryland, I = Irrigated
+- **3rd+ letters**: Output — `G_GO` = Grain-Only (no fiber harvest), `G_GF` = Grain with Fiber-residue harvest, `F` = Fiber-only, `D` = Dual-purpose (both harvested)
 
-Multi-co-product scenarios (require allocation): TDG_GF, TIG_GF, HDG_GF, HIG_GF, TDD, TID.
+Multi-co-product scenarios (require allocation): `TDG_GF, TIG_GF, HDG_GF, HIG_GF, TDD, TID`.
 
-Below is the complete per-scenario median + p25 + p75 data for all impact categories (per-acre basis, allocation-agnostic):
+Allocation constants used for economic + energy methods:
+- **Grain price**: 1.9327 $/kg (3-yr average 2023-2025 from alloc tab)
+- **Fiber price**: 0.463 $/kg (3-yr average 2023-2025)
+- **Grain energy content**: 19.29 MJ/kg (as-sold)
+- **Fiber energy content**: 14.94 MJ/kg (as-sold)
+
+---
+
+## Data block A: per-ACRE impact by scenario (allocation-agnostic)
+
+Medians + p25 + p75 across 1,000 Monte Carlo runs. Use for Charts 1–3.
 
 ```json
 {
@@ -646,74 +655,667 @@ Below is the complete per-scenario median + p25 + p75 data for all impact catego
 }
 ```
 
-Notes on the data:
-- `AP_total = AP_upstream + AP_field_NH3` — the field NH₃ addition is the material change vs v5
-- `ADPe` and `ADPf` computed from frozen fertilizer inputs × CML CF (workbook cache was cold; values verified by Python from first-principles LCI × CF multiplication)
-- `Eutrophication` values here are UPSTREAM ONLY (field pathway is in a separate tab that requires an Excel recalc pass; if v5 report included field eutro, add ~15–25% for TD/TI scenarios per Rylie's data)
-- All values are from 1,000 Monte Carlo runs (medians + interquartile range)
-- Per-kg output values with allocation splits require a separate Excel F9 pass on the `*_perkg` tabs — flag this for a follow-up if the v5 report used per-kg charts
+## Data block B: per-KG output × 3-METHOD allocation (Chart 5)
+
+Medians only in this block for prompt readability. Full stats (p25, p75, min, max, mean) are in the attached `lca_perkg_allocation.json`. Key format: `SCENARIO__OutputProduct` (e.g., `TDG_GF__Grain`). For single-output scenarios, all 3 methods have identical values (no co-product to allocate).
+
+```json
+{
+  "GWP_wet": {
+    "unit": "kg CO2-eq/kg output",
+    "medians_by_method": {
+      "TDG_GO__Grain": {
+        "mass": 2.039177,
+        "economic": 2.039177,
+        "energy": 2.039177
+      },
+      "TDG_GF__Grain": {
+        "mass": 0.725356,
+        "economic": 1.394437,
+        "energy": 0.845686
+      },
+      "TDG_GF__Fiber": {
+        "mass": 0.725356,
+        "economic": 0.334029,
+        "energy": 0.654979
+      },
+      "TDF__Fiber": {
+        "mass": 0.226261,
+        "economic": 0.226261,
+        "energy": 0.226261
+      },
+      "TDD__Grain": {
+        "mass": 0.739103,
+        "economic": 1.656519,
+        "energy": 0.881079
+      },
+      "TDD__Fiber": {
+        "mass": 0.739103,
+        "economic": 0.396809,
+        "energy": 0.682391
+      },
+      "TIG_GO__Grain": {
+        "mass": 1.926829,
+        "economic": 1.926829,
+        "energy": 1.926829
+      },
+      "TIG_GF__Grain": {
+        "mass": 0.680043,
+        "economic": 1.307326,
+        "energy": 0.792855
+      },
+      "TIG_GF__Fiber": {
+        "mass": 0.680043,
+        "economic": 0.313162,
+        "energy": 0.614062
+      },
+      "TIF__Fiber": {
+        "mass": 0.252478,
+        "economic": 0.252478,
+        "energy": 0.252478
+      },
+      "TID__Grain": {
+        "mass": 0.535536,
+        "economic": 1.33487,
+        "energy": 0.649891
+      },
+      "TID__Fiber": {
+        "mass": 0.535536,
+        "economic": 0.31976,
+        "energy": 0.503337
+      },
+      "HDG_GO__Grain": {
+        "mass": 1.151553,
+        "economic": 1.151553,
+        "energy": 1.151553
+      },
+      "HDG_GF__Grain": {
+        "mass": 0.391017,
+        "economic": 0.751697,
+        "energy": 0.455882
+      },
+      "HDG_GF__Fiber": {
+        "mass": 0.391017,
+        "economic": 0.180064,
+        "energy": 0.353078
+      },
+      "HIG_GO__Grain": {
+        "mass": 0.903035,
+        "economic": 0.903035,
+        "energy": 0.903035
+      },
+      "HIG_GF__Grain": {
+        "mass": 0.299378,
+        "economic": 0.575529,
+        "energy": 0.349041
+      },
+      "HIG_GF__Fiber": {
+        "mass": 0.299378,
+        "economic": 0.137864,
+        "energy": 0.270331
+      }
+    }
+  },
+  "GWP_dry": {
+    "unit": "kg CO2-eq/kg output",
+    "medians_by_method": {
+      "TDG_GO__Grain": {
+        "mass": 1.164958,
+        "economic": 1.164958,
+        "energy": 1.164958
+      },
+      "TDG_GF__Grain": {
+        "mass": 0.436524,
+        "economic": 0.839182,
+        "energy": 0.508939
+      },
+      "TDG_GF__Fiber": {
+        "mass": 0.436524,
+        "economic": 0.201021,
+        "energy": 0.394171
+      },
+      "TDF__Fiber": {
+        "mass": 0.152919,
+        "economic": 0.152919,
+        "energy": 0.152919
+      },
+      "TDD__Grain": {
+        "mass": 0.441357,
+        "economic": 0.978717,
+        "energy": 0.525375
+      },
+      "TDD__Fiber": {
+        "mass": 0.441357,
+        "economic": 0.234446,
+        "energy": 0.4069
+      },
+      "TIG_GO__Grain": {
+        "mass": 1.313916,
+        "economic": 1.313916,
+        "energy": 1.313916
+      },
+      "TIG_GF__Grain": {
+        "mass": 0.478712,
+        "economic": 0.920283,
+        "energy": 0.558125
+      },
+      "TIG_GF__Fiber": {
+        "mass": 0.478712,
+        "economic": 0.220448,
+        "energy": 0.432265
+      },
+      "TIF__Fiber": {
+        "mass": 0.182898,
+        "economic": 0.182898,
+        "energy": 0.182898
+      },
+      "TID__Grain": {
+        "mass": 0.366784,
+        "economic": 0.926656,
+        "energy": 0.444587
+      },
+      "TID__Fiber": {
+        "mass": 0.366784,
+        "economic": 0.221975,
+        "energy": 0.344331
+      },
+      "HDG_GO__Grain": {
+        "mass": 0.648953,
+        "economic": 0.648953,
+        "energy": 0.648953
+      },
+      "HDG_GF__Grain": {
+        "mass": 0.23341,
+        "economic": 0.448711,
+        "energy": 0.27213
+      },
+      "HDG_GF__Fiber": {
+        "mass": 0.23341,
+        "economic": 0.107486,
+        "energy": 0.210763
+      },
+      "HIG_GO__Grain": {
+        "mass": 0.6071,
+        "economic": 0.6071,
+        "energy": 0.6071
+      },
+      "HIG_GF__Grain": {
+        "mass": 0.211478,
+        "economic": 0.406548,
+        "energy": 0.24656
+      },
+      "HIG_GF__Fiber": {
+        "mass": 0.211478,
+        "economic": 0.097386,
+        "energy": 0.190959
+      }
+    }
+  },
+  "AP": {
+    "unit": "kg SO2-eq/kg output",
+    "medians_by_method": {
+      "TDG_GO__Grain": {
+        "mass": 0.004425,
+        "economic": 0.004425,
+        "energy": 0.004425
+      },
+      "TDG_GF__Grain": {
+        "mass": 0.00176,
+        "economic": 0.003384,
+        "energy": 0.002052
+      },
+      "TDG_GF__Fiber": {
+        "mass": 0.00176,
+        "economic": 0.000811,
+        "energy": 0.00159
+      },
+      "TDF__Fiber": {
+        "mass": 0.000958,
+        "economic": 0.000958,
+        "energy": 0.000958
+      },
+      "TDD__Grain": {
+        "mass": 0.001693,
+        "economic": 0.003734,
+        "energy": 0.002003
+      },
+      "TDD__Fiber": {
+        "mass": 0.001693,
+        "economic": 0.000894,
+        "energy": 0.001552
+      },
+      "TIG_GO__Grain": {
+        "mass": 0.004302,
+        "economic": 0.004302,
+        "energy": 0.004302
+      },
+      "TIG_GF__Grain": {
+        "mass": 0.001641,
+        "economic": 0.003155,
+        "energy": 0.001913
+      },
+      "TIG_GF__Fiber": {
+        "mass": 0.001641,
+        "economic": 0.000756,
+        "energy": 0.001482
+      },
+      "TIF__Fiber": {
+        "mass": 0.000704,
+        "economic": 0.000704,
+        "energy": 0.000704
+      },
+      "TID__Grain": {
+        "mass": 0.001263,
+        "economic": 0.003146,
+        "energy": 0.001528
+      },
+      "TID__Fiber": {
+        "mass": 0.001263,
+        "economic": 0.000754,
+        "energy": 0.001184
+      },
+      "HDG_GO__Grain": {
+        "mass": 0.002299,
+        "economic": 0.002299,
+        "energy": 0.002299
+      },
+      "HDG_GF__Grain": {
+        "mass": 0.000898,
+        "economic": 0.001727,
+        "energy": 0.001047
+      },
+      "HDG_GF__Fiber": {
+        "mass": 0.000898,
+        "economic": 0.000414,
+        "energy": 0.000811
+      },
+      "HIG_GO__Grain": {
+        "mass": 0.001836,
+        "economic": 0.001836,
+        "energy": 0.001836
+      },
+      "HIG_GF__Grain": {
+        "mass": 0.000712,
+        "economic": 0.001369,
+        "energy": 0.00083
+      },
+      "HIG_GF__Fiber": {
+        "mass": 0.000712,
+        "economic": 0.000328,
+        "energy": 0.000643
+      }
+    }
+  },
+  "ADPe": {
+    "unit": "kg Sb-eq/kg output",
+    "medians_by_method": {
+      "TDG_GO__Grain": {
+        "mass": 1.2e-05,
+        "economic": 1.2e-05,
+        "energy": 1.2e-05
+      },
+      "TDG_GF__Grain": {
+        "mass": 5e-06,
+        "economic": 9e-06,
+        "energy": 6e-06
+      },
+      "TDG_GF__Fiber": {
+        "mass": 5e-06,
+        "economic": 2e-06,
+        "energy": 4e-06
+      },
+      "TDF__Fiber": {
+        "mass": 3e-06,
+        "economic": 3e-06,
+        "energy": 3e-06
+      },
+      "TDD__Grain": {
+        "mass": 6e-06,
+        "economic": 1.3e-05,
+        "energy": 7e-06
+      },
+      "TDD__Fiber": {
+        "mass": 6e-06,
+        "economic": 3e-06,
+        "energy": 5e-06
+      },
+      "TIG_GO__Grain": {
+        "mass": 1.7e-05,
+        "economic": 1.7e-05,
+        "energy": 1.7e-05
+      },
+      "TIG_GF__Grain": {
+        "mass": 6e-06,
+        "economic": 1.2e-05,
+        "energy": 7e-06
+      },
+      "TIG_GF__Fiber": {
+        "mass": 6e-06,
+        "economic": 3e-06,
+        "energy": 6e-06
+      },
+      "TIF__Fiber": {
+        "mass": 3e-06,
+        "economic": 3e-06,
+        "energy": 3e-06
+      },
+      "TID__Grain": {
+        "mass": 5e-06,
+        "economic": 1.2e-05,
+        "energy": 6e-06
+      },
+      "TID__Fiber": {
+        "mass": 5e-06,
+        "economic": 3e-06,
+        "energy": 5e-06
+      },
+      "HDG_GO__Grain": {
+        "mass": 7e-06,
+        "economic": 7e-06,
+        "energy": 7e-06
+      },
+      "HDG_GF__Grain": {
+        "mass": 3e-06,
+        "economic": 5e-06,
+        "energy": 3e-06
+      },
+      "HDG_GF__Fiber": {
+        "mass": 3e-06,
+        "economic": 1e-06,
+        "energy": 2e-06
+      },
+      "HIG_GO__Grain": {
+        "mass": 8e-06,
+        "economic": 8e-06,
+        "energy": 8e-06
+      },
+      "HIG_GF__Grain": {
+        "mass": 3e-06,
+        "economic": 6e-06,
+        "energy": 3e-06
+      },
+      "HIG_GF__Fiber": {
+        "mass": 3e-06,
+        "economic": 1e-06,
+        "energy": 3e-06
+      }
+    }
+  },
+  "ADPf": {
+    "unit": "MJ/kg output",
+    "medians_by_method": {
+      "TDG_GO__Grain": {
+        "mass": 10.86128,
+        "economic": 10.86128,
+        "energy": 10.86128
+      },
+      "TDG_GF__Grain": {
+        "mass": 4.274204,
+        "economic": 8.156271,
+        "energy": 4.976609
+      },
+      "TDG_GF__Fiber": {
+        "mass": 4.274204,
+        "economic": 1.953783,
+        "energy": 3.854356
+      },
+      "TDF__Fiber": {
+        "mass": 1.521326,
+        "economic": 1.521326,
+        "energy": 1.521326
+      },
+      "TDD__Grain": {
+        "mass": 4.318493,
+        "economic": 9.545061,
+        "energy": 5.160003
+      },
+      "TDD__Fiber": {
+        "mass": 4.318493,
+        "economic": 2.28646,
+        "energy": 3.996394
+      },
+      "TIG_GO__Grain": {
+        "mass": 11.711125,
+        "economic": 11.711125,
+        "energy": 11.711125
+      },
+      "TIG_GF__Grain": {
+        "mass": 4.443304,
+        "economic": 8.478957,
+        "energy": 5.173498
+      },
+      "TIG_GF__Fiber": {
+        "mass": 4.443304,
+        "economic": 2.031081,
+        "energy": 4.006846
+      },
+      "TIF__Fiber": {
+        "mass": 1.745155,
+        "economic": 1.745155,
+        "energy": 1.745155
+      },
+      "TID__Grain": {
+        "mass": 3.283124,
+        "economic": 8.115829,
+        "energy": 3.954949
+      },
+      "TID__Fiber": {
+        "mass": 3.283124,
+        "economic": 1.944096,
+        "energy": 3.063087
+      },
+      "HDG_GO__Grain": {
+        "mass": 5.872528,
+        "economic": 5.872528,
+        "energy": 5.872528
+      },
+      "HDG_GF__Grain": {
+        "mass": 2.29164,
+        "economic": 4.373034,
+        "energy": 2.668239
+      },
+      "HDG_GF__Fiber": {
+        "mass": 2.29164,
+        "economic": 1.047533,
+        "energy": 2.066536
+      },
+      "HIG_GO__Grain": {
+        "mass": 5.136296,
+        "economic": 5.136296,
+        "energy": 5.136296
+      },
+      "HIG_GF__Grain": {
+        "mass": 1.973869,
+        "economic": 3.766646,
+        "energy": 2.298247
+      },
+      "HIG_GF__Fiber": {
+        "mass": 1.973869,
+        "economic": 0.902276,
+        "energy": 1.77998
+      }
+    }
+  },
+  "Eutrophication": {
+    "unit": "kg P-eq/kg output",
+    "medians_by_method": {
+      "TDG_GO__Grain": {
+        "mass": 0.000304,
+        "economic": 0.000304,
+        "energy": 0.000304
+      },
+      "TDG_GF__Grain": {
+        "mass": 0.000106,
+        "economic": 0.000203,
+        "energy": 0.000123
+      },
+      "TDG_GF__Fiber": {
+        "mass": 0.000106,
+        "economic": 4.9e-05,
+        "energy": 9.5e-05
+      },
+      "TDF__Fiber": {
+        "mass": 0.000141,
+        "economic": 0.000141,
+        "energy": 0.000141
+      },
+      "TDD__Grain": {
+        "mass": 0.000318,
+        "economic": 0.000715,
+        "energy": 0.000379
+      },
+      "TDD__Fiber": {
+        "mass": 0.000318,
+        "economic": 0.000171,
+        "energy": 0.000294
+      },
+      "TIG_GO__Grain": {
+        "mass": 0.00069,
+        "economic": 0.00069,
+        "energy": 0.00069
+      },
+      "TIG_GF__Grain": {
+        "mass": 0.000249,
+        "economic": 0.00048,
+        "energy": 0.000291
+      },
+      "TIG_GF__Fiber": {
+        "mass": 0.000249,
+        "economic": 0.000115,
+        "energy": 0.000225
+      },
+      "TIF__Fiber": {
+        "mass": 0.000152,
+        "economic": 0.000152,
+        "energy": 0.000152
+      },
+      "TID__Grain": {
+        "mass": 0.000217,
+        "economic": 0.000528,
+        "energy": 0.000266
+      },
+      "TID__Fiber": {
+        "mass": 0.000217,
+        "economic": 0.000126,
+        "energy": 0.000206
+      },
+      "HDG_GO__Grain": {
+        "mass": 0.000259,
+        "economic": 0.000259,
+        "energy": 0.000259
+      },
+      "HDG_GF__Grain": {
+        "mass": 8.6e-05,
+        "economic": 0.000166,
+        "energy": 0.000101
+      },
+      "HDG_GF__Fiber": {
+        "mass": 8.6e-05,
+        "economic": 4e-05,
+        "energy": 7.8e-05
+      },
+      "HIG_GO__Grain": {
+        "mass": 4.4e-05,
+        "economic": 4.4e-05,
+        "energy": 4.4e-05
+      },
+      "HIG_GF__Grain": {
+        "mass": 1.6e-05,
+        "economic": 3.1e-05,
+        "energy": 1.9e-05
+      },
+      "HIG_GF__Fiber": {
+        "mass": 1.6e-05,
+        "economic": 7e-06,
+        "energy": 1.5e-05
+      }
+    }
+  }
+}
+```
 
 ---
 
 ## Chart directives — what to regenerate
 
-Preserve v5's visual style (colors, fonts, layout, dark navy background if that was v5's palette). Only update numbers.
+Preserve v5's visual style (colors, fonts, panel layout, dark navy background if that was v5's palette). Only update the numbers and the narrative text about NH₃.
 
-### Chart 1 — Per-acre impact by scenario (primary comparison chart)
+### Chart 1 — Per-acre impact by scenario (primary comparison)
 
 Grouped bar chart. Six panels, one per impact category:
-1. **GWP** — use `GWP_dry` medians (default). Optionally show wet as alternative.
-2. **Acidification** — use `AP_total` medians (upstream + field NH₃ combined). This is the material change from v5.
+1. **GWP** — use `GWP_dry` medians (default). Optionally toggle to wet.
+2. **Acidification** — use `AP_total` medians (upstream + field NH₃ combined). Field NH₃ dominates now.
 3. **ADP-elements** — `ADPe` medians.
 4. **ADP-fossils** — `ADPf` medians.
-5. **Eutrophication** — `Eutrophication_upstream` medians (note upstream-only caveat above).
+5. **Eutrophication** — `Eutrophication_upstream` medians (note upstream-only caveat below).
 
-For each scenario bar, show median as bar height + error whiskers p25 → p75.
-
-Preserve any scenario grouping v5 used (e.g., colored by tillage or water regime).
+For each scenario bar: median as bar height, error whiskers p25 → p75.
 
 ### Chart 2 — AP breakdown: upstream vs field NH₃
 
 Stacked bar chart, 12 scenarios × 2 stacks:
-- Blue (or v5's upstream color): `AP_upstream` medians
-- Orange (or v5's field-emissions color): `AP_field_NH3` medians
+- Bottom stack (v5's upstream color): `AP_upstream` medians
+- Top stack (new field-NH₃ color, ideally distinct): `AP_field_NH3` medians
 
-Total bar height = `AP_total`. This is the key "before/after" visual for the paper — v5 showed only upstream; v6 shows upstream + field NH₃, and field NH₃ dominates in every scenario.
+Total bar height = `AP_total`. **This is the key "before/after" visual for the paper** — v5 showed only upstream; the corrected version shows upstream + field NH₃, and field NH₃ dominates in every scenario (typically 3–7× upstream). Rewrite any v5 narrative that said "AP is dominated by upstream" — that's no longer true.
 
 ### Chart 3 — Contribution breakdown for ADPe and ADPf
 
 Stacked bar chart per impact category (ADPe and ADPf), 12 scenarios × 8 activity stacks:
 - seeding, MAP, urea, MOP, herbicide, fuel, irrigation, electricity
 
-Use `contribution_medians[scenario][activity]` from the JSON. Show which inputs dominate the impact per scenario. Fuel is typically the ADPf driver; MOP is typically the ADPe driver.
+Use `contribution_medians[scenario][activity]` from Data Block A. Shows which inputs dominate the impact per scenario. Fuel is typically the ADPf driver; MOP is typically the ADPe driver.
 
-### Chart 4 — Scenario ranking summary (optional)
+### Chart 4 — Scenario ranking summary (optional if v5 had one)
 
-If v5 had a "top-line summary" chart ranking scenarios by GWP or acidification, update the numbers accordingly. Rank order for GWP (dry, lowest to highest): TDG_GO, TDG_GF, HDG_GF, HDG_GO, TIF, TIG_GF, TIG_GO, TID, HIG_GF, HIG_GO, TDD (highest).
+If v5 had a top-line summary chart ranking scenarios by GWP or acidification, update the numbers. Rank order for GWP-dry (lowest to highest): TDG_GO, TDG_GF, HDG_GF, HDG_GO, TIF, TIG_GF, TIG_GO, TID, HIG_GF, HIG_GO, TDD.
 
-### Chart 5 (defer) — Allocation sensitivity per-kg
+### Chart 5 — Allocation sensitivity per-kg output ★
 
-Multi-co-product scenarios need 3-method allocation (Mass / Economic / Energy) at the per-kg output level. This requires an Excel recalc pass on the per-kg tabs before extraction. Deferred to a follow-up round.
+**This is the ISO-required sensitivity analysis for multi-co-product scenarios.**
+
+Per impact category, show 3-method comparison (Mass / Economic / Energy) for each multi-co-product scenario × output. For single-output scenarios, all methods give identical values (no allocation applied) — you can either omit or show as a flat baseline.
+
+**Recommended visualization: grouped bar chart per impact category:**
+- X-axis: scenario_output pairs (e.g., "TDG_GF Grain", "TDG_GF Fiber", "TDD Grain", "TDD Fiber", ...)
+- Y-axis: per-kg impact
+- Three bars per group: Mass, Economic, Energy (color-coded)
+- **Default view: Economic** (report default per Rylie). Toggle to see other methods.
+
+Key story from the data:
+- Under **Economic allocation**, grain always gets a higher per-kg impact than fiber because grain is worth ~4× more per kg ($1.93/kg vs $0.46/kg)
+- Under **Mass allocation**, grain and fiber share the impact proportional to yield — usually equal per-kg
+- Under **Energy allocation**, grain gets somewhat more than fiber (19.29 vs 14.94 MJ/kg, ~30% higher factor)
+
+Use `per_kg_by_impact[impact][medians_by_method]` from Data Block B. Each key is `SCENARIO__Output` (e.g., `TDG_GF__Grain`).
 
 ---
 
-## Design system hints (for consistency with v5)
+## Narrative updates needed in the report body
 
-- Keep v5's color palette exactly. If unsure, ask Rylie which color goes with which impact category before regenerating.
-- Fonts: preserve DM Sans / Neue Montreal if v5 used them.
-- Layout: same grid, same panel sizes.
-- Any narrative text in v5 that talks about "AP is dominated by upstream" or similar needs updating — field NH₃ is now the dominant driver of AP across all scenarios. Rewrite that narrative section accordingly.
+- **AP section**: replace "AP is dominated by upstream fertilizer production" with "AP is dominated by field NH₃ volatilization from urea and MAP; upstream fertilizer production is a secondary driver." Include the field-NH₃-to-upstream ratio (typically 3–7× depending on scenario).
+- **Methodology → Impact assessment → Acidification**: add a paragraph explaining the IPCC 2019 Vol4 Ch11 Eq11.9 breakdown for FracGASF (0.15 urea, 0.05 MAP), the NH₃-to-N ratio (17/14), and the TRACI 2.1 CF (1.88 kg SO₂-eq/kg NH₃).
+- **Allocation section**: state that Economic allocation is the report default, all three methods are shown as sensitivity, and grain gets more impact under Economic than Mass because of its ~4× price premium.
+- **Uncertainty section**: mention that the fertilizer distribution recalibration corrected 5 stale σ_log values (Grain P₂O₅, Grain K₂O, Fiber N, Fiber P₂O₅, Fiber K₂O) and truncated the MOP tail at 135 lb K₂O/ac.
+
+---
+
+## Caveats
+
+- **Eutrophication** values in Data Block A are UPSTREAM ONLY. If v5 showed total (upstream + field-weighted CF), add ~15–25% on top for the TD/TI scenarios per Rylie's regionalized CF data. If v5 used only upstream, you're good as-is.
+- **ADPe/ADPf** per-acre AND per-kg values were computed by Python from first principles (frozen fertilizer inputs × CML CF from the CF tab). The Excel workbook cache was cold for these two categories — the numbers here should match exactly what the workbook would produce after a Ctrl+Alt+F9 pass.
+- **All values from 1,000 Monte Carlo runs**. `p25` and `p75` give the interquartile range for error whiskers.
 
 ---
 
 ## Deliverable
 
-Return the updated HTML report as a single downloadable file, matching v5's structure. If any data is ambiguous or you need clarification on which chart to update, ask Rylie a targeted question rather than guessing.
+Return the updated HTML report as a single downloadable file, structurally matching v5. If any data is ambiguous or a chart needs clarification, ask Rylie a targeted question rather than guessing.
 
 ---
 
-*Generated 2026-07-02T01:59:03Z from LEIF AIOS Phase 2 Step 11.*
-*Source workbooks:*
+*Generated 2026-07-02T03:11:17+00:00 from LEIF AIOS Phase 2 Step 11.*
+*Source workbooks (all corrected):*
 - *FinalMC_GWP_v2.xlsx (Steps 0–1)*
 - *FinalMC_upstreamAP_v7.xlsx (Steps 0–2, 5, 7, 10 — includes field NH₃)*
 - *FinalMC_upstreamADPe_v3.xlsx (Step 2)*
