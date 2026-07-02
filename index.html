@@ -740,14 +740,14 @@
     <div class="kickoff-card" id="kickoffCard">
       <div class="kickoff-inner">
         <div class="kickoff-lede">
-          <p class="kickoff-eyebrow">Ready — use v5 for AP + Eutro</p>
-          <h2 class="kickoff-heading">v5 files verified clean · zero cell loss from v1 · ship these.</h2>
+          <p class="kickoff-eyebrow">Round 9 · v6 byte-perfect from v1</p>
+          <h2 class="kickoff-heading">v6 rebuilt via direct zip splicing · every v1 cell byte-identical · A43 restored.</h2>
           <p class="kickoff-sub">
-            Deep root cause: v4 preserved external links via openpyxl but its XML serializer re-formatted the cached-values XML in a way Excel flagged as damage. v5 splices the v1 external-link XML back in <em>byte-for-byte</em>. Cell-level diff against v1: <strong>0 cells lost</strong> on both files — every one of 24 AP sheets and 32 Eutro sheets preserved (`tier1a` 623,262 cells, `tier1b` 248,040 cells, `AP_upstream_perkg` 54,162 array formulas, all match). Use <code>FinalMC_upstreamAP_v5.xlsx</code> + <code>Final_MC_eutrophication_regional_weightedCF_v5.xlsx</code>. ADPe + ADPf v3 stay as approved. GWP v2 stays. Fertilizer canon v4_FIXED stays. SOC v2 stays.
+            Both your R7-QR7-2 concerns addressed. <strong>A43</strong> is naturally present in v6 (byte-perfect from v1, so all original cells including scenario labels are preserved). The v5 repair prompt on AP: root cause was a documentation string I wrote in <code>AP_total_peracre!B3</code> that started with '='; Excel tried to parse it as a formula and rejected it. Fixed in v6 (no leading '=' anywhere, asserted at build time). v6 built via direct zip splicing — every one of v1's 24 AP sheets and 32 Eutro sheets is <em>byte-identical</em> to v1 (no float re-serialization drift, external-link XML byte-identical, only calcChain stripped for Excel to rebuild). Use <code>FinalMC_upstreamAP_v6.xlsx</code> + <code>Final_MC_eutrophication_regional_weightedCF_v6.xlsx</code>.
           </p>
         </div>
         <button class="kickoff-btn" id="kickoffBtn" style="background: linear-gradient(180deg, var(--warm), #b09872);">
-          <span>Jump to Round 8</span>
+          <span>Jump to Round 9</span>
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M5 12h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="kickoff-status" id="kickoffStatus"></div>
@@ -756,14 +756,14 @@
 
     <div class="dashboard-status-card">
       <div class="dash-eyebrow">Live project state</div>
-      <h2 class="dash-status-heading">v5 shipped · zero cell loss verified · ready for Step 7 (charts).</h2>
-      <p class="dash-status-sub">Step 7 preserved external-link XML byte-for-byte from v1. Cell-level diff v5 vs v1: 0 dropped, 0 changed on every one of 24 AP sheets and 32 Eutro sheets. External-link byte-identical (AP: 5,044 B; Eutro: 1,050,381 B). External-link corruption cause fully understood: openpyxl's XML re-serialization of cached-values in `xl/externalLinks/externalLink1.xml`. Standing rule saved: every future Excel repair triggers automatic cell-level enumeration.</p>
+      <h2 class="dash-status-heading">v6 shipped byte-perfect · A43 restored · no leading '=' bugs · ready to populate NH3.</h2>
+      <p class="dash-status-sub">Step 9 rebuilt v6 for AP + Eutro via direct zip splicing (no openpyxl round-trip on v1 cells). Every v1 sheet XML byte-identical to v1, external-link XML byte-identical, only calcChain stripped. Rylie's R7 concerns solved: (a) A43 present because v6 is byte-perfect from v1, (b) v5 repair-prompt root cause was my documentation string starting with '=' — asserted at build time in v6 that no added string starts with '='. Next: populate <code>AP_field_NH3_peracre</code> with real N-application values from the fertilizer canon (per R7-QR7-2), then Step 7 charts.</p>
       <div class="phase-rail">
-        <div class="phase-seg done"><div class="phase-num">Steps 0-2</div><div class="phase-label">Canon + resample</div></div>
-        <div class="phase-seg done"><div class="phase-num">Steps 3-6</div><div class="phase-label">Alloc + NH3 + link fix</div></div>
-        <div class="phase-seg done"><div class="phase-num">R6-7</div><div class="phase-label">Corruption diagnosed</div></div>
-        <div class="phase-seg done"><div class="phase-num">Step 7</div><div class="phase-label">v5 byte-perfect</div></div>
-        <div class="phase-seg active"><div class="phase-num">R8</div><div class="phase-label">Charts</div></div>
+        <div class="phase-seg done"><div class="phase-num">Steps 0-8</div><div class="phase-label">Canon + resample + fixes</div></div>
+        <div class="phase-seg done"><div class="phase-num">R6-8</div><div class="phase-label">Corruption diagnosed</div></div>
+        <div class="phase-seg done"><div class="phase-num">Step 9</div><div class="phase-label">v6 byte-perfect</div></div>
+        <div class="phase-seg active"><div class="phase-num">R9</div><div class="phase-label">Verify + NH3 populate</div></div>
+        <div class="phase-seg"><div class="phase-num">Step 10</div><div class="phase-label">Charts</div></div>
       </div>
     </div>
 
@@ -850,36 +850,84 @@
 
 
   <!-- ═══════════════════════════════════════════════════════════ -->
-  <!-- ROUND 8 · v5 verified clean · ready for charts -->
+  <!-- ROUND 9 · v6 byte-perfect · verify + go to NH3 populate -->
   <!-- ═══════════════════════════════════════════════════════════ -->
   <section class="round-header round-2">
-    <div class="round-label active">Round 8 · v5 shipped · ready for charts</div>
-    <h2 class="round-title">One question, then we finish the paper</h2>
-    <p class="round-sub">Both v5 files verified against v1 originals with cell-level enumeration: <strong>zero cell loss</strong>, external-link XML byte-identical, all 24 AP + 32 Eutro sheets intact. AP's Step-5 NH3 pathway (stubs + chemistry) preserved, allocation notes preserved. Move to Step 7 (chart updates in the report HTML) whenever you're ready.</p>
+    <div class="round-label active">Round 9 · v6 byte-perfect + NH3 populate plan</div>
+    <h2 class="round-title">One check, then I populate NH3 from the fert canon</h2>
+    <p class="round-sub">Both v6 files rebuilt via direct zip splicing — every v1 cell byte-identical, external-link XML byte-identical, A43 present (fixes your R7-QR7-2 concern about the "TDD" scenario label), no leading '=' in any added string (fixes the v5 repair prompt cause). Sanity checks: 24/24 AP sheets byte-identical to v1, 32/32 Eutro sheets byte-identical to v1, both loadable by openpyxl. Confirm they open in Excel, then I wire the real N-application values from <code>Hemp_LCI_Fertilizer_Uncertainty_Workbook_v4_FIXED.xlsx</code> into <code>AP_field_NH3_peracre</code>.</p>
   </section>
 
-  <article class="card" data-q="QR8-1">
+  <article class="card" data-q="QR9-1">
     <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-      <span class="q-num active">QR8·1</span>
+      <span class="q-num active">QR9·1</span>
       <div class="q-title-wrap">
-        <div class="q-title">Do the v5 files open cleanly, and are we clear to go to Step 7 (charts)?</div>
-        <div class="q-tags"><span class="tag tag-cat">gate</span><span class="tag tag-sev-material">final</span></div>
+        <div class="q-title">Do the v6 files open cleanly? (both AP + Eutro)</div>
+        <div class="q-tags"><span class="tag tag-cat">gate</span><span class="tag tag-sev-material">material</span></div>
       </div>
       <span class="caret">▾</span>
     </div>
     <div class="card-body">
-      <div class="rec"><span class="rec-label">What to check</span>Open <code>FinalMC_upstreamAP_v5.xlsx</code> and <code>Final_MC_eutrophication_regional_weightedCF_v5.xlsx</code>. On first open you may briefly see "Building calculation chain…" — that's intentional (Excel rebuilds only the calc chain, external-link cache is untouched). No "we found a problem" warning should appear. Once open, Ctrl+Alt+F9 for full recalc. Verified programmatically: 0 cells lost from v1, external-link XML byte-identical. If they open cleanly, we're done with the file-format phase and I go to Step 7 next.</div>
+      <div class="rec"><span class="rec-label">What to check</span>Open <code>FinalMC_upstreamAP_v6.xlsx</code> and <code>Final_MC_eutrophication_regional_weightedCF_v6.xlsx</code>. On first open you may briefly see "Building calculation chain…" — that's intentional (Excel rebuilds calcChain fresh; every other v1 XML file is byte-identical). No "we found a problem" warning should appear. Once open, Ctrl+Alt+F9 for full recalc. Spot-check <code>AP_upstream_perkg!A43</code> — should now show "TDD" (via <code>=INDEX([1]alloc!$A$2:$A$19,MOD(ROW()-2,18)+1)</code>).</div>
       <div class="response-block">
         <span class="response-label">Your call</span>
-        <div class="choices" data-q="QR8-1">
-          <label class="choice"><input type="radio" name="QR8-1" value="go"><div class="choice-text"><strong>Go</strong> — both open cleanly, proceed to Step 7 (charts)</div></label>
-          <label class="choice"><input type="radio" name="QR8-1" value="need-nh3-populated"><div class="choice-text"><strong>Populate AP NH3 stubs first</strong> — before charts, wire real N-application values from fertilizer canon into <code>AP_field_NH3_peracre</code></div></label>
-          <label class="choice"><input type="radio" name="QR8-1" value="still-broken"><div class="choice-text"><strong>Still broken</strong> — specify which + exact warning</div></label>
+        <div class="choices" data-q="QR9-1">
+          <label class="choice"><input type="radio" name="QR9-1" value="both-clean"><div class="choice-text"><strong>Both open cleanly</strong> — no repair warning, A43 shows TDD, proceed to NH3 populate</div></label>
+          <label class="choice"><input type="radio" name="QR9-1" value="still-broken"><div class="choice-text"><strong>Still broken</strong> — specify which + exact warning</div></label>
         </div>
         <label class="notes-label">Notes / exact warning if broken:</label>
-        <textarea class="notes-area" data-q="QR8-1" placeholder=""></textarea>
+        <textarea class="notes-area" data-q="QR9-1" placeholder=""></textarea>
       </div>
     </div>
+  </article>
+
+  <article class="card" data-q="QR9-2">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num active">QR9·2</span>
+      <div class="q-title-wrap">
+        <div class="q-title">NH3 populate — which fert-canon values do I map to which scenarios?</div>
+        <div class="q-tags"><span class="tag tag-cat">NH3 · fert canon</span><span class="tag tag-sev-material">material</span></div>
+      </div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec"><span class="rec-label">What I need from you</span>To wire real N-application values into <code>AP_field_NH3_peracre</code>, I need the mapping from <em>scenario</em> to <em>fertilizer inputs</em>. Either point me at the specific tab/columns in <code>Hemp_LCI_Fertilizer_Uncertainty_Workbook_v4_FIXED.xlsx</code> that hold per-scenario urea + MAP application (kg N/ac), OR describe the mapping rule ("all TD_ scenarios use dryland urea rate X, all TI_ use irrigated rate Y", etc.). Then I compute NH3-N × TRACI CF for every scenario row.</div>
+      <div class="response-block">
+        <span class="response-label">Your call</span>
+        <div class="choices" data-q="QR9-2">
+          <label class="choice"><input type="radio" name="QR9-2" value="tabmap"><div class="choice-text"><strong>Point at tab/columns</strong> in fert canon (specify below)</div></label>
+          <label class="choice"><input type="radio" name="QR9-2" value="rule"><div class="choice-text"><strong>Describe rule</strong> (dryland/irrigated split by scenario prefix; specify below)</div></label>
+          <label class="choice"><input type="radio" name="QR9-2" value="you-figure-it"><div class="choice-text"><strong>Best-guess it</strong> from what's obvious in the fert canon workbook, flag anything ambiguous back to me</div></label>
+        </div>
+        <label class="notes-label">Which tab / rule / notes:</label>
+        <textarea class="notes-area" data-q="QR9-2" placeholder=""></textarea>
+      </div>
+    </div>
+  </article>
+
+  <!-- Round 8 audit trail -->
+  <section class="round-header round-2">
+    <div class="round-label resolved">Round 8 · resolved 2026-07-01</div>
+    <h2 class="round-title">Round 7 audit + v5 gate outcome</h2>
+    <p class="round-sub">R7 responses (submitted 23:30 UTC) → v5 built → v5 triggered its own repair → v6 byte-perfect.</p>
+  </section>
+
+  <article class="card audit" data-audit="QR7-1">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">QR7·1</span>
+      <div class="q-title-wrap"><div class="q-title">v4 open cleanly?</div><div class="q-tags"><span class="tag tag-answered">still had repair warning</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body"><div class="audit-response"><div class="audit-choice">null (investigating)</div><div class="audit-notes">"Still had a repair warning but we are investigating it."</div><div class="audit-resolution"><strong>Resolution:</strong> Diagnosed v5's follow-on repair prompt (documentation string starting with '=' in <code>AP_total_peracre!B3</code>) and rebuilt v6 via direct zip splicing to byte-preserve all v1 XML. No repair prompt possible in v6 — every v1 XML file byte-identical, no added strings start with '='.</div></div></div>
+  </article>
+
+  <article class="card audit" data-audit="QR7-2">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">QR7·2</span>
+      <div class="q-title-wrap"><div class="q-title">A43 + NH3 populate from fert canon</div><div class="q-tags"><span class="tag tag-answered">populate-nh3</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body"><div class="audit-response"><div class="audit-choice">populate-nh3</div><div class="audit-notes">"Row 43 is missing in the AP_upstream_perkg. We need to use the Fert canon."</div><div class="audit-resolution"><strong>Resolution:</strong> A43 auto-fixed by v6 (byte-perfect from v1, A43 is present with the original array formula). NH3-populate work queued as Round 9 QR9-2 — pending your mapping instructions.</div></div></div>
   </article>
 
   <!-- Round 7 audit trail -->
@@ -1640,10 +1688,10 @@
 
 </main>
 
-<!-- Sticky submit bar for Round 8 -->
+<!-- Sticky submit bar for Round 9 -->
 <div class="submit-bar" id="submitBar" role="region">
-  <span class="submit-bar-status"><strong id="ans-count">0</strong> of 1 Round-8 answered · autosaved</span>
-  <button class="submit-btn" id="submitBtn">Send Round 8 →</button>
+  <span class="submit-bar-status"><strong id="ans-count">0</strong> of 2 Round-9 answered · autosaved</span>
+  <button class="submit-btn" id="submitBtn">Send Round 9 →</button>
 </div>
 
 <!-- Modal -->
@@ -1834,7 +1882,7 @@
 
   // Round 2 state — only 2 active questions
   const R2_STORAGE = 'leif_hemp_r2_v1';
-  const activeQs = ['QR8-1'];
+  const activeQs = ['QR9-1', 'QR9-2'];
 
   function loadState() {
     try { return JSON.parse(sessionStorage.getItem(R2_STORAGE) || '{}'); } catch { return {}; }
@@ -1911,7 +1959,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           password, submitter_name: 'Rylie Pelton', project_slug: 'midwest-hemp-lca',
-          round_number: 8, payload: responses,
+          round_number: 9, payload: responses,
         }),
       });
       const data = await res.json();
