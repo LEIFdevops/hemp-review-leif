@@ -522,6 +522,65 @@
   .kickoff-card.fired { border-color: rgba(122, 171, 145, 0.5); }
   .kickoff-card.fired .kickoff-btn { pointer-events: none; opacity: 0.6; }
 
+  /* ─── Active round · always visually anchored at top ─── */
+  .active-round-anchor { margin: 12px 0 8px; }
+  .active-round-eyebrow {
+    display: inline-block;
+    font-family: var(--font-head); font-weight: 700; font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--sage-bright);
+    padding: 6px 14px;
+    background: linear-gradient(180deg, rgba(122,171,145,0.18), rgba(122,171,145,0.10));
+    border: 1px solid rgba(122,171,145,0.38);
+    border-radius: 999px;
+    box-shadow: 0 0 24px rgba(122,171,145,0.18);
+    animation: pulseGlow 2.6s ease-in-out infinite;
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 24px rgba(122,171,145,0.14); }
+    50%      { box-shadow: 0 0 36px rgba(122,171,145,0.32); }
+  }
+  section.round-header.active-round {
+    padding: 20px 24px;
+    background: linear-gradient(180deg, rgba(122,171,145,0.06), transparent);
+    border-left: 3px solid var(--sage-bright);
+    border-radius: 8px;
+    box-shadow: 0 0 40px rgba(122,171,145,0.08);
+  }
+
+  /* ─── Past rounds collapsible ─── */
+  .past-rounds {
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px dashed var(--border-strong);
+  }
+  .past-rounds > summary {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    list-style: none;
+    transition: all 0.2s var(--ease);
+    user-select: none;
+  }
+  .past-rounds > summary::-webkit-details-marker { display: none; }
+  .past-rounds > summary:hover { border-color: var(--border-strong); background: var(--surface-2); }
+  .past-rounds[open] > summary { border-color: rgba(122,171,145,0.28); background: var(--surface-2); }
+  .past-rounds-title {
+    font-family: var(--font-head); font-weight: 700; font-size: 14px;
+    color: var(--text); letter-spacing: -0.01em;
+  }
+  .past-rounds-hint { color: var(--muted); font-size: 12px; }
+  .past-rounds[open] > summary .past-rounds-hint::before { content: '▾ '; color: var(--sage); }
+  .past-rounds:not([open]) > summary .past-rounds-hint::before { content: '▸ '; color: var(--sage); }
+  .past-rounds-body { padding-top: 32px; opacity: 0.85; }
+  .past-rounds-body section.round-header { margin-top: 40px; }
+
   /* ─── Live Activity feed ─── */
   .live-activity {
     background: var(--surface);
@@ -712,7 +771,7 @@
       <div><div class="gate-brand-name">LEIF</div><div class="gate-brand-tag">Hemp LCA · Rylie's Workspace</div></div>
     </div>
     <h2 class="gate-heading">Welcome back</h2>
-    <p class="gate-lede">Your Midwest Hemp LCA review workspace is here. Round 1 is closed. Round 2 (2 investigation-derived questions) is ready for your judgment.</p>
+    <p class="gate-lede">Your Midwest Hemp LCA review workspace. Pick up where we left off — the current round's questions are always front and center.</p>
     <input id="viewGateInput" type="password" placeholder="Access password" autofocus autocomplete="off" spellcheck="false">
     <button id="viewGateBtn" class="gate-btn"><span>Enter workspace</span><svg viewBox="0 0 20 20" width="16" height="16" fill="none"><path d="M4 10h11m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     <div id="viewGateError" class="gate-error">Password not recognized. Ping Joe.</div>
@@ -740,14 +799,14 @@
     <div class="kickoff-card" id="kickoffCard">
       <div class="kickoff-inner">
         <div class="kickoff-lede">
-          <p class="kickoff-eyebrow">Round 9 · v6 byte-perfect from v1</p>
-          <h2 class="kickoff-heading">v6 rebuilt via direct zip splicing · every v1 cell byte-identical · A43 restored.</h2>
+          <p class="kickoff-eyebrow">Round 10 · verify populated NH3 pathway</p>
+          <h2 class="kickoff-heading">AP v7 shipped with real NH3 values from your fert canon. 2 quick verifications, then charts.</h2>
           <p class="kickoff-sub">
-            Both your R7-QR7-2 concerns addressed. <strong>A43</strong> is naturally present in v6 (byte-perfect from v1, so all original cells including scenario labels are preserved). The v5 repair prompt on AP: root cause was a documentation string I wrote in <code>AP_total_peracre!B3</code> that started with '='; Excel tried to parse it as a formula and rejected it. Fixed in v6 (no leading '=' anywhere, asserted at build time). v6 built via direct zip splicing — every one of v1's 24 AP sheets and 32 Eutro sheets is <em>byte-identical</em> to v1 (no float re-serialization drift, external-link XML byte-identical, only calcChain stripped for Excel to rebuild). Use <code>FinalMC_upstreamAP_v6.xlsx</code> + <code>Final_MC_eutrophication_regional_weightedCF_v6.xlsx</code>.
+            Per your R9 note, I pulled per-scenario per-run urea + MAP from <code>FinalMC_GWP_v2::urea_frozen</code> and <code>MAP_frozen</code> (cross-verified <code>N_urea + N_MAP == Nrate</code>), computed NH3 field AP for all 12,000 (scenario × run) combinations, and shipped <code>FinalMC_upstreamAP_v7.xlsx</code> (byte-perfect v1 base + populated <code>AP_field_NH3_peracre</code> values + <code>AP_total_peracre</code> formulas). Eutro is unchanged — v6 remains canonical for Eutro.
           </p>
         </div>
         <button class="kickoff-btn" id="kickoffBtn" style="background: linear-gradient(180deg, var(--warm), #b09872);">
-          <span>Jump to Round 9</span>
+          <span>Jump to Round 10</span>
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M5 12h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="kickoff-status" id="kickoffStatus"></div>
@@ -756,14 +815,13 @@
 
     <div class="dashboard-status-card">
       <div class="dash-eyebrow">Live project state</div>
-      <h2 class="dash-status-heading">v6 shipped byte-perfect · A43 restored · no leading '=' bugs · ready to populate NH3.</h2>
-      <p class="dash-status-sub">Step 9 rebuilt v6 for AP + Eutro via direct zip splicing (no openpyxl round-trip on v1 cells). Every v1 sheet XML byte-identical to v1, external-link XML byte-identical, only calcChain stripped. Rylie's R7 concerns solved: (a) A43 present because v6 is byte-perfect from v1, (b) v5 repair-prompt root cause was my documentation string starting with '=' — asserted at build time in v6 that no added string starts with '='. Next: populate <code>AP_field_NH3_peracre</code> with real N-application values from the fertilizer canon (per R7-QR7-2), then Step 7 charts.</p>
+      <h2 class="dash-status-heading">AP v7 with populated NH3 · 12,000 scenario×run values wired from fert canon.</h2>
+      <p class="dash-status-sub">Step 10 pulled per-scenario per-run urea + MAP from <code>FinalMC_GWP_v2</code>, applied IPCC 2019 chemistry (N_urea×0.15 + N_MAP×0.05) × 17/14 × 1.88 TRACI, wrote populated values into <code>AP_field_NH3_peracre</code>, added <code>AP_total_peracre</code> as formulas (upstream + field NH3). AP v7 byte-perfect from v1 (all 24 v1 sheets byte-identical), no leading '=' bugs, no repair prompt possible. Eutro stays as v6 (already clean). Waiting on your sanity check of the NH3 medians before charts.</p>
       <div class="phase-rail">
-        <div class="phase-seg done"><div class="phase-num">Steps 0-8</div><div class="phase-label">Canon + resample + fixes</div></div>
-        <div class="phase-seg done"><div class="phase-num">R6-8</div><div class="phase-label">Corruption diagnosed</div></div>
-        <div class="phase-seg done"><div class="phase-num">Step 9</div><div class="phase-label">v6 byte-perfect</div></div>
-        <div class="phase-seg active"><div class="phase-num">R9</div><div class="phase-label">Verify + NH3 populate</div></div>
-        <div class="phase-seg"><div class="phase-num">Step 10</div><div class="phase-label">Charts</div></div>
+        <div class="phase-seg done"><div class="phase-num">Steps 0-9</div><div class="phase-label">Canon + fixes + v6</div></div>
+        <div class="phase-seg done"><div class="phase-num">Step 10</div><div class="phase-label">NH3 populated</div></div>
+        <div class="phase-seg active"><div class="phase-num">R10</div><div class="phase-label">Verify NH3</div></div>
+        <div class="phase-seg"><div class="phase-num">Step 11</div><div class="phase-label">Charts</div></div>
       </div>
     </div>
 
@@ -850,15 +908,119 @@
 
 
   <!-- ═══════════════════════════════════════════════════════════ -->
-  <!-- ROUND 9 · v6 byte-perfect · verify + go to NH3 populate -->
+  <!-- ROUND 10 · verify populated NH3 · ACTIVE, TOP OF PAGE       -->
   <!-- ═══════════════════════════════════════════════════════════ -->
-  <section class="round-header round-2">
-    <div class="round-label active">Round 9 · v6 byte-perfect + NH3 populate plan</div>
-    <h2 class="round-title">One check, then I populate NH3 from the fert canon</h2>
-    <p class="round-sub">Both v6 files rebuilt via direct zip splicing — every v1 cell byte-identical, external-link XML byte-identical, A43 present (fixes your R7-QR7-2 concern about the "TDD" scenario label), no leading '=' in any added string (fixes the v5 repair prompt cause). Sanity checks: 24/24 AP sheets byte-identical to v1, 32/32 Eutro sheets byte-identical to v1, both loadable by openpyxl. Confirm they open in Excel, then I wire the real N-application values from <code>Hemp_LCI_Fertilizer_Uncertainty_Workbook_v4_FIXED.xlsx</code> into <code>AP_field_NH3_peracre</code>.</p>
+  <section class="active-round-anchor">
+    <div class="active-round-eyebrow">Answer these 2 questions ↓</div>
   </section>
 
-  <article class="card" data-q="QR9-1">
+  <section class="round-header round-2 active-round">
+    <div class="round-label active">Round 10 · verify populated NH3</div>
+    <h2 class="round-title">Two sanity checks on the populated AP NH3 tab</h2>
+    <p class="round-sub">v7 AP shipped with real per-scenario per-run NH3 values from your fert canon. Method: N_urea × 0.15 + N_MAP × 0.05, then × 17/14 × 1.88 (IPCC 2019 breakdown, TRACI 2.1). Sanity-check the medians below match your intuition, verify the total sheet computes, and Step 11 (charts) begins.</p>
+  </section>
+
+  <article class="card" data-q="QR10-1">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="true">
+      <span class="q-num active">QR10·1</span>
+      <div class="q-title-wrap">
+        <div class="q-title">AP field NH3 medians — do these match what you'd expect?</div>
+        <div class="q-tags"><span class="tag tag-cat">AP · NH3</span><span class="tag tag-sev-material">material</span></div>
+      </div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec"><span class="rec-label">Computed medians (kg SO2-eq/ac, from 1000 MC runs)</span>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px 20px; padding: 12px 0; font-family: ui-monospace, monospace; font-size: 13px;">
+          <div><span style="color: var(--muted);">TDG_GO</span> <strong>12.03</strong></div>
+          <div><span style="color: var(--muted);">TIG_GO</span> <strong>15.66</strong></div>
+          <div><span style="color: var(--muted);">HDG_GO</span> <strong>13.20</strong></div>
+          <div><span style="color: var(--muted);">HIG_GO</span> <strong>14.63</strong></div>
+          <div><span style="color: var(--muted);">TDG_GF</span> <strong>12.03</strong></div>
+          <div><span style="color: var(--muted);">TIG_GF</span> <strong>15.66</strong></div>
+          <div><span style="color: var(--muted);">HDG_GF</span> <strong>13.20</strong></div>
+          <div><span style="color: var(--muted);">HIG_GF</span> <strong>14.63</strong></div>
+          <div><span style="color: var(--muted);">TDF</span> <strong>5.96</strong></div>
+          <div><span style="color: var(--muted);">TIF</span> <strong>9.49</strong></div>
+          <div style="grid-column: span 2;"></div>
+          <div><span style="color: var(--muted);">TDD</span> <strong>16.40</strong></div>
+          <div><span style="color: var(--muted);">TID</span> <strong>15.91</strong></div>
+        </div>
+        Order of magnitude sanity: for ~90 lb N/ac (~41 kg N/ac) with FracGASF≈0.10 weighted, expect ~14 kg SO2-eq/ac. Dual scenarios (TDD/TID) higher, fiber-only lower — matches intuition. In Excel open <code>FinalMC_upstreamAP_v7.xlsx</code>, check <code>AP_field_NH3_peracre!B18:B29</code> — the median column.
+      </div>
+      <div class="response-block">
+        <span class="response-label">Your call</span>
+        <div class="choices" data-q="QR10-1">
+          <label class="choice"><input type="radio" name="QR10-1" value="approve"><div class="choice-text"><strong>Approved</strong> — magnitudes and scenario ranking look right</div></label>
+          <label class="choice"><input type="radio" name="QR10-1" value="switch-method"><div class="choice-text"><strong>Switch method</strong> — use total N × single FracGASF (specify below) instead of urea+MAP split</div></label>
+          <label class="choice"><input type="radio" name="QR10-1" value="fix-values"><div class="choice-text"><strong>Values look wrong</strong> — flag which scenarios + why</div></label>
+        </div>
+        <label class="notes-label">Notes:</label>
+        <textarea class="notes-area" data-q="QR10-1" placeholder=""></textarea>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-q="QR10-2">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="true">
+      <span class="q-num active">QR10·2</span>
+      <div class="q-title-wrap">
+        <div class="q-title">AP_total_peracre formulas compute (Ctrl+Alt+F9)?</div>
+        <div class="q-tags"><span class="tag tag-cat">AP · totals</span><span class="tag tag-sev-material">material</span></div>
+      </div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec"><span class="rec-label">What to check</span>Open <code>FinalMC_upstreamAP_v7.xlsx</code>, press Ctrl+Alt+F9 (⌘+⌥+F9 on Mac) to force recalc. Look at <code>AP_total_peracre</code> — cells B2..ALM13 should show numeric values (upstream + field NH3 sum per scenario × run). Median column B18..B29 shows per-scenario AP totals. If B2 shows an error like <code>#REF!</code> or <code>#NAME?</code>, tell me which cell and I fix.</div>
+      <div class="response-block">
+        <span class="response-label">Your call</span>
+        <div class="choices" data-q="QR10-2">
+          <label class="choice"><input type="radio" name="QR10-2" value="totals-work"><div class="choice-text"><strong>Totals compute cleanly</strong> — proceed to Step 11 (charts)</div></label>
+          <label class="choice"><input type="radio" name="QR10-2" value="formulas-broken"><div class="choice-text"><strong>Errors in totals</strong> — specify which cells + error text</div></label>
+          <label class="choice"><input type="radio" name="QR10-2" value="totals-magnitudes-off"><div class="choice-text"><strong>Totals compute but magnitudes wrong</strong> — flag which scenarios</div></label>
+        </div>
+        <label class="notes-label">Notes / error text if any:</label>
+        <textarea class="notes-area" data-q="QR10-2" placeholder=""></textarea>
+      </div>
+    </div>
+  </article>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- PAST ROUNDS · collapsed by default                            -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <details class="past-rounds" id="pastRounds">
+    <summary>
+      <span class="past-rounds-title">Past rounds · R1 through R9</span>
+      <span class="past-rounds-hint">click to expand history + audit trail</span>
+    </summary>
+    <div class="past-rounds-body">
+
+  <section class="round-header round-2">
+    <div class="round-label resolved">Round 9 · resolved 2026-07-02</div>
+    <h2 class="round-title">Your Round 9 responses</h2>
+    <p class="round-sub">v6 byte-perfect gate + NH3 populate direction · submitted 2026-07-02 00:56 UTC · triggered Step 10 populated build.</p>
+  </section>
+
+  <article class="card audit" data-audit="QR9-1">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">QR9·1</span>
+      <div class="q-title-wrap"><div class="q-title">v6 files open cleanly?</div><div class="q-tags"><span class="tag tag-answered">both-clean</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body"><div class="audit-response"><div class="audit-choice">both-clean</div><div class="audit-notes">Both v6 files opened without a repair warning; byte-perfect fix worked.</div><div class="audit-resolution"><strong>Resolution:</strong> v6 confirmed as the AP + Eutro canonical version. Moved forward to NH3 populate.</div></div></div>
+  </article>
+
+  <article class="card audit" data-audit="QR9-2">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">QR9·2</span>
+      <div class="q-title-wrap"><div class="q-title">NH3 populate — mapping instructions</div><div class="q-tags"><span class="tag tag-answered">Nrate tab</span></div></div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body"><div class="audit-response"><div class="audit-choice">null (detailed notes)</div><div class="audit-notes">"See the 'MC_inputs' tab, it has the Monte Carlo distribution parameters of the fertilizer N rates for each scenario, the resulting actual Monte Carlo run for each scenario (the random pull from the distribution) is presented on the Nrate tab of the FinalMC_GWP workbook. You should use this Nrate tab for the NH3 estimates."</div><div class="audit-resolution"><strong>Resolution:</strong> Loaded <code>urea_frozen</code> + <code>MAP_frozen</code> matrices from <code>FinalMC_GWP_v2</code> (per-scenario × per-run kg fertilizer product/ac). Cross-verified <code>N_urea + N_MAP = Nrate</code> (TDG_GO Run_1: 42.13 = 42.13 kg N/ac). Applied IPCC 2019 breakdown (urea 0.46×0.15 vs MAP 0.11×0.05), then × 17/14 × 1.88 TRACI. Populated AP_field_NH3_peracre with 12×1000 values. Verify in Round 10.</div></div></div>
+  </article>
+
+  <!-- old QR9-1 article kept below for archival — hidden -->
+  <div style="display:none" aria-hidden="true">
     <div class="card-header" tabindex="0" role="button" aria-expanded="false">
       <span class="q-num active">QR9·1</span>
       <div class="q-title-wrap">
@@ -881,29 +1043,7 @@
     </div>
   </article>
 
-  <article class="card" data-q="QR9-2">
-    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-      <span class="q-num active">QR9·2</span>
-      <div class="q-title-wrap">
-        <div class="q-title">NH3 populate — which fert-canon values do I map to which scenarios?</div>
-        <div class="q-tags"><span class="tag tag-cat">NH3 · fert canon</span><span class="tag tag-sev-material">material</span></div>
-      </div>
-      <span class="caret">▾</span>
-    </div>
-    <div class="card-body">
-      <div class="rec"><span class="rec-label">What I need from you</span>To wire real N-application values into <code>AP_field_NH3_peracre</code>, I need the mapping from <em>scenario</em> to <em>fertilizer inputs</em>. Either point me at the specific tab/columns in <code>Hemp_LCI_Fertilizer_Uncertainty_Workbook_v4_FIXED.xlsx</code> that hold per-scenario urea + MAP application (kg N/ac), OR describe the mapping rule ("all TD_ scenarios use dryland urea rate X, all TI_ use irrigated rate Y", etc.). Then I compute NH3-N × TRACI CF for every scenario row.</div>
-      <div class="response-block">
-        <span class="response-label">Your call</span>
-        <div class="choices" data-q="QR9-2">
-          <label class="choice"><input type="radio" name="QR9-2" value="tabmap"><div class="choice-text"><strong>Point at tab/columns</strong> in fert canon (specify below)</div></label>
-          <label class="choice"><input type="radio" name="QR9-2" value="rule"><div class="choice-text"><strong>Describe rule</strong> (dryland/irrigated split by scenario prefix; specify below)</div></label>
-          <label class="choice"><input type="radio" name="QR9-2" value="you-figure-it"><div class="choice-text"><strong>Best-guess it</strong> from what's obvious in the fert canon workbook, flag anything ambiguous back to me</div></label>
-        </div>
-        <label class="notes-label">Which tab / rule / notes:</label>
-        <textarea class="notes-area" data-q="QR9-2" placeholder=""></textarea>
-      </div>
-    </div>
-  </article>
+  </div><!-- /old QR9 archive -->
 
   <!-- Round 8 audit trail -->
   <section class="round-header round-2">
@@ -1686,12 +1826,15 @@
     </div>
   </article>
 
+    </div><!-- /past-rounds-body -->
+  </details>
+
 </main>
 
-<!-- Sticky submit bar for Round 9 -->
+<!-- Sticky submit bar (round label populated at runtime) -->
 <div class="submit-bar" id="submitBar" role="region">
-  <span class="submit-bar-status"><strong id="ans-count">0</strong> of 2 Round-9 answered · autosaved</span>
-  <button class="submit-btn" id="submitBtn">Send Round 9 →</button>
+  <span class="submit-bar-status"><strong id="ans-count">0</strong> of <span id="ans-total">2</span> Round-<span class="js-current-round">10</span> answered · autosaved</span>
+  <button class="submit-btn" id="submitBtn">Send Round <span class="js-current-round">10</span> →</button>
 </div>
 
 <!-- Modal -->
@@ -1880,9 +2023,14 @@
     });
   });
 
-  // Round 2 state — only 2 active questions
-  const R2_STORAGE = 'leif_hemp_r2_v1';
-  const activeQs = ['QR9-1', 'QR9-2'];
+  // Active round state
+  const CURRENT_ROUND = 10;
+  const R2_STORAGE = 'leif_hemp_r' + CURRENT_ROUND + '_v1';
+  const activeQs = ['QR10-1', 'QR10-2'];
+  // Populate any DOM elements marked with class 'js-current-round'
+  document.querySelectorAll('.js-current-round').forEach(el => { el.textContent = CURRENT_ROUND; });
+  const ansTotal = document.getElementById('ans-total');
+  if (ansTotal) ansTotal.textContent = activeQs.length;
 
   function loadState() {
     try { return JSON.parse(sessionStorage.getItem(R2_STORAGE) || '{}'); } catch { return {}; }
@@ -1959,7 +2107,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           password, submitter_name: 'Rylie Pelton', project_slug: 'midwest-hemp-lca',
-          round_number: 9, payload: responses,
+          round_number: CURRENT_ROUND, payload: responses,
         }),
       });
       const data = await res.json();
@@ -1968,7 +2116,7 @@
         btn.textContent = '✓ Sent';
       } else if (res.status === 401) {
         alert('Password rejected. Ping Joe.');
-        btn.disabled = false; btn.textContent = 'Send Round 2 →';
+        btn.disabled = false; btn.textContent = 'Send Round ' + CURRENT_ROUND + ' →';
       } else {
         throw new Error(data.error || 'HTTP ' + res.status);
       }
@@ -1984,8 +2132,8 @@
     const submittedAt = new Date(data.submitted_at || Date.now()).toLocaleString();
     modal.innerHTML = '' +
       '<div class="sent-check"><svg viewBox="0 0 52 52" width="72" height="72"><circle cx="26" cy="26" r="24" fill="none" stroke="var(--sage)" stroke-width="2" class="sent-circle"/><path d="M14 27l8 8 16-18" fill="none" stroke="var(--sage)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="sent-tick"/></svg></div>' +
-      '<h2 class="sent-title">Round 2 sent</h2>' +
-      '<p class="sent-sub">Joe and Claude are on it. Phase 2 execution begins as soon as they review your answers. You can close this tab — come back here anytime to see project state.</p>' +
+      '<h2 class="sent-title">Round ' + CURRENT_ROUND + ' sent</h2>' +
+      '<p class="sent-sub">Joe and Claude are on it. You can close this tab — come back here anytime to see project state.</p>' +
       '<div style="background: rgba(122, 171, 145, 0.06); border: 1px solid rgba(122, 171, 145, 0.18); border-radius: 12px; padding: 16px 20px; display: flex; justify-content: space-between; gap: 24px; margin-bottom: 20px;">' +
       '<div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);">Submission</span><strong style="font-family: var(--font-head); font-weight: 600; color: var(--text); font-size: 14px;">' + submissionId + '</strong></div>' +
       '<div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);">Timestamp</span><strong style="font-family: var(--font-head); font-weight: 600; color: var(--text); font-size: 14px;">' + submittedAt + '</strong></div>' +
