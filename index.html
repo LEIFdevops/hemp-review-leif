@@ -799,14 +799,14 @@
     <div class="kickoff-card" id="kickoffCard">
       <div class="kickoff-inner">
         <div class="kickoff-lede">
-          <p class="kickoff-eyebrow">Round 13 · verify GWP fix + run Claude Design regen</p>
-          <h2 class="kickoff-heading">R12 fix executed. GWP v3 workbook + refreshed prompt ready. Verify + regen.</h2>
+          <p class="kickoff-eyebrow">Round 14 · post-farm gate scope + QAQC on ADPf_C2Pg</p>
+          <h2 class="kickoff-heading">Reviewed your ADPf_C2Pg file. Clean and well-structured. Two decisions needed.</h2>
           <p class="kickoff-sub">
-            Path A applied: irrigated scenarios now use wet-regime EF₁ + non-zero FracLEACH regardless of climate. Dryland unchanged. Built <code>FinalMC_GWP_v3.xlsx</code> with the fix in a new <code>TotalGWP_peracre_v3_primary</code> tab (byte-perfect from v2; formulas select wet vs dry per row). Refreshed the drop-in prompt + JSONs with a new <code>GWP_primary</code> category as the canonical GWP for headline charts. Quick eyeball below — then Claude Design regen.
+            QAQC on the new <code>FinalMC_upstreamADPf_C2Pg.xlsx</code>: formula chain is auditable, cache is warm (10,000/10,000 on C2Pg oil block), magnitudes reasonable (TDG_GO oil = 7.67 MJ/kg, meal = 16.36 MJ/kg), scenario scope correct (10 grain-producing, excludes TDF/TIF). No errors so far. Two decisions before we push forward: (1) integration strategy, (2) scope across impact categories. R13 regen paused until this resolves.
           </p>
         </div>
         <button class="kickoff-btn" id="kickoffBtn" style="background: linear-gradient(180deg, var(--warm), #b09872);">
-          <span>Jump to Round 13</span>
+          <span>Jump to Round 14</span>
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M5 12h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="kickoff-status" id="kickoffStatus"></div>
@@ -815,13 +815,13 @@
 
     <div class="dashboard-status-card">
       <div class="dash-eyebrow">Live project state</div>
-      <h2 class="dash-status-heading">Step 12 shipped · GWP v3 with irrigation×regime fix · prompt + JSONs refreshed.</h2>
-      <p class="dash-status-sub">Executed R12 Path A: for irrigated scenarios (TIG_GO, TIG_GF, TIF, TID, HIG_GO, HIG_GF), pathway1 now uses <code>EF1_wet_frozen</code> (0.0157) and pathway3 uses non-zero wet FracLEACH regardless of climate zone. Dryland unchanged. <strong>GWP_primary</strong> is the new canonical category in the chart data (dryland → dry, irrigated → wet). <strong>FinalMC_GWP_v3.xlsx</strong> is byte-perfect from v2 with a new <code>TotalGWP_peracre_v3_primary</code> tab (formulas select the right source per scenario) and a <code>_step12_R12_Provenance</code> tab documenting the fix. R11 downloads refreshed. Regen ready to run after R13 sanity check.</p>
+      <h2 class="dash-status-heading">Scope extension · post-farm gate (C2Pg) enters the picture · QAQC on ADPf_C2Pg complete.</h2>
+      <p class="dash-status-sub">You added post-farm gate tabs (<code>Pg_inputs_wholeseed</code>, <code>Pg_inputs_dehulled</code>, <code>C2Pg_wholeseed</code>, <code>C2Pg_dehulled</code>) to ADPf so we can produce cradle-to-processing-gate impacts for grain products. QAQC pass: formula chain clean, cache warm, magnitudes reasonable, scenario scope right. Two structural decisions before I build the extended chart pipeline: integration strategy + scope across the 5 impact categories.</p>
       <div class="phase-rail">
-        <div class="phase-seg done"><div class="phase-num">Steps 0-11</div><div class="phase-label">Workbooks + charts v1</div></div>
-        <div class="phase-seg done"><div class="phase-num">R12</div><div class="phase-label">Path A approved</div></div>
-        <div class="phase-seg done"><div class="phase-num">Step 12</div><div class="phase-label">GWP v3 + refresh</div></div>
-        <div class="phase-seg active"><div class="phase-num">R13</div><div class="phase-label">Verify + regen</div></div>
+        <div class="phase-seg done"><div class="phase-num">Steps 0-12</div><div class="phase-label">C2FG done</div></div>
+        <div class="phase-seg done"><div class="phase-num">R12</div><div class="phase-label">Path A applied</div></div>
+        <div class="phase-seg" style="opacity:0.6;"><div class="phase-num">R13</div><div class="phase-label">Regen (paused)</div></div>
+        <div class="phase-seg active"><div class="phase-num">R14</div><div class="phase-label">C2PG scope</div></div>
         <div class="phase-seg"><div class="phase-num">Ship</div><div class="phase-label">To AURI</div></div>
       </div>
     </div>
@@ -909,17 +909,125 @@
 
 
   <!-- ═══════════════════════════════════════════════════════════ -->
-  <!-- ROUND 13 · verify + run · ACTIVE, TOP OF PAGE                -->
+  <!-- ROUND 14 · ADPf_C2Pg QAQC + scope decisions · ACTIVE, TOP    -->
   <!-- ═══════════════════════════════════════════════════════════ -->
   <section class="active-round-anchor">
-    <div class="active-round-eyebrow">Verify + regen ↓</div>
+    <div class="active-round-eyebrow">Two decisions on post-farm gate scope ↓</div>
   </section>
 
   <section class="round-header round-2 active-round">
-    <div class="round-label active">Round 13 · verify GWP fix + Claude Design regen</div>
-    <h2 class="round-title">Sanity-check the corrected GWP_primary values, then run the regen</h2>
-    <p class="round-sub">R12 Path A applied. GWP_primary is now: dryland→dry, irrigated→wet. Refreshed downloads reflect the fix. Quick eyeball on the medians below, then the Claude Design regen can run.</p>
+    <div class="round-label active">Round 14 · post-farm gate C2Pg scope</div>
+    <h2 class="round-title">QAQC report on ADPf_C2Pg + integration strategy + scope</h2>
+    <p class="round-sub">Full audit of the ADPf_C2Pg file below with formula chain traced and cache verified. Then two structural decisions: how to integrate C2Pg vs the corrected upstream files, and whether the C2Pg extension applies to only ADPf or all 5 impact categories. R13 regen holds until this resolves.</p>
   </section>
+
+  <article class="card" data-q="QR14-1" style="border-color: rgba(122,171,145,0.35); box-shadow: 0 0 32px rgba(122,171,145,0.10);">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="true">
+      <span class="q-num active">QR14·1</span>
+      <div class="q-title-wrap">
+        <div class="q-title">Integration strategy — use your ADPf_C2Pg file as the base? (recommended: yes)</div>
+        <div class="q-tags"><span class="tag tag-cat">integration</span><span class="tag tag-sev-material">structural</span></div>
+      </div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec"><span class="rec-label">QAQC findings on FinalMC_upstreamADPf_C2Pg.xlsx</span>
+        <div style="padding: 8px 0;">
+          <strong>Structure — clean:</strong>
+          <ul style="margin: 4px 0 8px 20px; color: var(--subtext); line-height: 1.7;">
+            <li>Pg_inputs_wholeseed (192×1001) and Pg_inputs_dehulled (286×1001): raw inputs (Elec, NG, Hexane, Water, NaOH, phos acid, citric) × 3 alloc blocks (Mass/Economic/Energy) × Oil / Meal / Hull outputs</li>
+            <li>Process gate impact per kg output computed as <code>raw × CF!$D$col</code> (electricity via <code>electricity_ADPf_CF_frozen</code> per-run)</li>
+            <li>C2FG cradle-to-farm-gate section pulls <code>ADPf_upstream_perkg!F&lt;row&gt;</code> × allocation share</li>
+            <li>C2Pg_wholeseed (162×1011) and C2Pg_dehulled (262×1011): rows 3–12 = 10 grain-producing scenarios × 1000 runs, 3 alloc blocks × 2–3 output products</li>
+            <li>Correctly excludes fiber-only scenarios (TDF, TIF) from post-farm gate</li>
+          </ul>
+          <strong>Formula chain — verified:</strong>
+          <div style="font-family: ui-monospace, monospace; font-size: 12px; padding: 6px 10px; background: var(--surface-2); border-radius: 6px; margin: 4px 0;">
+            C2Pg_wholeseed!B3 = Pg_inputs_wholeseed!B85 + Pg_inputs_wholeseed!B$75<br>
+            &nbsp;&nbsp;where B85 = ADPf_upstream_perkg!F2 × alloc_share (C2FG for TDG_GO oil)<br>
+            &nbsp;&nbsp;and B$75 = SUM(B68:B74) (per-run oil processing total MJ/kg)
+          </div>
+          <strong>Cache — warm:</strong> 10,000/10,000 cells cached in C2Pg oil block. Sample: TDG_GO oil = <strong>7.67 MJ/kg</strong>, TDG_GO meal = <strong>16.36 MJ/kg</strong>. Reasonable for oilseed processing.
+          <br><br>
+          <strong>No formula errors detected in initial pass.</strong> One remaining check I'll run in Step 13: byte-compare the ADPf machinery in your file vs the v1 originals to confirm no drift in upstream cells.
+        </div>
+      </div>
+      <div class="rec"><span class="rec-label">Recommendation — Path B (use your file as base)</span>
+        <div style="padding: 4px 0;">
+          Reasoning: (a) your file already has the full C2Pg extension working, (b) there are no ADPf-specific corrections in our v3 that need backporting — the Phase 2 fixes were AP-specific (NH₃) and GWP-specific (irrigation×regime), (c) combining two workbooks with different sheet counts is more error-prone than validating one.
+        </div>
+      </div>
+      <div class="response-block">
+        <span class="response-label">Your call</span>
+        <div class="choices" data-q="QR14-1">
+          <label class="choice"><input type="radio" name="QR14-1" value="path-b"><div class="choice-text"><strong>Path B</strong> — use my ADPf_C2Pg file as the base (Claude runs byte-check vs v1 upstream + adds C2Pg data to chart pipeline)</div></label>
+          <label class="choice"><input type="radio" name="QR14-1" value="path-a"><div class="choice-text"><strong>Path A</strong> — splice the C2Pg tabs into our ADPf v3 fixed file instead</div></label>
+          <label class="choice"><input type="radio" name="QR14-1" value="different"><div class="choice-text"><strong>Something else</strong> — specify</div></label>
+        </div>
+        <label class="notes-label">Notes:</label>
+        <textarea class="notes-area" data-q="QR14-1" placeholder=""></textarea>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-q="QR14-2" style="border-color: rgba(122,171,145,0.35); box-shadow: 0 0 32px rgba(122,171,145,0.10);">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="true">
+      <span class="q-num active">QR14·2</span>
+      <div class="q-title-wrap">
+        <div class="q-title">Scope — is C2Pg for ADPf only, or should we extend to all 5 impact categories?</div>
+        <div class="q-tags"><span class="tag tag-cat">scope</span><span class="tag tag-sev-material">structural</span></div>
+      </div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec"><span class="rec-label">Context</span>
+        <div style="padding: 4px 0;">
+          Post-farm gate processing (dehulling, oil extraction with hexane, meal production, refining with NaOH/phos acid/citric acid) produces impacts across every impact category, not just ADPf. Same processing inputs × their GWP CF, AP CF, ADPe CF, Eutro CF would give cradle-to-processing-gate values for those categories too.
+          <br><br>
+          You sent us just the ADPf_C2Pg file. I read that two ways: (a) you're prototyping the pattern on ADPf first and will send the same treatment for the others, or (b) the report scope only reports cradle-to-processing-gate for ADPf and the other categories stay at cradle-to-farm-gate. Both are valid choices — need your call.
+        </div>
+      </div>
+      <div class="response-block">
+        <span class="response-label">Your call</span>
+        <div class="choices" data-q="QR14-2">
+          <label class="choice"><input type="radio" name="QR14-2" value="all-5"><div class="choice-text"><strong>Extend C2Pg to all 5 impact categories</strong> — I'll replicate the pattern for GWP, AP, ADPe, Eutro using the same Pg_inputs raw data × each category's CF. You'll get 4 more C2Pg files.</div></label>
+          <label class="choice"><input type="radio" name="QR14-2" value="adpf-only"><div class="choice-text"><strong>ADPf-only for now</strong> — other categories stay at cradle-to-farm-gate in the report. C2Pg is a separate ADPf sensitivity.</div></label>
+          <label class="choice"><input type="radio" name="QR14-2" value="specific-subset"><div class="choice-text"><strong>Specific subset</strong> — specify which impact categories need C2Pg extension</div></label>
+        </div>
+        <label class="notes-label">Notes:</label>
+        <textarea class="notes-area" data-q="QR14-2" placeholder=""></textarea>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-q="QR14-3" style="border-color: rgba(196,168,130,0.35);">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="true">
+      <span class="q-num active">QR14·3</span>
+      <div class="q-title-wrap">
+        <div class="q-title">R13 sequencing — hold the Claude Design regen until C2Pg integration is complete?</div>
+        <div class="q-tags"><span class="tag tag-cat">sequencing</span></div>
+      </div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec"><span class="rec-label">Trade-off</span>
+        <div style="padding: 4px 0;">
+          The R13 drop-in prompt covers cradle-to-farm-gate results only. Running it now produces an interim report; adding C2Pg later needs a second Claude Design regen. My recommendation is to hold R13 regen until C2Pg is integrated across whatever scope you approve in QR14-2, then do ONE clean regen with everything.
+        </div>
+      </div>
+      <div class="response-block">
+        <span class="response-label">Your call</span>
+        <div class="choices" data-q="QR14-3">
+          <label class="choice"><input type="radio" name="QR14-3" value="hold"><div class="choice-text"><strong>Hold R13 regen</strong> — do one clean regen after C2Pg is fully integrated</div></label>
+          <label class="choice"><input type="radio" name="QR14-3" value="run-both"><div class="choice-text"><strong>Run R13 regen now</strong> — I'll do interim + follow-up regens</div></label>
+        </div>
+        <label class="notes-label">Notes:</label>
+        <textarea class="notes-area" data-q="QR14-3" placeholder=""></textarea>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-q="QR13-legacy" style="display:none">
 
   <article class="card" data-q="QR13-1" style="border-color: rgba(122,171,145,0.35); box-shadow: 0 0 32px rgba(122,171,145,0.10);">
     <div class="card-header" tabindex="0" role="button" aria-expanded="true">
@@ -2193,9 +2301,9 @@
   });
 
   // Active round state
-  const CURRENT_ROUND = 13;
+  const CURRENT_ROUND = 14;
   const R2_STORAGE = 'leif_hemp_r' + CURRENT_ROUND + '_v1';
-  const activeQs = ['QR13-1'];
+  const activeQs = ['QR14-1', 'QR14-2', 'QR14-3'];
   // Populate any DOM elements marked with class 'js-current-round'
   document.querySelectorAll('.js-current-round').forEach(el => { el.textContent = CURRENT_ROUND; });
   const ansTotal = document.getElementById('ans-total');
