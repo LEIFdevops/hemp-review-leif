@@ -799,14 +799,14 @@
     <div class="kickoff-card" id="kickoffCard">
       <div class="kickoff-inner">
         <div class="kickoff-lede">
-          <p class="kickoff-eyebrow">Round 11 · charts · drop-in prompt for Claude Design</p>
-          <h2 class="kickoff-heading">Data extracted from all 6 workbooks. Download the drop-in prompt, paste into Claude Design.</h2>
+          <p class="kickoff-eyebrow" style="background: linear-gradient(180deg, rgba(181, 122, 122, 0.20), rgba(181, 122, 122, 0.10)); border-color: rgba(181, 122, 122, 0.45); color: var(--rose);">Round 12 · new methodology finding · pause R11</p>
+          <h2 class="kickoff-heading">GWP model's dry/wet split ignores irrigation — irrigated scenarios need collapsing to wet-regime.</h2>
           <p class="kickoff-sub">
-            Per-scenario × per-impact medians + p25/p75 pulled from every workbook (GWP v2, AP v7, ADPe/ADPf v3 computed from first principles, Eutro v6). Now includes <strong>Chart 5 — allocation sensitivity per-kg</strong> with all 3 methods (Mass · Economic · Energy) for every multi-co-product scenario × output. Self-contained prompt Rylie pastes into a fresh Claude Design conversation — no manual number-typing.
+            Diagnosed while looking at the corrected GWP data before Claude Design regen: the workbook applies dry/wet EF₁ as a <em>climate</em> toggle uniformly across all 12 scenarios, but irrigation adds soil moisture — irrigated scenarios (TIG_GO, TIG_GF, TIF, TID, HIG_GO, HIG_GF) are currently borrowing the dryland/dry-climate EF₁ ≈ 0.0049 and zero FracLEACH. That undercounts N₂O for irrigated systems by ~30–50%. Please answer R12 before running the Claude Design regen — the GWP numbers on irrigated scenarios will shift substantially once the fix lands.
           </p>
         </div>
         <button class="kickoff-btn" id="kickoffBtn" style="background: linear-gradient(180deg, var(--warm), #b09872);">
-          <span>Jump to Round 11</span>
+          <span>Jump to Round 12</span>
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M5 12h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="kickoff-status" id="kickoffStatus"></div>
@@ -815,13 +815,14 @@
 
     <div class="dashboard-status-card">
       <div class="dash-eyebrow">Live project state</div>
-      <h2 class="dash-status-heading">Charts stage · full package for all 5 charts including allocation sensitivity.</h2>
-      <p class="dash-status-sub">Step 11 extracted per-scenario × per-impact medians (p25/p75) from all 6 workbooks: GWP v2, AP v7 (new field NH3), ADPe v3 + ADPf v3 (computed from first principles since cold cache), Eutro v6. Added <strong>Chart 5</strong>: per-kg output × 3-method allocation (Mass / Economic / Energy) — pulled from cache for GWP/AP/Eutro, computed programmatically for ADPe/ADPf using grain+fiber yields × prices ($1.93/kg grain, $0.46/kg fiber) + energy content (19.29/14.94 MJ/kg). Rylie's flow: download prompt → paste into Claude Design → attach v5 HTML → new report back.</p>
+      <h2 class="dash-status-heading">R12 finding — GWP dry/wet needs to key off irrigation, not just climate.</h2>
+      <p class="dash-status-sub">Caught before regen: the GWP workbook builds a dry and a wet total for every scenario, but the dry/wet toggle is applied uniformly as a <em>climate</em> choice. Physics says wet regime should ALSO apply whenever a field is irrigated. Under current logic, irrigated scenarios (TIG_GO, TIG_GF, TIF, TID, HIG_GO, HIG_GF) inherit the dry EF₁ ≈ 0.0049 and zero FracLEACH — undercounting their N₂O by ~30%. Fix: irrigated collapse to single wet-regime result; dryland keeps both dry+wet (rainfed regions). R11 (Claude Design regen) is paused until R12 resolves so the chart data reflects the corrected GWP.</p>
       <div class="phase-rail">
-        <div class="phase-seg done"><div class="phase-num">Steps 0-10</div><div class="phase-label">All workbooks corrected</div></div>
-        <div class="phase-seg done"><div class="phase-num">Step 11</div><div class="phase-label">Chart data extracted</div></div>
-        <div class="phase-seg active"><div class="phase-num">R11</div><div class="phase-label">Regen in Claude Design</div></div>
-        <div class="phase-seg"><div class="phase-num">Ship</div><div class="phase-label">Updated report to AURI</div></div>
+        <div class="phase-seg done"><div class="phase-num">Steps 0-10</div><div class="phase-label">Workbooks corrected</div></div>
+        <div class="phase-seg done"><div class="phase-num">Step 11</div><div class="phase-label">Chart data v1</div></div>
+        <div class="phase-seg active" style="border-color: rgba(181,122,122,0.5); background: linear-gradient(180deg, rgba(181,122,122,0.10), transparent);"><div class="phase-num">R12</div><div class="phase-label">GWP methodology</div></div>
+        <div class="phase-seg" style="opacity:0.6;"><div class="phase-num">R11</div><div class="phase-label">Regen (paused)</div></div>
+        <div class="phase-seg"><div class="phase-num">Ship</div><div class="phase-label">To AURI</div></div>
       </div>
     </div>
 
@@ -908,16 +909,80 @@
 
 
   <!-- ═══════════════════════════════════════════════════════════ -->
-  <!-- ROUND 11 · chart regen · ACTIVE, TOP OF PAGE                -->
+  <!-- ROUND 12 · methodology finding · ACTIVE, TOP OF PAGE         -->
   <!-- ═══════════════════════════════════════════════════════════ -->
   <section class="active-round-anchor">
-    <div class="active-round-eyebrow">Download + regen ↓</div>
+    <div class="active-round-eyebrow" style="background: linear-gradient(180deg, rgba(181,122,122,0.24), rgba(181,122,122,0.12)); border-color: rgba(181,122,122,0.50); color: var(--rose);">One methodology decision ↓</div>
   </section>
 
-  <section class="round-header round-2 active-round">
-    <div class="round-label active">Round 11 · chart regen in Claude Design</div>
-    <h2 class="round-title">Two downloads, a paste, then a fresh report</h2>
-    <p class="round-sub">All chart data extracted from the corrected workbooks and packaged as a drop-in prompt. Your flow: (1) download the prompt, (2) open Claude Design in a fresh conversation, (3) attach the current v5 HTML report + paste the prompt, (4) get an updated report back with the new numbers everywhere.</p>
+  <section class="round-header round-2 active-round" style="border-left-color: var(--rose); background: linear-gradient(180deg, rgba(181,122,122,0.06), transparent);">
+    <div class="round-label active" style="color: var(--rose);">Round 12 · GWP irrigation×regime methodology</div>
+    <h2 class="round-title">Dry/wet split should key off irrigation, not just climate</h2>
+    <p class="round-sub">Physics summary: irrigation adds soil moisture → drives denitrification (higher EF₁) and leaching (non-zero FracLEACH). A field belongs on the wet curve if it's in a wet climate OR if it's irrigated. Only rainfed fields in dry regions belong on the dry curve. Current workbook applies the toggle uniformly as a climate choice — irrigated scenarios inherit the dryland/dry-climate EF₁ ≈ 0.0049 and zero FracLEACH, understating their N₂O by ~30%. Fix scope: irrigated collapse to single wet-regime result; dryland keeps both dry+wet.</p>
+  </section>
+
+  <article class="card" data-q="QR12-1" style="border-color: rgba(181,122,122,0.45); box-shadow: 0 0 32px rgba(181,122,122,0.10);">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="true">
+      <span class="q-num active" style="background: rgba(181,122,122,0.18); color: var(--rose);">QR12·1</span>
+      <div class="q-title-wrap">
+        <div class="q-title">Approve the fix — and which EF₁ value do we use for irrigated?</div>
+        <div class="q-tags"><span class="tag tag-cat">GWP · IPCC 2019</span><span class="tag tag-sev-material">material</span></div>
+      </div>
+      <span class="caret">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec"><span class="rec-label">The fix</span>
+        <div style="padding: 8px 0 4px;">
+          <strong>Irrigated scenarios (I in scenario code, 6 total):</strong> TIG_GO, TIG_GF, TIF, TID, HIG_GO, HIG_GF.
+          <br>→ Use <code>EF1_wet_frozen</code> for pathway1 regardless of climate zone.
+          <br>→ Use non-zero wet FracLEACH / pathway3_wet regardless of climate zone.
+          <br>→ Collapse to a single (wet-regime) result — no more dry/wet split for these.
+          <br><br>
+          <strong>Dryland scenarios (D in scenario code, 6 total):</strong> TDG_GO, TDG_GF, TDF, TDD, HDG_GO, HDG_GF.
+          <br>→ Keep both dry and wet versions — legitimate dry vs wet growing-region sensitivity.
+        </div>
+      </div>
+      <div class="rec"><span class="rec-label">Predicted GWP impact per scenario (per acre)</span>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px 20px; padding: 12px 0; font-family: ui-monospace, monospace; font-size: 12px;">
+          <div style="color: var(--muted); grid-column: span 4;">Irrigated — shifts from current "dry" up to current "wet":</div>
+          <div><span style="color: var(--muted);">TIG_GO</span> 781 → <strong>1162</strong></div>
+          <div><span style="color: var(--muted);">TIG_GF</span> 769 → <strong>1101</strong></div>
+          <div><span style="color: var(--muted);">TIF</span> 607 → <strong>852</strong></div>
+          <div><span style="color: var(--muted);">TID</span> 780 → <strong>1128</strong></div>
+          <div><span style="color: var(--muted);">HIG_GO</span> 794 → <strong>1190</strong></div>
+          <div><span style="color: var(--muted);">HIG_GF</span> 744 → <strong>1052</strong></div>
+          <div style="grid-column: span 2;"></div>
+          <div style="color: var(--muted); grid-column: span 4; margin-top: 8px;">Dryland — unchanged (keeps dry+wet range):</div>
+          <div><span style="color: var(--muted);">TDG_GO</span> 412 (unchanged)</div>
+          <div><span style="color: var(--muted);">TDG_GF</span> 416 (unchanged)</div>
+          <div><span style="color: var(--muted);">TDF</span> 430 (unchanged)</div>
+          <div><span style="color: var(--muted);">TDD</span> 626 (unchanged)</div>
+          <div><span style="color: var(--muted);">HDG_GO</span> 504 (unchanged)</div>
+          <div><span style="color: var(--muted);">HDG_GF</span> 492 (unchanged)</div>
+        </div>
+        Numbers are current GWP-dry medians (kg CO₂-eq/ac from 1000 MC runs). Irrigated column shows shift up to the wet-regime value.
+      </div>
+      <div class="rec"><span class="rec-label">Methods flag — which EF₁ value for irrigated?</span>
+        The current "wet" EF₁ (0.0157) represents a wet <em>climate</em> from IPCC 2019 defaults. For irrigated-in-a-dry-climate, IPCC 2019 may specify a distinct irrigation-specific EF₁ that differs from the climate-wet value. Please confirm which value to use before I code the fix into the GWP workbook.
+      </div>
+      <div class="response-block">
+        <span class="response-label">Your call</span>
+        <div class="choices" data-q="QR12-1">
+          <label class="choice"><input type="radio" name="QR12-1" value="approve-borrow-wet"><div class="choice-text"><strong>Approve fix</strong> · use current <code>EF1_wet_frozen</code> (0.0157) for all irrigated · fastest path</div></label>
+          <label class="choice"><input type="radio" name="QR12-1" value="approve-distinct-ef1"><div class="choice-text"><strong>Approve fix, but use a distinct IPCC 2019 irrigation EF₁</strong> · specify the value + citation below</div></label>
+          <label class="choice"><input type="radio" name="QR12-1" value="different-approach"><div class="choice-text"><strong>Different approach entirely</strong> · specify below</div></label>
+        </div>
+        <label class="notes-label">If choosing distinct EF₁ or different approach — value + citation + reasoning:</label>
+        <textarea class="notes-area" data-q="QR12-1" placeholder=""></textarea>
+      </div>
+    </div>
+  </article>
+
+  <!-- R11 · paused, kept accessible immediately below but visually de-prioritized -->
+  <section class="round-header round-2" style="margin-top: 48px; opacity: 0.75;">
+    <div class="round-label active" style="background: rgba(196,168,130,0.16); color: var(--warm); border-color: rgba(196,168,130,0.35);">Round 11 · on hold pending R12</div>
+    <h2 class="round-title">Chart regen in Claude Design (paused)</h2>
+    <p class="round-sub"><strong style="color: var(--warm);">Please do not run the Claude Design regen yet.</strong> The GWP data in the current drop-in prompt uses the pre-fix methodology (irrigated scenarios on the dry curve). Once R12 resolves, I'll re-extract the GWP data with the corrected logic and refresh the prompt + JSON. You'll get an updated download here — the files below will change.</p>
   </section>
 
   <article class="card" data-q="QR11-1" style="border-color: rgba(122,171,145,0.35); box-shadow: 0 0 32px rgba(122,171,145,0.10);">
@@ -2084,9 +2149,9 @@
   });
 
   // Active round state
-  const CURRENT_ROUND = 11;
+  const CURRENT_ROUND = 12;
   const R2_STORAGE = 'leif_hemp_r' + CURRENT_ROUND + '_v1';
-  const activeQs = ['QR11-1'];
+  const activeQs = ['QR12-1'];
   // Populate any DOM elements marked with class 'js-current-round'
   document.querySelectorAll('.js-current-round').forEach(el => { el.textContent = CURRENT_ROUND; });
   const ansTotal = document.getElementById('ans-total');
