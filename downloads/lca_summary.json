@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-02T01:57:13+00:00",
+  "generated_at": "2026-07-02T19:00:19+00:00",
   "scenarios": [
     "TDG_GO",
     "TDG_GF",
@@ -1387,6 +1387,155 @@
         "HIG_GO": 0.0564,
         "HIG_GF": 0.0568
       }
+    },
+    "GWP_primary": {
+      "label": "GWP (irrigation-corrected primary)",
+      "unit": "kg CO2-eq/ac",
+      "method_note": "Per R12 Path A: irrigated scenarios (TIG_GO/TIG_GF/TIF/TID/HIG_GO/HIG_GF) use wet-regime EF1 + non-zero FracLEACH regardless of climate zone. Dryland scenarios (TDG_GO/TDG_GF/TDF/TDD/HDG_GO/HDG_GF) use dry-regime as primary (GWP_wet remains available as climate-wet sensitivity for dryland).",
+      "per_acre_stats": {
+        "TDG_GO": {
+          "n": 1000,
+          "median": 412.14044,
+          "p25": 373.565523,
+          "p75": 455.647696,
+          "min": 262.35674,
+          "max": 688.340607,
+          "mean": 416.720741
+        },
+        "TDG_GF": {
+          "n": 1000,
+          "median": 416.052137,
+          "p25": 379.311839,
+          "p75": 454.006876,
+          "min": 271.279215,
+          "max": 620.887542,
+          "mean": 417.608738
+        },
+        "TDF": {
+          "n": 1000,
+          "median": 429.982239,
+          "p25": 394.285021,
+          "p75": 471.507745,
+          "min": 303.069383,
+          "max": 1574.778184,
+          "mean": 442.909657
+        },
+        "TDD": {
+          "n": 1000,
+          "median": 626.11601,
+          "p25": 574.327518,
+          "p75": 687.411577,
+          "min": 403.826041,
+          "max": 905.374106,
+          "mean": 632.59605
+        },
+        "TIG_GO": {
+          "n": 1000,
+          "median": 1163.247393,
+          "p25": 972.983001,
+          "p75": 1370.425065,
+          "min": 539.451478,
+          "max": 3020.740173,
+          "mean": 1199.26349
+        },
+        "TIG_GF": {
+          "n": 1000,
+          "median": 1101.095821,
+          "p25": 928.808791,
+          "p75": 1320.059125,
+          "min": 531.516487,
+          "max": 2923.381576,
+          "mean": 1143.730728
+        },
+        "TIF": {
+          "n": 1000,
+          "median": 851.8059,
+          "p25": 791.58239,
+          "p75": 921.719348,
+          "min": 615.609372,
+          "max": 1780.213516,
+          "mean": 869.2532
+        },
+        "TID": {
+          "n": 1000,
+          "median": 1128.700792,
+          "p25": 1028.913657,
+          "p75": 1250.153813,
+          "min": 714.927659,
+          "max": 1810.607735,
+          "mean": 1146.093103
+        },
+        "HDG_GO": {
+          "n": 1000,
+          "median": 504.061938,
+          "p25": 438.129709,
+          "p75": 573.859658,
+          "min": 271.927671,
+          "max": 871.665775,
+          "mean": 508.137749
+        },
+        "HDG_GF": {
+          "n": 1000,
+          "median": 492.442516,
+          "p25": 430.124219,
+          "p75": 561.011187,
+          "min": 275.449381,
+          "max": 811.301385,
+          "mean": 496.140628
+        },
+        "HIG_GO": {
+          "n": 1000,
+          "median": 1190.923761,
+          "p25": 1012.836553,
+          "p75": 1391.610116,
+          "min": 608.299856,
+          "max": 2646.128954,
+          "mean": 1225.740361
+        },
+        "HIG_GF": {
+          "n": 1000,
+          "median": 1053.133662,
+          "p25": 898.008721,
+          "p75": 1243.781434,
+          "min": 503.662634,
+          "max": 2288.707226,
+          "mean": 1092.092032
+        }
+      },
+      "per_acre_medians": {
+        "TDG_GO": 412.1404,
+        "TDG_GF": 416.0521,
+        "TDF": 429.9822,
+        "TDD": 626.116,
+        "TIG_GO": 1163.2474,
+        "TIG_GF": 1101.0958,
+        "TIF": 851.8059,
+        "TID": 1128.7008,
+        "HDG_GO": 504.0619,
+        "HDG_GF": 492.4425,
+        "HIG_GO": 1190.9238,
+        "HIG_GF": 1053.1337
+      }
     }
+  },
+  "r12_fix": {
+    "path_taken": "A (borrow current EF1_wet_frozen \u2248 0.0157)",
+    "irrigated": [
+      "HIG_GF",
+      "HIG_GO",
+      "TID",
+      "TIF",
+      "TIG_GF",
+      "TIG_GO"
+    ],
+    "dryland": [
+      "HDG_GF",
+      "HDG_GO",
+      "TDD",
+      "TDF",
+      "TDG_GF",
+      "TDG_GO"
+    ],
+    "applied_at": "2026-07-02T19:00:19+00:00"
   }
 }

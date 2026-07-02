@@ -6,12 +6,24 @@
 
 ## Context: what changed between v5 and this update
 
-Since the v5 report was generated, the underlying LCA workbooks went through Phase-2 QAQC corrections:
+Since the v5 report was generated, the underlying LCA workbooks went through Phase-2 QAQC corrections. **The most material methodological change is the R12 irrigation×regime fix — read this first.**
+
+### R12 IRRIGATION × REGIME FIX (material — landed 2026-07-02)
+
+The v5 GWP model applied a dry/wet emission-factor split as a *climate* toggle uniformly across all 12 scenarios. But irrigation adds soil moisture — which is exactly what drives denitrification (higher EF₁) and leaching (non-zero FracLEACH). Physically, a field belongs on the *wet* curve if it's in a wet climate **OR** if it's irrigated. Only rainfed fields in dry regions belong on the *dry* curve.
+
+**Fix applied (Rylie R12 QR12-1 = Path A):**
+- **Irrigated scenarios** (2nd letter I: `TIG_GO, TIG_GF, TIF, TID, HIG_GO, HIG_GF`) collapse to a single wet-regime result. They use `EF1_wet_frozen` ≈ 0.0157 and non-zero FracLEACH regardless of climate zone.
+- **Dryland scenarios** (2nd letter D: `TDG_GO, TDG_GF, TDF, TDD, HDG_GO, HDG_GF`) keep both dry and wet — dry vs wet legitimately represents a dry vs wet growing region.
+
+**Impact on numbers:** irrigated per-acre GWP shifted up ~30–50% versus what v5 showed. Dryland unchanged. The `GWP_primary` category in Data Block A is the corrected canonical value; `GWP_dry` and `GWP_wet` remain available as climate sensitivity for dryland scenarios only.
+
+### Other Phase-2 corrections (background context)
 
 1. **Fertilizer distributions refit** — stale `Cluster_Stats` cache values fixed for 5 σ_log parameters (Grain P₂O₅, Grain K₂O, Fiber N, Fiber P₂O₅, Fiber K₂O). MOP pathological tail truncated at 135 lb K₂O/ac (Scrucca cap).
 2. **GWP pathway2 bug fixed** — spurious `F_CR × FracGASM` term removed from all 24,000 pathway2 cells. EF4_wet resampled from Triangular(0.011, 0.014, 0.017) with seed 20260701.
 3. **AP field NH₃ pathway added** — AP-001 finding closed. Field emissions now include NH₃ volatilization using IPCC 2019 Vol4 Ch11 Eq11.9 breakdown: FracGASF_urea = 0.15, FracGASF_MAP = 0.05, ratio 17/14 NH₃/N, TRACI 2.1 CF = 1.88 kg SO₂-eq/kg NH₃.
-4. **Allocation clarified + shipped** — Multi-co-product scenarios (TDG_GF, TIG_GF, HDG_GF, HIG_GF, TDD, TID) computed with all 3 allocation methods (Mass · Economic · Energy). Economic is the report default; energy and mass are shown as sensitivity. SOC exception: `_GF` scenarios attribute 100% SOC to grain (no allocation).
+4. **Allocation clarified + shipped** — Multi-co-product scenarios (`TDG_GF, TIG_GF, HDG_GF, HIG_GF, TDD, TID`) computed with all 3 allocation methods (Mass · Economic · Energy). Economic is the report default; energy and mass are shown as sensitivity. SOC exception: `_GF` scenarios attribute 100% SOC to grain (no allocation).
 5. **File-format corruption fixed** — All workbooks now open without repair prompts. Byte-perfect preservation of v1 cells.
 
 ---
@@ -21,7 +33,7 @@ Since the v5 report was generated, the underlying LCA workbooks went through Pha
 Twelve scenarios: `TDG_GO, TDG_GF, TDF, TDD, TIG_GO, TIG_GF, TIF, TID, HDG_GO, HDG_GF, HIG_GO, HIG_GF`
 
 - **1st letter (T/H)**: Tillage — T = Traditional (conventional), H = High-management (reduced-till)
-- **2nd letter (D/I)**: Water regime — D = Dryland, I = Irrigated
+- **2nd letter (D/I)**: Water regime — **D = Dryland (rainfed), I = Irrigated**
 - **3rd+ letters**: Output — `G_GO` = Grain-Only (no fiber harvest), `G_GF` = Grain with Fiber-residue harvest, `F` = Fiber-only, `D` = Dual-purpose (both harvested)
 
 Multi-co-product scenarios (require allocation): `TDG_GF, TIG_GF, HDG_GF, HIG_GF, TDD, TID`.
@@ -37,6 +49,8 @@ Allocation constants used for economic + energy methods:
 ## Data block A: per-ACRE impact by scenario (allocation-agnostic)
 
 Medians + p25 + p75 across 1,000 Monte Carlo runs. Use for Charts 1–3.
+
+**Use `GWP_primary` as the canonical GWP for headline charts.** `GWP_wet` and `GWP_dry` are retained for the dryland-only climate sensitivity chart.
 
 ```json
 {
@@ -651,13 +665,62 @@ Medians + p25 + p75 across 1,000 Monte Carlo runs. Use for Charts 1–3.
       "HIG_GO": 0.0661,
       "HIG_GF": 0.0667
     }
+  },
+  "GWP_primary": {
+    "label": "GWP (irrigation-corrected primary)",
+    "unit": "kg CO2-eq/ac",
+    "medians": {
+      "TDG_GO": 412.1404,
+      "TDG_GF": 416.0521,
+      "TDF": 429.9822,
+      "TDD": 626.116,
+      "TIG_GO": 1163.2474,
+      "TIG_GF": 1101.0958,
+      "TIF": 851.8059,
+      "TID": 1128.7008,
+      "HDG_GO": 504.0619,
+      "HDG_GF": 492.4425,
+      "HIG_GO": 1190.9238,
+      "HIG_GF": 1053.1337
+    },
+    "p25": {
+      "TDG_GO": 373.5655,
+      "TDG_GF": 379.3118,
+      "TDF": 394.285,
+      "TDD": 574.3275,
+      "TIG_GO": 972.983,
+      "TIG_GF": 928.8088,
+      "TIF": 791.5824,
+      "TID": 1028.9137,
+      "HDG_GO": 438.1297,
+      "HDG_GF": 430.1242,
+      "HIG_GO": 1012.8366,
+      "HIG_GF": 898.0087
+    },
+    "p75": {
+      "TDG_GO": 455.6477,
+      "TDG_GF": 454.0069,
+      "TDF": 471.5077,
+      "TDD": 687.4116,
+      "TIG_GO": 1370.4251,
+      "TIG_GF": 1320.0591,
+      "TIF": 921.7193,
+      "TID": 1250.1538,
+      "HDG_GO": 573.8597,
+      "HDG_GF": 561.0112,
+      "HIG_GO": 1391.6101,
+      "HIG_GF": 1243.7814
+    },
+    "method_note": "Per R12 Path A: irrigated scenarios (TIG_GO/TIG_GF/TIF/TID/HIG_GO/HIG_GF) use wet-regime EF1 + non-zero FracLEACH regardless of climate zone. Dryland scenarios (TDG_GO/TDG_GF/TDF/TDD/HDG_GO/HDG_GF) use dry-regime as primary (GWP_wet remains available as climate-wet sensitivity for dryland)."
   }
 }
 ```
 
 ## Data block B: per-KG output × 3-METHOD allocation (Chart 5)
 
-Medians only in this block for prompt readability. Full stats (p25, p75, min, max, mean) are in the attached `lca_perkg_allocation.json`. Key format: `SCENARIO__OutputProduct` (e.g., `TDG_GF__Grain`). For single-output scenarios, all 3 methods have identical values (no co-product to allocate).
+Medians only in this block for readability. Full stats (p25, p75, min, max, mean) are in the attached `lca_perkg_allocation.json`. Key format: `SCENARIO__OutputProduct` (e.g., `TDG_GF__Grain`). For single-output scenarios, all 3 methods have identical values.
+
+**Use `GWP_primary` here as well for the canonical GWP per-kg.** GWP_wet and GWP_dry retained for dryland sensitivity.
 
 ```json
 {
@@ -1230,6 +1293,102 @@ Medians only in this block for prompt readability. Full stats (p25, p75, min, ma
         "energy": 1.5e-05
       }
     }
+  },
+  "GWP_primary": {
+    "unit": "kg CO2-eq/kg output",
+    "medians_by_method": {
+      "TDG_GO__Grain": {
+        "mass": 1.164958,
+        "economic": 1.164958,
+        "energy": 1.164958
+      },
+      "TDG_GF__Grain": {
+        "mass": 0.436524,
+        "economic": 0.839182,
+        "energy": 0.508939
+      },
+      "TDG_GF__Fiber": {
+        "mass": 0.436524,
+        "economic": 0.201021,
+        "energy": 0.394171
+      },
+      "TDF__Fiber": {
+        "mass": 0.152919,
+        "economic": 0.152919,
+        "energy": 0.152919
+      },
+      "TDD__Grain": {
+        "mass": 0.441357,
+        "economic": 0.978717,
+        "energy": 0.525375
+      },
+      "TDD__Fiber": {
+        "mass": 0.441357,
+        "economic": 0.234446,
+        "energy": 0.4069
+      },
+      "TIG_GO__Grain": {
+        "mass": 1.926829,
+        "economic": 1.926829,
+        "energy": 1.926829
+      },
+      "TIG_GF__Grain": {
+        "mass": 0.680043,
+        "economic": 1.307326,
+        "energy": 0.792855
+      },
+      "TIG_GF__Fiber": {
+        "mass": 0.680043,
+        "economic": 0.313162,
+        "energy": 0.614062
+      },
+      "TIF__Fiber": {
+        "mass": 0.252478,
+        "economic": 0.252478,
+        "energy": 0.252478
+      },
+      "TID__Grain": {
+        "mass": 0.535536,
+        "economic": 1.33487,
+        "energy": 0.649891
+      },
+      "TID__Fiber": {
+        "mass": 0.535536,
+        "economic": 0.31976,
+        "energy": 0.503337
+      },
+      "HDG_GO__Grain": {
+        "mass": 0.648953,
+        "economic": 0.648953,
+        "energy": 0.648953
+      },
+      "HDG_GF__Grain": {
+        "mass": 0.23341,
+        "economic": 0.448711,
+        "energy": 0.27213
+      },
+      "HDG_GF__Fiber": {
+        "mass": 0.23341,
+        "economic": 0.107486,
+        "energy": 0.210763
+      },
+      "HIG_GO__Grain": {
+        "mass": 0.903035,
+        "economic": 0.903035,
+        "energy": 0.903035
+      },
+      "HIG_GF__Grain": {
+        "mass": 0.299378,
+        "economic": 0.575529,
+        "energy": 0.349041
+      },
+      "HIG_GF__Fiber": {
+        "mass": 0.299378,
+        "economic": 0.137864,
+        "energy": 0.270331
+      }
+    },
+    "method_note": "R12 Path A: irrigated (I) uses C2Fg_wet; dryland (D) uses C2Fg_dry."
   }
 }
 ```
@@ -1238,12 +1397,12 @@ Medians only in this block for prompt readability. Full stats (p25, p75, min, ma
 
 ## Chart directives — what to regenerate
 
-Preserve v5's visual style (colors, fonts, panel layout, dark navy background if that was v5's palette). Only update the numbers and the narrative text about NH₃.
+Preserve v5's visual style (colors, fonts, panel layout, dark navy background if that was v5's palette). Only update the numbers and the narrative text about NH₃ and irrigation×regime.
 
 ### Chart 1 — Per-acre impact by scenario (primary comparison)
 
 Grouped bar chart. Six panels, one per impact category:
-1. **GWP** — use `GWP_dry` medians (default). Optionally toggle to wet.
+1. **GWP** — use `GWP_primary` medians. **This is the corrected default post-R12.** Irrigated bars will be visibly taller than v5 showed.
 2. **Acidification** — use `AP_total` medians (upstream + field NH₃ combined). Field NH₃ dominates now.
 3. **ADP-elements** — `ADPe` medians.
 4. **ADP-fossils** — `ADPf` medians.
@@ -1264,17 +1423,21 @@ Total bar height = `AP_total`. **This is the key "before/after" visual for the p
 Stacked bar chart per impact category (ADPe and ADPf), 12 scenarios × 8 activity stacks:
 - seeding, MAP, urea, MOP, herbicide, fuel, irrigation, electricity
 
-Use `contribution_medians[scenario][activity]` from Data Block A. Shows which inputs dominate the impact per scenario. Fuel is typically the ADPf driver; MOP is typically the ADPe driver.
+Use `contribution_medians[scenario][activity]` from Data Block A. Fuel dominates ADPf; MOP dominates ADPe.
 
-### Chart 4 — Scenario ranking summary (optional if v5 had one)
+### Chart 4 — GWP scenario ranking (updated post-R12)
 
-If v5 had a top-line summary chart ranking scenarios by GWP or acidification, update the numbers. Rank order for GWP-dry (lowest to highest): TDG_GO, TDG_GF, HDG_GF, HDG_GO, TIF, TIG_GF, TIG_GO, TID, HIG_GF, HIG_GO, TDD.
+Rank order for `GWP_primary`, lowest to highest per-acre:
+
+**TDG_GO (412) → TDG_GF (416) → TDF (430) → HDG_GF (492) → HDG_GO (504) → TDD (626) → TIF (852) → HIG_GF (1053) → TIG_GF (1101) → TID (1129) → TIG_GO (1163) → HIG_GO (1191)**
+
+Notable: post-R12, dryland scenarios cluster at the low end (~412–626 kg CO₂-eq/ac), irrigated cluster at the high end (~852–1191 kg CO₂-eq/ac). This is the corrected physics — irrigation always increases N₂O.
 
 ### Chart 5 — Allocation sensitivity per-kg output ★
 
 **This is the ISO-required sensitivity analysis for multi-co-product scenarios.**
 
-Per impact category, show 3-method comparison (Mass / Economic / Energy) for each multi-co-product scenario × output. For single-output scenarios, all methods give identical values (no allocation applied) — you can either omit or show as a flat baseline.
+Per impact category, show 3-method comparison (Mass / Economic / Energy) for each multi-co-product scenario × output. For single-output scenarios, all methods give identical values.
 
 **Recommended visualization: grouped bar chart per impact category:**
 - X-axis: scenario_output pairs (e.g., "TDG_GF Grain", "TDG_GF Fiber", "TDD Grain", "TDD Fiber", ...)
@@ -1287,16 +1450,22 @@ Key story from the data:
 - Under **Mass allocation**, grain and fiber share the impact proportional to yield — usually equal per-kg
 - Under **Energy allocation**, grain gets somewhat more than fiber (19.29 vs 14.94 MJ/kg, ~30% higher factor)
 
-Use `per_kg_by_impact[impact][medians_by_method]` from Data Block B. Each key is `SCENARIO__Output` (e.g., `TDG_GF__Grain`).
+Use `per_kg_by_impact[GWP_primary][medians_by_method]` from Data Block B for the GWP per-kg allocation sensitivity.
+
+### Chart 6 (optional add) — Climate sensitivity for dryland
+
+For dryland scenarios only (`TDG_GO, TDG_GF, TDF, TDD, HDG_GO, HDG_GF`), show side-by-side bars for `GWP_dry` and `GWP_wet` to represent dry vs wet growing region as a sensitivity axis. Irrigated scenarios don't have this axis (they're always wet regime post-R12) — you can either omit them from this chart or note "n/a for irrigated" inline.
 
 ---
 
 ## Narrative updates needed in the report body
 
+- **GWP methodology section**: add a paragraph explaining the R12 fix. Text template: *"For irrigated cropping systems, we apply the IPCC 2019 wet-regime EF₁ (0.0157) and non-zero FracLEACH regardless of surrounding climate, because irrigation is the dominant driver of soil moisture. This departs from a purely climate-zone-driven regime selection and better reflects the physical driver of N₂O and leached-N emissions."*
+- **GWP results narrative**: update any language that talked about "dry vs wet climate" as if it applied to all scenarios. Post-R12, only dryland scenarios have a climate sensitivity axis.
 - **AP section**: replace "AP is dominated by upstream fertilizer production" with "AP is dominated by field NH₃ volatilization from urea and MAP; upstream fertilizer production is a secondary driver." Include the field-NH₃-to-upstream ratio (typically 3–7× depending on scenario).
-- **Methodology → Impact assessment → Acidification**: add a paragraph explaining the IPCC 2019 Vol4 Ch11 Eq11.9 breakdown for FracGASF (0.15 urea, 0.05 MAP), the NH₃-to-N ratio (17/14), and the TRACI 2.1 CF (1.88 kg SO₂-eq/kg NH₃).
+- **AP methodology → Impact assessment → Acidification**: add a paragraph explaining the IPCC 2019 Vol4 Ch11 Eq11.9 breakdown for FracGASF (0.15 urea, 0.05 MAP), the NH₃-to-N ratio (17/14), and the TRACI 2.1 CF (1.88 kg SO₂-eq/kg NH₃).
 - **Allocation section**: state that Economic allocation is the report default, all three methods are shown as sensitivity, and grain gets more impact under Economic than Mass because of its ~4× price premium.
-- **Uncertainty section**: mention that the fertilizer distribution recalibration corrected 5 stale σ_log values (Grain P₂O₅, Grain K₂O, Fiber N, Fiber P₂O₅, Fiber K₂O) and truncated the MOP tail at 135 lb K₂O/ac.
+- **Uncertainty section**: mention the fertilizer distribution recalibration corrected 5 stale σ_log values (Grain P₂O₅, Grain K₂O, Fiber N, Fiber P₂O₅, Fiber K₂O) and truncated the MOP tail at 135 lb K₂O/ac.
 
 ---
 
@@ -1304,6 +1473,7 @@ Use `per_kg_by_impact[impact][medians_by_method]` from Data Block B. Each key is
 
 - **Eutrophication** values in Data Block A are UPSTREAM ONLY. If v5 showed total (upstream + field-weighted CF), add ~15–25% on top for the TD/TI scenarios per Rylie's regionalized CF data. If v5 used only upstream, you're good as-is.
 - **ADPe/ADPf** per-acre AND per-kg values were computed by Python from first principles (frozen fertilizer inputs × CML CF from the CF tab). The Excel workbook cache was cold for these two categories — the numbers here should match exactly what the workbook would produce after a Ctrl+Alt+F9 pass.
+- **GWP_primary** was computed by combining the cached workbook `TotalGWP_peracre_wet` (for irrigated) and `TotalGWP_peracre_dry` (for dryland). The physical `FinalMC_GWP_v3.xlsx` workbook has a new tab (`TotalGWP_peracre_v3_primary`) with formulas that make the same selection — those formulas will recompute to the same values after a Ctrl+Alt+F9 pass.
 - **All values from 1,000 Monte Carlo runs**. `p25` and `p75` give the interquartile range for error whiskers.
 
 ---
@@ -1314,9 +1484,9 @@ Return the updated HTML report as a single downloadable file, structurally match
 
 ---
 
-*Generated 2026-07-02T03:11:17+00:00 from LEIF AIOS Phase 2 Step 11.*
+*Generated 2026-07-02T19:02:05+00:00 from LEIF AIOS Phase 2 Step 12.*
 *Source workbooks (all corrected):*
-- *FinalMC_GWP_v2.xlsx (Steps 0–1)*
+- *FinalMC_GWP_v3.xlsx (Steps 0–1, 12 — includes R12 irrigation×regime fix)*
 - *FinalMC_upstreamAP_v7.xlsx (Steps 0–2, 5, 7, 10 — includes field NH₃)*
 - *FinalMC_upstreamADPe_v3.xlsx (Step 2)*
 - *FinalMC_upstreamADPf_v3.xlsx (Step 2)*
