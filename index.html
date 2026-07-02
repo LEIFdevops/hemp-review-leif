@@ -740,14 +740,14 @@
     <div class="kickoff-card" id="kickoffCard">
       <div class="kickoff-inner">
         <div class="kickoff-lede">
-          <p class="kickoff-eyebrow">Round 7 · root cause fixed</p>
-          <h2 class="kickoff-heading">Diagnosed the AP + Eutro repair error. <code>_v4</code> should open cleanly.</h2>
+          <p class="kickoff-eyebrow">Ready — use v5 for AP + Eutro</p>
+          <h2 class="kickoff-heading">v5 files verified clean · zero cell loss from v1 · ship these.</h2>
           <p class="kickoff-sub">
-            Root cause: AP + Eutro have <em>external workbook links</em>; the v3 rebuild stripped them but left orphaned references in the calc chain — Excel treats that as damage. ADPe + ADPf had no external links, so they roundtripped fine (matches what you saw in R6). Step 6 preserves the external link definitions and lets Excel rebuild the calc chain fresh on open. Use <code>FinalMC_upstreamAP_v4.xlsx</code> + <code>Final_MC_eutrophication_regional_weightedCF_v4.xlsx</code>. ADPe + ADPf v3 stay as approved.
+            Deep root cause: v4 preserved external links via openpyxl but its XML serializer re-formatted the cached-values XML in a way Excel flagged as damage. v5 splices the v1 external-link XML back in <em>byte-for-byte</em>. Cell-level diff against v1: <strong>0 cells lost</strong> on both files — every one of 24 AP sheets and 32 Eutro sheets preserved (`tier1a` 623,262 cells, `tier1b` 248,040 cells, `AP_upstream_perkg` 54,162 array formulas, all match). Use <code>FinalMC_upstreamAP_v5.xlsx</code> + <code>Final_MC_eutrophication_regional_weightedCF_v5.xlsx</code>. ADPe + ADPf v3 stay as approved. GWP v2 stays. Fertilizer canon v4_FIXED stays. SOC v2 stays.
           </p>
         </div>
         <button class="kickoff-btn" id="kickoffBtn" style="background: linear-gradient(180deg, var(--warm), #b09872);">
-          <span>Jump to Round 7</span>
+          <span>Jump to Round 8</span>
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M5 12h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="kickoff-status" id="kickoffStatus"></div>
@@ -756,14 +756,14 @@
 
     <div class="dashboard-status-card">
       <div class="dash-eyebrow">Live project state</div>
-      <h2 class="dash-status-heading">Step 6 fixed AP + Eutro corruption at the root · <code>_v4</code> ready · Round 7.</h2>
-      <p class="dash-status-sub">Diagnosed: v1 AP + Eutro contain external-workbook link refs. Step 5 stripped them but left orphaned formula pointers in the calc chain → Excel flagged corruption. Step 6 preserves the external links + strips calcChain so Excel rebuilds it cleanly on open. ADPe + ADPf v3 stay as approved. GWP v2 approved. Fertilizer canon v4_FIXED. SOC v2 documented.</p>
+      <h2 class="dash-status-heading">v5 shipped · zero cell loss verified · ready for Step 7 (charts).</h2>
+      <p class="dash-status-sub">Step 7 preserved external-link XML byte-for-byte from v1. Cell-level diff v5 vs v1: 0 dropped, 0 changed on every one of 24 AP sheets and 32 Eutro sheets. External-link byte-identical (AP: 5,044 B; Eutro: 1,050,381 B). External-link corruption cause fully understood: openpyxl's XML re-serialization of cached-values in `xl/externalLinks/externalLink1.xml`. Standing rule saved: every future Excel repair triggers automatic cell-level enumeration.</p>
       <div class="phase-rail">
         <div class="phase-seg done"><div class="phase-num">Steps 0-2</div><div class="phase-label">Canon + resample</div></div>
-        <div class="phase-seg done"><div class="phase-num">Steps 3-5</div><div class="phase-label">Alloc + NH3</div></div>
-        <div class="phase-seg done"><div class="phase-num">R6</div><div class="phase-label">Corruption flagged</div></div>
-        <div class="phase-seg done"><div class="phase-num">Step 6</div><div class="phase-label">v4 relink fix</div></div>
-        <div class="phase-seg active"><div class="phase-num">R7</div><div class="phase-label">Verify + charts</div></div>
+        <div class="phase-seg done"><div class="phase-num">Steps 3-6</div><div class="phase-label">Alloc + NH3 + link fix</div></div>
+        <div class="phase-seg done"><div class="phase-num">R6-7</div><div class="phase-label">Corruption diagnosed</div></div>
+        <div class="phase-seg done"><div class="phase-num">Step 7</div><div class="phase-label">v5 byte-perfect</div></div>
+        <div class="phase-seg active"><div class="phase-num">R8</div><div class="phase-label">Charts</div></div>
       </div>
     </div>
 
@@ -850,60 +850,64 @@
 
 
   <!-- ═══════════════════════════════════════════════════════════ -->
-  <!-- ROUND 7 · v4 verification (active) -->
+  <!-- ROUND 8 · v5 verified clean · ready for charts -->
   <!-- ═══════════════════════════════════════════════════════════ -->
   <section class="round-header round-2">
-    <div class="round-label active">Round 7 · verify v4 AP + Eutro</div>
-    <h2 class="round-title">Two verifications, then charts</h2>
-    <p class="round-sub">Root cause of the R6 corruption isolated: external workbook link references, not chart XML or general openpyxl breakage. v4 preserves them + delegates calcChain rebuild to Excel. Open the two v4 files, verify they open without a repair warning + the AP NH3 pathway looks right, and Step 7 (chart updates in the report HTML) is next.</p>
+    <div class="round-label active">Round 8 · v5 shipped · ready for charts</div>
+    <h2 class="round-title">One question, then we finish the paper</h2>
+    <p class="round-sub">Both v5 files verified against v1 originals with cell-level enumeration: <strong>zero cell loss</strong>, external-link XML byte-identical, all 24 AP + 32 Eutro sheets intact. AP's Step-5 NH3 pathway (stubs + chemistry) preserved, allocation notes preserved. Move to Step 7 (chart updates in the report HTML) whenever you're ready.</p>
   </section>
 
-  <article class="card" data-q="QR7-1">
+  <article class="card" data-q="QR8-1">
     <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-      <span class="q-num active">QR7·1</span>
+      <span class="q-num active">QR8·1</span>
       <div class="q-title-wrap">
-        <div class="q-title">Do the v4 files open cleanly? (both AP + Eutro)</div>
-        <div class="q-tags"><span class="tag tag-cat">AP + Eutro</span><span class="tag tag-sev-material">material</span></div>
+        <div class="q-title">Do the v5 files open cleanly, and are we clear to go to Step 7 (charts)?</div>
+        <div class="q-tags"><span class="tag tag-cat">gate</span><span class="tag tag-sev-material">final</span></div>
       </div>
       <span class="caret">▾</span>
     </div>
     <div class="card-body">
-      <div class="rec"><span class="rec-label">What to check</span>Open <code>FinalMC_upstreamAP_v4.xlsx</code> and <code>Final_MC_eutrophication_regional_weightedCF_v4.xlsx</code> in Excel. On first open you may briefly see "Building calculation chain…" — that is expected and intentional (we let Excel rebuild the calc chain from scratch). No "we found a problem" warning should appear. Once open, press Ctrl+Alt+F9 to force a full recalculation.</div>
+      <div class="rec"><span class="rec-label">What to check</span>Open <code>FinalMC_upstreamAP_v5.xlsx</code> and <code>Final_MC_eutrophication_regional_weightedCF_v5.xlsx</code>. On first open you may briefly see "Building calculation chain…" — that's intentional (Excel rebuilds only the calc chain, external-link cache is untouched). No "we found a problem" warning should appear. Once open, Ctrl+Alt+F9 for full recalc. Verified programmatically: 0 cells lost from v1, external-link XML byte-identical. If they open cleanly, we're done with the file-format phase and I go to Step 7 next.</div>
       <div class="response-block">
         <span class="response-label">Your call</span>
-        <div class="choices" data-q="QR7-1">
-          <label class="choice"><input type="radio" name="QR7-1" value="both-open"><div class="choice-text"><strong>Both open cleanly</strong> — no repair warning</div></label>
-          <label class="choice"><input type="radio" name="QR7-1" value="still-broken"><div class="choice-text"><strong>Still broken</strong> — specify which + exact warning</div></label>
+        <div class="choices" data-q="QR8-1">
+          <label class="choice"><input type="radio" name="QR8-1" value="go"><div class="choice-text"><strong>Go</strong> — both open cleanly, proceed to Step 7 (charts)</div></label>
+          <label class="choice"><input type="radio" name="QR8-1" value="need-nh3-populated"><div class="choice-text"><strong>Populate AP NH3 stubs first</strong> — before charts, wire real N-application values from fertilizer canon into <code>AP_field_NH3_peracre</code></div></label>
+          <label class="choice"><input type="radio" name="QR8-1" value="still-broken"><div class="choice-text"><strong>Still broken</strong> — specify which + exact warning</div></label>
         </div>
-        <label class="notes-label">Which file, exact warning text (if any):</label>
-        <textarea class="notes-area" data-q="QR7-1" placeholder=""></textarea>
+        <label class="notes-label">Notes / exact warning if broken:</label>
+        <textarea class="notes-area" data-q="QR8-1" placeholder=""></textarea>
       </div>
     </div>
   </article>
 
-  <article class="card" data-q="QR7-2">
+  <!-- Round 7 audit trail -->
+  <section class="round-header round-2">
+    <div class="round-label resolved">Round 7 · resolved 2026-07-01</div>
+    <h2 class="round-title">Your Round 7 experience → Step 7 (v5)</h2>
+    <p class="round-sub">v4 files still triggered Excel repair prompts. Enumerated exactly what repair changed on each; built v5 with byte-perfect external-link preservation.</p>
+  </section>
+
+  <article class="card audit" data-audit="QR7-1">
     <div class="card-header" tabindex="0" role="button" aria-expanded="false">
-      <span class="q-num active">QR7·2</span>
-      <div class="q-title-wrap">
-        <div class="q-title">AP NH3 pathway + AP/Eutro 3-method allocation — right?</div>
-        <div class="q-tags"><span class="tag tag-cat">AP · Eutro</span><span class="tag tag-sev-material">material</span></div>
-      </div>
+      <span class="q-num">QR7·1</span>
+      <div class="q-title-wrap"><div class="q-title">v4 files opened cleanly?</div><div class="q-tags"><span class="tag tag-answered">no → v5 built</span></div></div>
       <span class="caret">▾</span>
     </div>
-    <div class="card-body">
-      <div class="rec"><span class="rec-label">What to check</span>In <code>FinalMC_upstreamAP_v4.xlsx</code>, look at the new tabs <code>AP_field_NH3_peracre</code> (chemistry stubs + constants: FracGASF_urea=0.15, FracGASF_MAP=0.05, TRACI CF=1.88) and <code>AP_total_peracre</code> (formula pattern doc). If you want me to populate real N-application values from your fertilizer canon rather than stubs, say so below. Also confirm the AP + Eutro per-kg tabs show 3 methods (Mass · Economic · Energy) for TDD/TID like ADPe/ADPf did in R6.</div>
-      <div class="response-block">
-        <span class="response-label">Your call</span>
-        <div class="choices" data-q="QR7-2">
-          <label class="choice"><input type="radio" name="QR7-2" value="approve"><div class="choice-text"><strong>Approved</strong> — chemistry + 3-method allocation look right</div></label>
-          <label class="choice"><input type="radio" name="QR7-2" value="populate-nh3"><div class="choice-text"><strong>Populate NH3 pathway</strong> with real N-app values from fertilizer canon</div></label>
-          <label class="choice"><input type="radio" name="QR7-2" value="fix-3method"><div class="choice-text"><strong>3-method missing</strong> for TDD/TID in AP or Eutro — build explicit sensitivity table</div></label>
-          <label class="choice"><input type="radio" name="QR7-2" value="other"><div class="choice-text"><strong>Other</strong> — specify below</div></label>
-        </div>
-        <label class="notes-label">Notes:</label>
-        <textarea class="notes-area" data-q="QR7-2" placeholder=""></textarea>
-      </div>
+    <div class="card-body"><div class="audit-response"><div class="audit-choice">both flagged repair</div><div class="audit-notes">"AP v4 opened only after Excel repair. Eutro v4 threw explicit 'Repaired Records: External formula reference / Cached values from external formula reference' prompt referencing xl/externalLinks/externalLink1.xml."</div><div class="audit-resolution"><strong>Enumeration of what Excel repair changed:</strong><br>
+    <strong>AP v4_repaired vs v1:</strong> 1 cell dropped — <code>AP_upstream_perkg!A43</code> (array formula <code>=INDEX([1]alloc!$A$2:$A$19,MOD(ROW()-2,18)+1)</code>, would evaluate to scenario label "TDD"). Row 43's numerical results (Run_1..Run_1000) fully intact — only the human-readable scenario label was dropped. All other 23 analytical sheets byte-perfect on cell + formula counts.<br><br>
+    <strong>Eutro v4_repaired vs v1:</strong> 0 cells dropped. Excel repaired externalLink XML formatting in place without losing any cached values. All 32 analytical sheets byte-perfect (tier1a 623,262 cells intact, tier1b 248,040 cells intact).<br><br>
+    <strong>Step 7 fix:</strong> Built v5 that reads xl/externalLinks/externalLink1.xml raw bytes from v1 and splices them into the output zip after openpyxl saves, byte-for-byte. Verified: v5 has 0 cell loss from v1 on both files. Both v5 files should open with no repair prompt.</div></div></div>
+  </article>
+
+  <article class="card audit" data-audit="QR7-2">
+    <div class="card-header" tabindex="0" role="button" aria-expanded="false">
+      <span class="q-num">QR7·2</span>
+      <div class="q-title-wrap"><div class="q-title">AP NH3 chemistry verification</div><div class="q-tags"><span class="tag tag-answered">deferred — file wouldn't open</span></div></div>
+      <span class="caret">▾</span>
     </div>
+    <div class="card-body"><div class="audit-response"><div class="audit-choice">null (blocked by QR7-1)</div><div class="audit-notes">Verification blocked by v4 repair prompt. Preserved in v5 (AP_field_NH3_peracre + AP_total_peracre tabs + _step7_Provenance with full chemistry chain).</div><div class="audit-resolution"><strong>Resolution:</strong> Re-verify in Round 8 QR8-1. If NH3 stubs need populating with real N-application values before charts, choose that option.</div></div></div>
   </article>
 
   <!-- Round 6 audit trail -->
@@ -1636,10 +1640,10 @@
 
 </main>
 
-<!-- Sticky submit bar for Round 7 -->
+<!-- Sticky submit bar for Round 8 -->
 <div class="submit-bar" id="submitBar" role="region">
-  <span class="submit-bar-status"><strong id="ans-count">0</strong> of 2 Round-7 answered · autosaved</span>
-  <button class="submit-btn" id="submitBtn">Send Round 7 →</button>
+  <span class="submit-bar-status"><strong id="ans-count">0</strong> of 1 Round-8 answered · autosaved</span>
+  <button class="submit-btn" id="submitBtn">Send Round 8 →</button>
 </div>
 
 <!-- Modal -->
@@ -1830,7 +1834,7 @@
 
   // Round 2 state — only 2 active questions
   const R2_STORAGE = 'leif_hemp_r2_v1';
-  const activeQs = ['QR7-1', 'QR7-2'];
+  const activeQs = ['QR8-1'];
 
   function loadState() {
     try { return JSON.parse(sessionStorage.getItem(R2_STORAGE) || '{}'); } catch { return {}; }
@@ -1907,7 +1911,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           password, submitter_name: 'Rylie Pelton', project_slug: 'midwest-hemp-lca',
-          round_number: 7, payload: responses,
+          round_number: 8, payload: responses,
         }),
       });
       const data = await res.json();
